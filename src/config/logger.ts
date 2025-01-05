@@ -1,8 +1,6 @@
 import pino from "pino";
 import pinoHttp from "pino-http";
 
-import config from "@/config";
-
 const httpLogger = pinoHttp({
   transport: {
     target: "pino-pretty",
@@ -32,7 +30,7 @@ const httpLogger = pinoHttp({
 });
 
 const logger = pino({
-  level: config.node.env === "development" ? "debug" : "info",
+  level: process.env.NODE_ENV === "test" ? "silent" : process.env.NODE_ENV !== "production" ? "debug" : "info",
   transport: {
     target: "pino-pretty",
     options: {
