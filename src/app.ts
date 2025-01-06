@@ -3,6 +3,7 @@ import express from "express";
 
 import config from "@/config";
 import { setupSwagger } from "@/config/swagger";
+import { checkDbEstablished } from "@/db";
 import logger, { httpLogger } from "@/logger";
 import defaultRoutes from "@/routes/default.route";
 
@@ -21,6 +22,8 @@ app.use(
 if (config.node.env === "development") {
   (async () => await setupSwagger(app))();
 }
+
+checkDbEstablished();
 
 app.use("/", defaultRoutes);
 
