@@ -18,9 +18,7 @@ describe("Config", () => {
   });
 
   it("설정되지 않은 값 호출 시 기본값 반환", async () => {
-    process.env.DB_USER = "";
-    process.env.DB_PASSWORD = "";
-    process.env.DB_DATABASE = "";
+    process.env.DATABASE_URL = "";
     const config = (await import("@/config")).default;
     expect(config.http.port).toBe("3000");
   });

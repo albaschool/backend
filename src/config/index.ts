@@ -27,12 +27,8 @@ const config = {
     port: getEnvVar("HTTP_PORT", "3000"),
     cors: getEnvVar("HTTP_CORS", "").split(","),
   },
-  db: {
-    host: getEnvVar("DB_HOST", "localhost"),
-    port: getEnvVar("DB_PORT", "3306"),
-    user: getEnvVar("DB_USER"),
-    password: getEnvVar("DB_PASSWORD"),
-    database: getEnvVar("DB_DATABASE"),
+  database: {
+    url: getEnvVar("DATABASE_URL"),
   },
 };
 
