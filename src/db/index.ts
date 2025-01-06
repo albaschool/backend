@@ -16,12 +16,12 @@ export const db = new Kysely<Database>({
 
 export const checkDbEstablished = () => {
   sql`SELECT 1`
-  .execute(db)
-  .then(() => {
-    logger.info("Database connection established.");
-  })
-  .catch((error) => {
-    logger.error(error, "Database connection failed:");
-    process.exit(1);
-  });
-}
+    .execute(db)
+    .then(() => {
+      logger.info("Database connection established.");
+    })
+    .catch((error) => {
+      logger.error(error, "Database connection failed:");
+      process.exit(1);
+    });
+};

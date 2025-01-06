@@ -48,7 +48,7 @@ export const setupSwagger = async (app: Express): Promise<boolean> => {
       return false;
     }
   } catch (error) {
-    logger.error(error,  "Swagger UI failed to initialize:");
+    logger.error(error, "Swagger UI failed to initialize:");
     return false;
   }
-}
+};
