@@ -1,10 +1,12 @@
 import cors from "cors";
 import express from "express";
 import { promises as fs } from "fs";
+import { sql } from "kysely";
 import path from "path";
 import swaggerUi from "swagger-ui-express";
 
 import config from "@/config";
+import { db } from "@/db";
 import logger, { httpLogger } from "@/logger";
 import defaultRoutes from "@/routes/default.route";
 
@@ -50,3 +52,13 @@ app.listen(parseInt(config.http.port), config.http.host, () => {
     logger.info(`Swagger UI is running on http://${config.http.host}:${config.http.port}/swagger`);
   }
 });
+
+sql`SELECT 1`
+  .execute(db)
+  .then(() => {
+    logger.info("Database connection established.");
+  })
+  .catch((error) => {
+    logger.error(error, "Database connection failed:");
+    process.exit(1);
+  });
