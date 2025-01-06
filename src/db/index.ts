@@ -1,4 +1,4 @@
-import { CamelCasePlugin, Kysely, MysqlDialect, sql } from "kysely";
+import { CamelCasePlugin, DeduplicateJoinsPlugin, Kysely, MysqlDialect, sql } from "kysely";
 import { createPool } from "mysql2";
 
 import config from "@/config";
@@ -11,7 +11,7 @@ const dialect = new MysqlDialect({
 
 export const db = new Kysely<Database>({
   dialect,
-  plugins: [new CamelCasePlugin()],
+  plugins: [new CamelCasePlugin(), new DeduplicateJoinsPlugin()],
 });
 
 export const checkDbEstablished = () => {
