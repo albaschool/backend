@@ -1,4 +1,4 @@
-import { Insertable, Selectable, Updateable } from "kysely";
+import { ColumnType, Insertable, Selectable, Updateable } from "kysely";
 
 export interface Database {
   user: UserTable;
@@ -18,7 +18,7 @@ export interface UserTable {
   password: string;
   name: string;
   contact: string;
-  role: "MANAGER" | "STAFF";
+  role: "manager" | "staff";
 }
 
 export type User = Selectable<UserTable>;
@@ -32,7 +32,7 @@ export interface StoreTable {
   location: string;
   contact: string;
   password: string;
-  createdAt: Date;
+  createdAt: ColumnType<Date, string | undefined, never>;
 }
 
 export type Store = Selectable<StoreTable>;
@@ -72,7 +72,7 @@ export interface MessageTable {
   roomId: string;
   senderId: string;
   content: string;
-  createdAt: Date;
+  createdAt: ColumnType<Date, string | undefined, never>;
 }
 
 export type Message = Selectable<MessageTable>;
@@ -86,7 +86,7 @@ export interface ScheduleTable {
   dayOfWeek: number;
   startTime: Date;
   endTime: Date;
-  createdAt: Date;
+  createdAt: ColumnType<Date, string | undefined, never>;
 }
 
 export type Schedule = Selectable<ScheduleTable>;
@@ -98,7 +98,7 @@ export interface EducationPageTable {
   storeId: string;
   title: string;
   content: string;
-  img: string;
+  img: string | null;
 }
 
 export type EducationPage = Selectable<EducationPageTable>;
