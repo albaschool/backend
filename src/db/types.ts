@@ -106,9 +106,9 @@ export type NewEducationPage = Insertable<EducationPageTable>;
 export type EducationPageUpdate = Updateable<EducationPageTable>;
 
 export interface VerificationTable {
-  userName: string;
-  userEmail: string;
-  verificationCode: string;
+  name: string;
+  email: string;
+  code: string;
 }
 
 export type Verification = Selectable<VerificationTable>;
