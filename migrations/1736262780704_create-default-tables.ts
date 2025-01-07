@@ -90,13 +90,13 @@ export async function up(db: Kysely<unknown>): Promise<void> {
 }
 
 export async function down(db: Kysely<unknown>): Promise<void> {
-  await db.schema.dropTable("user").execute();
-  await db.schema.dropTable("store").execute();
   await db.schema.dropTable("store_member").execute();
-  await db.schema.dropTable("chat_room").execute();
   await db.schema.dropTable("chat_room_member").execute();
   await db.schema.dropTable("message").execute();
   await db.schema.dropTable("schedule").execute();
   await db.schema.dropTable("education_page").execute();
   await db.schema.dropTable("verification").execute();
+  await db.schema.dropTable("chat_room").execute();
+  await db.schema.dropTable("store").execute();
+  await db.schema.dropTable("user").execute();
 }
