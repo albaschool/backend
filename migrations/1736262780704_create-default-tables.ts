@@ -63,7 +63,7 @@ export async function up(db: Kysely<unknown>): Promise<void> {
     .addColumn("id", "varchar(16)", (col) => col.primaryKey())
     .addColumn("user_id", "varchar(12)", (col) => col.notNull())
     .addColumn("store_id", "varchar(8)", (col) => col.notNull())
-    .addColumn("day_of_week", "integer", (col) => col.notNull())
+    .addColumn("day_of_week", sql`TINYINT`, (col) => col.notNull())
     .addColumn("content", "text", (col) => col.notNull())
     .addColumn("start_at", "timestamp", (col) => col.notNull())
     .addColumn("end_at", "timestamp", (col) => col.notNull())
