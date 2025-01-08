@@ -12,6 +12,18 @@ const dialect = new MysqlDialect({
 export const db = new Kysely<Database>({
   dialect,
   plugins: [new CamelCasePlugin(), new DeduplicateJoinsPlugin()],
+  log(event) {
+    if (event.level !== "error") return;
+    logger.error(
+      {
+        durationMs: event.queryDurationMillis,
+        error: event.error,
+        sql: event.query.sql,
+        params: event.query.parameters,
+      },
+      "Query failed:",
+    );
+  },
 });
 
 export const checkDbEstablished = () => {
