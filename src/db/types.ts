@@ -5,7 +5,6 @@ export interface Database {
   store: StoreTable;
   storeMember: StoreMemberTable;
   chatRoom: ChatRoomTable;
-  chatRoomMember: ChatRoomMemberTable;
   message: MessageTable;
   schedule: ScheduleTable;
   educationPage: EducationPageTable;
@@ -57,15 +56,6 @@ export interface ChatRoomTable {
 export type ChatRoom = Selectable<ChatRoomTable>;
 export type NewChatRoom = Insertable<ChatRoomTable>;
 export type ChatRoomUpdate = Updateable<ChatRoomTable>;
-
-export interface ChatRoomMemberTable {
-  roomId: string;
-  userId: string;
-}
-
-export type ChatRoomMember = Selectable<ChatRoomMemberTable>;
-export type NewChatRoomMember = Insertable<ChatRoomMemberTable>;
-export type ChatRoomMemberUpdate = Updateable<ChatRoomMemberTable>;
 
 export interface MessageTable {
   id: string;

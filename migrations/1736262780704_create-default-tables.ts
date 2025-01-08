@@ -40,14 +40,6 @@ export async function up(db: Kysely<unknown>): Promise<void> {
     .execute();
 
   await db.schema
-    .createTable("chat_room_member")
-    .addColumn("room_id", "varchar(8)", (col) => col.notNull())
-    .addColumn("user_id", "varchar(12)", (col) => col.notNull())
-    .addForeignKeyConstraint("chat_room_member_room_id_fk", ["room_id"], "chat_room", ["id"])
-    .addForeignKeyConstraint("chat_room_member_user_id_fk", ["user_id"], "user", ["id"])
-    .execute();
-
-  await db.schema
     .createTable("message")
     .addColumn("id", "varchar(12)", (col) => col.primaryKey())
     .addColumn("room_id", "varchar(8)", (col) => col.notNull())
@@ -91,7 +83,6 @@ export async function up(db: Kysely<unknown>): Promise<void> {
 
 export async function down(db: Kysely<unknown>): Promise<void> {
   await db.schema.dropTable("store_member").execute();
-  await db.schema.dropTable("chat_room_member").execute();
   await db.schema.dropTable("message").execute();
   await db.schema.dropTable("schedule").execute();
   await db.schema.dropTable("education_page").execute();
