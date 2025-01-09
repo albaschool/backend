@@ -3,7 +3,7 @@ import { config as loadEnvFile } from "dotenv";
 import logger from "@/logger";
 
 loadEnvFile({
-  path: process.env.NODE_ENV === "test" ? `.env.${process.env.NODE_ENV}` : `.env`,
+  path: process.env.NODE_ENV === "test" ? `.env.${process.env.NODE_ENV}.local` : `.env`,
 });
 
 const getEnvVar = (name: string, defaultValue: string | null = null): string => {
