@@ -96,7 +96,6 @@ export type NewEducationPage = Insertable<EducationPageTable>;
 export type EducationPageUpdate = Updateable<EducationPageTable>;
 
 export interface VerificationTable {
-  name: string;
   email: string;
   code: string;
 }

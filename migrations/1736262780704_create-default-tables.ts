@@ -75,7 +75,6 @@ export async function up(db: Kysely<unknown>): Promise<void> {
 
   await db.schema
     .createTable("verification")
-    .addColumn("name", "varchar(20)", (col) => col.notNull())
     .addColumn("email", "varchar(255)", (col) => col.notNull())
     .addColumn("code", "varchar(8)", (col) => col.notNull())
     .execute();
