@@ -2,7 +2,7 @@ import { type Kysely, sql } from "kysely";
 
 export async function up(db: Kysely<unknown>): Promise<void> {
   await db.schema
-    .createTable("last_read_messages")
+    .createTable("last_read_message")
     .addColumn("user_id", "varchar(12)", (col) => col.notNull())
     .addColumn("room_id", "varchar(8)", (col) => col.notNull())
     .addColumn("message_id", "varchar(12)", (col) => col.notNull())
