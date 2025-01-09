@@ -17,7 +17,7 @@ export async function up(db: Kysely<unknown>): Promise<void> {
     .addColumn("user_id", "varchar(12)", (col) => col.notNull())
     .addColumn("content", "varchar(255)", (col) => col.notNull())
     .addColumn("target", "varchar(255)", (col) => col.notNull())
-    .addColumn("is_checked", sql`TINYINT`, (col) => col.notNull())
+    .addColumn("is_checked", "boolean", (col) => col.notNull())
     .addColumn("created_at", "timestamp", (col) => col.defaultTo(sql`CURRENT_TIMESTAMP`).notNull())
     .addForeignKeyConstraint("notification_user_id", ["user_id"], "user", ["id"])
     .execute();
