@@ -6,9 +6,11 @@ export interface Database {
   storeMember: StoreMemberTable;
   chatRoom: ChatRoomTable;
   message: MessageTable;
+  lastReadMessage: LastReadMessageTable;
   schedule: ScheduleTable;
   educationPage: EducationPageTable;
   verification: VerificationTable;
+  notification: NotificationTable;
 }
 
 export interface UserTable {
@@ -69,6 +71,16 @@ export type Message = Selectable<MessageTable>;
 export type NewMessage = Insertable<MessageTable>;
 export type MessageUpdate = Updateable<MessageTable>;
 
+export interface LastReadMessageTable {
+  userId: string;
+  chatRoomId: string;
+  messageId: string;
+}
+
+export type LastReadMessage = Selectable<LastReadMessageTable>;
+export type NewLastReadMessage = Insertable<LastReadMessageTable>;
+export type LastReadMessageUpdate = Updateable<LastReadMessageTable>;
+
 export interface ScheduleTable {
   id: string;
   userId: string;
@@ -103,3 +115,16 @@ export interface VerificationTable {
 export type Verification = Selectable<VerificationTable>;
 export type NewVerification = Insertable<VerificationTable>;
 export type VerificationUpdate = Updateable<VerificationTable>;
+
+export interface NotificationTable {
+  id: string;
+  userId: string;
+  content: string;
+  target: string;
+  isChecked: boolean;
+  createdAt: ColumnType<Date, string | undefined, never>;
+}
+
+export type Notification = Selectable<NotificationTable>;
+export type NewNotification = Insertable<NotificationTable>;
+export type NotificationUpdate = Updateable<NotificationTable>;
