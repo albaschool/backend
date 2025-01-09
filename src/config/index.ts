@@ -30,6 +30,9 @@ const config = {
   database: {
     url: getEnvVar("DATABASE_URL"),
   },
+  jwt: {
+    secretKey: getEnvVar("JWT_SECRET_KEY"),
+  }
 };
 
 export default config;
