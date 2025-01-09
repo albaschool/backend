@@ -6,7 +6,15 @@ import { Database } from "@/db/types";
 import logger from "@/logger";
 
 const dialect = new MysqlDialect({
-  pool: createPool(config.database.url),
+  pool: createPool({
+    uri: config.database.url,
+    typeCast(field, next) {
+      if (field.type === "TINY" && field.length === 1) {
+        return field.string() === "1";
+      }
+      return next();
+    },
+  }),
 });
 
 export const db = new Kysely<Database>({
