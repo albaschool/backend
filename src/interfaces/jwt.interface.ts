@@ -1,7 +1,7 @@
-import { JwtPayload } from "jsonwebtoken";
-
-export interface AuthPayload extends JwtPayload {
+export interface AuthPayload {
   id: string;
   name: string;
   role: "manager" | "staff";
+  iat?: number;
+  exp?: number;
 }
