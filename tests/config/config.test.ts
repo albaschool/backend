@@ -1,3 +1,7 @@
+jest.mock("dotenv", () => ({
+  config: jest.fn()
+}));
+
 describe("Config", () => {
   let processExitSpy: jest.SpyInstance;
 
