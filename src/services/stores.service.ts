@@ -63,6 +63,16 @@ export const deleteStoreMemberService = async (storeId: string, memberId: string
   return result;
 };
 
+export const isUserExistsService = async (userId: string) => {
+  const result = await db
+    .selectFrom("user")
+    .select(sql`1`.as("exists"))
+    .where("id", "=", userId)
+    .executeTakeFirst();
+
+  return result !== undefined;
+}
+
 export const isOwnerService = async (userId: string, storeId: string) => {
   const result = await db
     .selectFrom("store")

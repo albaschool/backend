@@ -9,6 +9,7 @@ import {
   getStoresService,
   isOwnerService,
   isStoreMemberService,
+  isUserExistsService,
 } from "@/services/stores.service";
 
 /** GET /stores */
@@ -100,7 +101,6 @@ export const getStoreMembers = async (req: Request, res: Response) => {
   }
 };
 
-
 /** POST /stores/:storeId/members */
 export const addStoreMember = async (req: Request, res: Response) => {
   try {
@@ -110,16 +110,21 @@ export const addStoreMember = async (req: Request, res: Response) => {
       return;
     }
 
-    const isMember = await isStoreMemberService(req.body.memberId, req.params.storeId);
+    const memberId = req.body.memberId;
+
+    const isMember = await isStoreMemberService(memberId, req.params.storeId);
     if (isMember) {
       res.status(409).json({ message: "이미 존재하는 직원입니다." });
       return;
     }
 
-    // TODO: 유저가 존재하는지 확인하는 로직 필요
-    // res.status(404).json({ message: "존재하지 않는 직원입니다." });
+    const isUserExists = await isUserExistsService(memberId);
+    if (!isUserExists) {
+      res.status(404).json({ message: "존재하지 않는 직원입니다." });
+      return;
+    }
 
-    const result = await addStoreMemberService(req.params.storeId, req.body.memberId);
+    const result = await addStoreMemberService(req.params.storeId, memberId);
     if (result.numInsertedOrUpdatedRows === BigInt(0)) {
       throw new Error("Failed to add store member");
     }
