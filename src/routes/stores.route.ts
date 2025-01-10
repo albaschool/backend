@@ -155,7 +155,7 @@ router.post(
       description: "Created",
       content: {
         "application/json": {
-          example: { ok: true }
+          example: { message: "가게가 생성되었습니다." }
         }
       }
     }
@@ -192,7 +192,7 @@ router.delete(
       description: "OK",
       content: {
         "application/json": {
-          example: { ok: true }
+          example: { message: "직원이 삭제되었습니다." }
         }
       }
     }

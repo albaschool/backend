@@ -83,7 +83,11 @@ export const addStore = async (req: Request, res: Response) => {
       ...req.body,
     });
 
-    res.status(201).json({ ok: (store.numInsertedOrUpdatedRows ?? 0) !== 0 });
+    if ((store.numInsertedOrUpdatedRows ?? 0) !== 0) {
+      throw new Error("Failed to add store");
+    }
+
+    res.status(201).json({ message: "가게가 생성되었습니다." });
   } catch {
     res.status(500).json({ message: "Internal server error" });
   }
@@ -105,7 +109,7 @@ export const deleteStoreMember = async (req: Request, res: Response) => {
       return;
     }
 
-    res.status(200).json({ ok: true });
+    res.status(200).json({ message: "직원이 삭제되었습니다." });
   } catch {
     res.status(500).json({ message: "Internal server error" });
   }
