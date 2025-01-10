@@ -1,12 +1,11 @@
 import cors from "cors";
 import express from "express";
-
 import config from "@/config";
 import { setupSwagger } from "@/config/swagger";
 import { checkDbEstablished } from "@/db";
 import logger, { httpLogger } from "@/logger";
 import defaultRoutes from "@/routes/default.route";
-
+import authRoutes from "@/routes/auth.route";
 const app = express();
 
 app.use(express.json());
@@ -26,6 +25,7 @@ if (config.node.env === "development") {
 checkDbEstablished();
 
 app.use("/", defaultRoutes);
+app.use("/auth", authRoutes);
 
 app.listen(parseInt(config.http.port), config.http.host, () => {
   logger.info(`Node environment: ${config.node.env}`);

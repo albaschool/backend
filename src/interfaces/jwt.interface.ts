@@ -5,3 +5,4 @@ export interface AuthPayload {
   iat?: number;
   exp?: number;
 }
+
