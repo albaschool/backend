@@ -1,6 +1,6 @@
 import express from "express";
 
-import { getMyStores, getStoreById, getStoreMembers, getStores } from "@/controllers/stores.controller";
+import { addStore, getMyStores, getStoreById, getStoreMembers, getStores } from "@/controllers/stores.controller";
 import authMiddleware from "@/middlewares/auth.middleware";
 
 const router = express.Router();
@@ -131,6 +131,45 @@ router.get(
   */
   authMiddleware,
   getStoreMembers,
+);
+
+router.post(
+  "/",
+  // #swagger.tags = ["Stores"]
+  // #swagger.description = "가게를 생성합니다."
+  // #swagger.security = [{ bearerAuth: [] }]
+  /*
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            $ref: "#/components/schemas/addUser"
+          }  
+        }
+      }
+    }
+  */
+  /*
+    #swagger.responses[201] = {
+      description: "Created",
+      content: {
+        "application/json": {
+          example: { ok: true }
+        }
+      }
+    }
+    #swagger.responses[500] = {
+      description: "Internal Server Error",
+      content: {
+        "application/json": {
+          example: { message: "Internal server error" }
+        }
+      }
+    }
+  */
+  authMiddleware,
+  addStore,
 );
 
 export default router;

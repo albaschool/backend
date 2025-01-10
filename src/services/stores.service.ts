@@ -1,6 +1,8 @@
 import { sql } from "kysely";
+import { nanoid } from "nanoid";
 
 import { db } from "@/db";
+import { AddStorePayload } from "@/interfaces/stores.interface";
 
 export const getStoresService = async (userId?: string) => {
   const stores = await db
@@ -43,4 +45,15 @@ export const isOwnerService = async (userId: string, storeId: string) => {
     .executeTakeFirst();
 
   return result !== undefined;
+}
+
+export const addStoreService = async (payload: AddStorePayload) => {
+  const { ownerId, title, location, contact, password } = payload;
+
+  const store = await db
+    .insertInto("store")
+    .values({ id: nanoid(8), ownerId, title, location, contact, password })
+    .executeTakeFirst();
+
+  return store;
 }

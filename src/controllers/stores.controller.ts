@@ -1,6 +1,12 @@
 import { Request, Response } from "express";
 
-import { getStoreByIdService, getStoreMembersService, getStoresService, isOwnerService } from "@/services/store.service";
+import {
+  addStoreService,
+  getStoreByIdService,
+  getStoreMembersService,
+  getStoresService,
+  isOwnerService,
+} from "@/services/stores.service";
 
 export const getStores = async (_: Request, res: Response) => {
   try {
@@ -64,6 +70,19 @@ export const getStoreMembers = async (req: Request, res: Response) => {
     }
 
     res.status(200).json(members);
+  } catch {
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const addStore = async (req: Request, res: Response) => {
+  try {
+    const store = await addStoreService({
+      ownerId: req.auth!.id,
+      ...req.body,
+    });
+
+    res.status(201).json({ ok: (store.numInsertedOrUpdatedRows ?? 0) !== 0 });
   } catch {
     res.status(500).json({ message: "Internal server error" });
   }
