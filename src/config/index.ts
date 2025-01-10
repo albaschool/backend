@@ -32,7 +32,7 @@ const config = {
   },
   jwt: {
     secretKey: getEnvVar("JWT_SECRET_KEY"),
-  }
+  },
 };
 
 export default config;

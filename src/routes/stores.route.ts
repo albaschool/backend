@@ -1,6 +1,14 @@
 import express from "express";
 
-import { addStoreMember, createStore, deleteStoreMember, getMyStores, getStoreById, getStoreMembers, getStores } from "@/controllers/stores.controller";
+import {
+  addStoreMember,
+  createStore,
+  deleteStoreMember,
+  getMyStores,
+  getStoreById,
+  getStoreMembers,
+  getStores,
+} from "@/controllers/stores.controller";
 import authMiddleware from "@/middlewares/auth.middleware";
 
 const router = express.Router();

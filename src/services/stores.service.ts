@@ -45,16 +45,13 @@ export const createStoreService = async (payload: CreateStorePayload) => {
     .executeTakeFirst();
 
   return store;
-}
+};
 
 export const addStoreMemberService = async (storeId: string, userId: string) => {
-  const result = await db
-    .insertInto("storeMember")
-    .values({ storeId, userId })
-    .executeTakeFirst();
+  const result = await db.insertInto("storeMember").values({ storeId, userId }).executeTakeFirst();
 
   return result;
-}
+};
 
 export const deleteStoreMemberService = async (storeId: string, memberId: string) => {
   const result = await db
@@ -64,26 +61,26 @@ export const deleteStoreMemberService = async (storeId: string, memberId: string
     .executeTakeFirst();
 
   return result;
-}
+};
 
 export const isOwnerService = async (userId: string, storeId: string) => {
   const result = await db
     .selectFrom("store")
-    .select(sql`1`.as('exists'))
+    .select(sql`1`.as("exists"))
     .where("id", "=", storeId)
     .where("ownerId", "=", userId)
     .executeTakeFirst();
 
   return result !== undefined;
-}
+};
 
 export const isStoreMemberService = async (userId: string, storeId: string) => {
   const result = await db
     .selectFrom("storeMember")
-    .select(sql`1`.as('exists'))
+    .select(sql`1`.as("exists"))
     .where("userId", "=", userId)
     .where("storeId", "=", storeId)
     .executeTakeFirst();
 
   return result !== undefined;
-}
+};
