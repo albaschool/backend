@@ -43,7 +43,7 @@ export const getMyStores = async (req: Request, res: Response) => {
 
 export const getStoreById = async (req: Request, res: Response) => {
   try {
-    const store = await getStoreByIdService(req.params.id);
+    const store = await getStoreByIdService(req.params.storeId);
 
     if (!store) {
       res.status(404).json({ message: "존재하지 않는 가게입니다." });
@@ -58,14 +58,14 @@ export const getStoreById = async (req: Request, res: Response) => {
 
 export const getStoreMembers = async (req: Request, res: Response) => {
   try {
-    const isOwner = await isOwnerService(req.auth!.id, req.params.id);
+    const isOwner = await isOwnerService(req.auth!.id, req.params.storeId);
 
     if (!isOwner) {
       res.status(403).json({ message: "가게 소유자만 조회할 수 있습니다." });
       return;
     }
 
-    const members = await getStoreMembersService(req.params.id);
+    const members = await getStoreMembersService(req.params.storeId);
 
     if (members.length === 0) {
       res.status(404).json([]);

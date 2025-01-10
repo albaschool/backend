@@ -60,12 +60,12 @@ router.get(
 );
 
 router.get(
-  "/:id",
+  "/:storeId",
   // #swagger.tags = ["Stores"]
   // #swagger.description = "특정 가게를 조회합니다."
   // #swagger.security = [{ bearerAuth: [] }]
   /*
-    #swagger.parameters['id'] = {
+    #swagger.parameters['storeId'] = {
       description: '가게 아이디',
       required: true,
     }
@@ -93,12 +93,12 @@ router.get(
 );
 
 router.get(
-  "/:id/members",
+  "/:storeId/members",
   // #swagger.tags = ["Stores"]
   // #swagger.description = "특정 가게의 직원 목록을 조회합니다."
   // #swagger.security = [{ bearerAuth: [] }]
   /*
-    #swagger.parameters['id'] = {
+    #swagger.parameters['storeId'] = {
       description: '가게 아이디',
       required: true,
     }
