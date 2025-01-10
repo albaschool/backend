@@ -28,12 +28,15 @@ const doc = {
   },
   components: {
     schemas: {
-      addUser: {
+      createStore: {
         $title: "GS25 서울역점",
         $location: "서울 용산구 한강대로 401",
         $contact: "0212345678",
         $password: "password"
       },
+      addMember: {
+        $memberId: "",
+      }
     },
   },
 };

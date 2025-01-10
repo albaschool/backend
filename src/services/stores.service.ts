@@ -2,7 +2,7 @@ import { sql } from "kysely";
 import { nanoid } from "nanoid";
 
 import { db } from "@/db";
-import { AddStorePayload } from "@/interfaces/stores.interface";
+import { CreateStorePayload } from "@/interfaces/stores.interface";
 
 export const getStoresService = async (userId?: string) => {
   const stores = await db
@@ -36,6 +36,36 @@ export const getStoreMembersService = async (storeId: string) => {
   return members;
 };
 
+export const createStoreService = async (payload: CreateStorePayload) => {
+  const { ownerId, title, location, contact, password } = payload;
+
+  const store = await db
+    .insertInto("store")
+    .values({ id: nanoid(8), ownerId, title, location, contact, password })
+    .executeTakeFirst();
+
+  return store;
+}
+
+export const addStoreMemberService = async (storeId: string, userId: string) => {
+  const result = await db
+    .insertInto("storeMember")
+    .values({ storeId, userId })
+    .executeTakeFirst();
+
+  return result;
+}
+
+export const deleteStoreMemberService = async (storeId: string, memberId: string) => {
+  const result = await db
+    .deleteFrom("storeMember")
+    .where("storeId", "=", storeId)
+    .where("userId", "=", memberId)
+    .executeTakeFirst();
+
+  return result;
+}
+
 export const isOwnerService = async (userId: string, storeId: string) => {
   const result = await db
     .selectFrom("store")
@@ -47,23 +77,13 @@ export const isOwnerService = async (userId: string, storeId: string) => {
   return result !== undefined;
 }
 
-export const addStoreService = async (payload: AddStorePayload) => {
-  const { ownerId, title, location, contact, password } = payload;
-
-  const store = await db
-    .insertInto("store")
-    .values({ id: nanoid(8), ownerId, title, location, contact, password })
-    .executeTakeFirst();
-
-  return store;
-}
-
-export const deleteStoreMemberService = async (storeId: string, memberId: string) => {
+export const isStoreMemberService = async (userId: string, storeId: string) => {
   const result = await db
-    .deleteFrom("storeMember")
+    .selectFrom("storeMember")
+    .select(sql`1`.as('exists'))
+    .where("userId", "=", userId)
     .where("storeId", "=", storeId)
-    .where("userId", "=", memberId)
     .executeTakeFirst();
 
-  return result;
+  return result !== undefined;
 }

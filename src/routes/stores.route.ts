@@ -1,6 +1,6 @@
 import express from "express";
 
-import { addStore, deleteStoreMember, getMyStores, getStoreById, getStoreMembers, getStores } from "@/controllers/stores.controller";
+import { addStoreMember, createStore, deleteStoreMember, getMyStores, getStoreById, getStoreMembers, getStores } from "@/controllers/stores.controller";
 import authMiddleware from "@/middlewares/auth.middleware";
 
 const router = express.Router();
@@ -144,7 +144,7 @@ router.post(
       content: {
         "application/json": {
           schema: {
-            $ref: "#/components/schemas/addUser"
+            $ref: "#/components/schemas/createStore"
           }  
         }
       }
@@ -169,7 +169,76 @@ router.post(
     }
   */
   authMiddleware,
-  addStore,
+  createStore,
+);
+
+router.post(
+  "/:storeId/members",
+  // #swagger.tags = ["Stores"]
+  // #swagger.description = "특정 가게에 직원을 추가합니다."
+  // #swagger.security = [{ bearerAuth: [] }]
+  /*
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            $ref: "#/components/schemas/addMember"
+          }  
+        }
+      }
+    }
+  */
+  /*
+    #swagger.parameters['storeId'] = {
+      description: '가게 아이디',
+      required: true,
+    }
+  */
+  /*
+    #swagger.responses[200] = {
+      description: "OK",
+      content: {
+        "application/json": {
+          example: { message: "직원이 추가되었습니다." }
+        }
+      }
+    }
+    #swagger.responses[403] = {
+      description: "가게 소유자가 아닐 때",
+      content: {
+        "application/json": {
+          example: { message: "가게 소유자만 추가할 수 있습니다." }
+        }
+      }
+    }
+    #swagger.responses[404] = {
+      description: "존재하지 않는 직원일 때",
+      content: {
+        "application/json": {
+          example: { message: "존재하지 않는 직원입니다." }
+        }
+      }
+    }
+    #swagger.responses[409] = {
+      description: "이미 존재하는 직원일 때",
+      content: {
+        "application/json": {
+          example: { message: "이미 존재하는 직원입니다." }
+        }
+      }
+    }
+    #swagger.responses[500] = {
+      description: "Internal Server Error",
+      content: {
+        "application/json": {
+          example: { message: "Internal server error" }
+        }
+      }
+    }
+  */
+  authMiddleware,
+  addStoreMember,
 );
 
 router.delete(

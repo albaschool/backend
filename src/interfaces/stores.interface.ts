@@ -1,4 +1,4 @@
-export interface AddStorePayload {
+export interface CreateStorePayload {
   ownerId: string;
   title: string;
   location: string;

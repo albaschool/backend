@@ -21,7 +21,17 @@ export const db = new Kysely<Database>({
   dialect,
   plugins: [new CamelCasePlugin(), new DeduplicateJoinsPlugin()],
   log(event) {
-    if (event.level !== "error") return;
+    if (event.level !== "error") {
+      logger.debug(
+        {
+          durationMs: event.queryDurationMillis,
+          sql: event.query.sql,
+          params: event.query.parameters,
+        },
+        "Query executed:",
+      );
+      return;
+    }
     logger.error(
       {
         durationMs: event.queryDurationMillis,
