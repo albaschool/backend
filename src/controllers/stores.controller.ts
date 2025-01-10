@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 
-import { getAllStores } from "@/services/store.service";
+import { getStores as getStoresService } from "@/services/store.service";
 
 export const getStores = async (_: Request, res: Response) => {
   try {
-    const stores = await getAllStores();
+    const stores = await getStoresService();
 
     if (stores.length === 0) {
       res.status(404).json([]);
@@ -19,7 +19,7 @@ export const getStores = async (_: Request, res: Response) => {
 
 export const getMyStores = async (req: Request, res: Response) => {
   try {
-    const stores = await getAllStores(req.auth!.id);
+    const stores = await getStoresService(req.auth!.id);
 
     if (stores.length === 0) {
       res.status(404).json([]);

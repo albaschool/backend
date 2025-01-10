@@ -1,6 +1,6 @@
 import { db } from "@/db";
 
-export const getAllStores = async (userId?: string) => {
+export const getStores = async (userId?: string) => {
   const stores = await db
     .selectFrom("store")
     .select(["id", "title", "location"])
