@@ -27,6 +27,24 @@ export const getStores = async (_: Request, res: Response) => {
   }
 };
 
+/** POST /stores */
+export const createStore = async (req: Request, res: Response) => {
+  try {
+    const store = await createStoreService({
+      ownerId: req.auth!.id,
+      ...req.body,
+    });
+
+    if ((store.numInsertedOrUpdatedRows ?? 0) !== 0) {
+      throw new Error("Failed to add store");
+    }
+
+    res.status(201).json({ message: "가게가 생성되었습니다." });
+  } catch {
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 /** GET /stores/me */
 export const getMyStores = async (req: Request, res: Response) => {
   try {
@@ -82,23 +100,6 @@ export const getStoreMembers = async (req: Request, res: Response) => {
   }
 };
 
-/** POST /stores */
-export const createStore = async (req: Request, res: Response) => {
-  try {
-    const store = await createStoreService({
-      ownerId: req.auth!.id,
-      ...req.body,
-    });
-
-    if ((store.numInsertedOrUpdatedRows ?? 0) !== 0) {
-      throw new Error("Failed to add store");
-    }
-
-    res.status(201).json({ message: "가게가 생성되었습니다." });
-  } catch {
-    res.status(500).json({ message: "Internal server error" });
-  }
-};
 
 /** POST /stores/:storeId/members */
 export const addStoreMember = async (req: Request, res: Response) => {
