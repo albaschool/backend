@@ -19,6 +19,13 @@ const doc = {
       description: "가게 엔드포인트",
     },
   ],
+  securityDefinitions: {
+    bearerAuth: {
+      type: "http",
+      scheme: "bearer",
+      bearerFormat: "JWT",
+    },
+  },
   components: {
     schemas: {
       testScheme: {
