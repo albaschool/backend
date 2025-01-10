@@ -9,6 +9,7 @@ router.get(
   "/",
   // #swagger.tags = ["Stores"]
   // #swagger.description = "모든 가게를 조회합니다."
+  // #swagger.security = [{ bearerAuth: [] }]
   /*
     #swagger.responses[404] = {
       description: "Not Found",
@@ -27,6 +28,7 @@ router.get(
       }
     }
   */
+  authMiddleware,
   getStores,
 );
 
