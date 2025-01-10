@@ -38,6 +38,24 @@ const doc = {
         $memberId: "",
       },
     },
+    examples: {
+      storesExample: {
+        value: [
+          {
+            id: "4uDfVBHq",
+            title: "GS25 서울역점",
+            location: "서울 용산구 한강대로 401",
+          },
+        ],
+      },
+      storeExample: {
+        value: {
+          title: "GS25 서울역점",
+          location: "서울 용산구 한강대로 401",
+          contact: "0212345678",
+        },
+      },
+    },
   },
 };
 

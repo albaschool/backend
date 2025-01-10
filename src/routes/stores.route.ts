@@ -19,6 +19,16 @@ router.get(
   // #swagger.description = "모든 가게를 조회합니다."
   // #swagger.security = [{ bearerAuth: [] }]
   /*
+    #swagger.responses[200] = {
+      description: "OK",
+      content: {
+        "application/json": {
+          examples: {
+            example: { $ref: "#/components/examples/storesExample" }
+          }
+        }
+      }
+    }
     #swagger.responses[404] = {
       description: "가게가 존재하지 않을 때",
       content: {
@@ -46,6 +56,16 @@ router.get(
   // #swagger.description = "내 가게를 조회합니다."
   // #swagger.security = [{ bearerAuth: [] }]
   /*
+    #swagger.responses[200] = {
+      description: "OK",
+      content: {
+        "application/json": {
+          examples: {
+            example: { $ref: "#/components/examples/storesExample" }
+          }
+        }
+      }
+    }
     #swagger.responses[404] = {
       description: "사용자 소유의 가게가 존재하지 않을 때",
       content: {
@@ -79,6 +99,16 @@ router.get(
     }
   */
   /*
+    #swagger.responses[200] = {
+      description: "OK",
+      content: {
+        "application/json": {
+          examples: {
+            example: { $ref: "#/components/examples/storeExample" }
+          }
+        }
+      }
+    }
     #swagger.responses[404] = {
       description: "가게가 존재하지 않을 때",
       content: {
