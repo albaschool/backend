@@ -7,7 +7,7 @@ export const getStores = async (_: Request, res: Response) => {
     const stores = await getAllStores();
 
     if (stores.length === 0) {
-      res.status(404).json({ message: "가게가 존재하지 않습니다." });
+      res.status(404).json([]);
       return;
     }
 
