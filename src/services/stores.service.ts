@@ -57,3 +57,13 @@ export const addStoreService = async (payload: AddStorePayload) => {
 
   return store;
 }
+
+export const deleteStoreMemberService = async (storeId: string, memberId: string) => {
+  const result = await db
+    .deleteFrom("storeMember")
+    .where("storeId", "=", storeId)
+    .where("userId", "=", memberId)
+    .executeTakeFirst();
+
+  return result;
+}

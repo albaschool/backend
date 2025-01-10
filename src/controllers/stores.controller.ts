@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 
 import {
   addStoreService,
+  deleteStoreMemberService,
   getStoreByIdService,
   getStoreMembersService,
   getStoresService,
@@ -83,6 +84,28 @@ export const addStore = async (req: Request, res: Response) => {
     });
 
     res.status(201).json({ ok: (store.numInsertedOrUpdatedRows ?? 0) !== 0 });
+  } catch {
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const deleteStoreMember = async (req: Request, res: Response) => {
+  try {
+    const isOwner = await isOwnerService(req.auth!.id, req.params.storeId);
+
+    if (!isOwner) {
+      res.status(403).json({ message: "가게 소유자만 삭제할 수 있습니다." });
+      return;
+    }
+
+    const result = await deleteStoreMemberService(req.params.storeId, req.params.memberId);
+
+    if (result.numDeletedRows === BigInt(0)) {
+      res.status(404).json({ message: "존재하지 않는 직원입니다." });
+      return;
+    }
+
+    res.status(200).json({ ok: true });
   } catch {
     res.status(500).json({ message: "Internal server error" });
   }

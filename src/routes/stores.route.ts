@@ -1,6 +1,6 @@
 import express from "express";
 
-import { addStore, getMyStores, getStoreById, getStoreMembers, getStores } from "@/controllers/stores.controller";
+import { addStore, deleteStoreMember, getMyStores, getStoreById, getStoreMembers, getStores } from "@/controllers/stores.controller";
 import authMiddleware from "@/middlewares/auth.middleware";
 
 const router = express.Router();
@@ -170,6 +170,59 @@ router.post(
   */
   authMiddleware,
   addStore,
+);
+
+router.delete(
+  "/:storeId/members/:memberId",
+  // #swagger.tags = ["Stores"]
+  // #swagger.description = "특정 가게의 직원을 삭제합니다."
+  // #swagger.security = [{ bearerAuth: [] }]
+  /*
+    #swagger.parameters['storeId'] = {
+      description: '가게 아이디',
+      required: true,
+    }
+      #swagger.parameters['memberId'] = {
+      description: '직원 아이디',
+      required: true,
+    }
+  */
+  /*
+    #swagger.responses[200] = {
+      description: "OK",
+      content: {
+        "application/json": {
+          example: { ok: true }
+        }
+      }
+    }
+    #swagger.responses[403] = {
+      description: "가게 소유자가 아닐 때",
+      content: {
+        "application/json": {
+          example: { message: "가게 소유자만 삭제할 수 있습니다." }
+        }
+      }
+    }
+      #swagger.responses[404] = {
+      description: "존재하지 않는 직원일 때",
+      content: {
+        "application/json": {
+          example: { message: "존재하지 않는 직원입니다." }
+        }
+      }
+    }
+    #swagger.responses[500] = {
+      description: "Internal Server Error",
+      content: {
+        "application/json": {
+          example: { message: "Internal server error" }
+        }
+      }
+    }
+  */
+  authMiddleware,
+  deleteStoreMember,
 );
 
 export default router;
