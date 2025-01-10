@@ -25,7 +25,7 @@ const doc = {
 };
 
 const outputFile = path.join(__dirname, "../swagger-output.json");
-const endpointsFiles = [path.join(__dirname, "../app.js"), path.join(__dirname, "../routes/*.js")];
+const endpointsFiles = [path.join(__dirname, "../../src/app.ts")];
 
 const generateSwagger = swaggerAutogen({ openapi: "3.1.1" })(outputFile, endpointsFiles, doc);
 
