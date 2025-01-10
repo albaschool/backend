@@ -11,6 +11,7 @@ import {
   isStoreMemberService,
 } from "@/services/stores.service";
 
+/** GET /stores */
 export const getStores = async (_: Request, res: Response) => {
   try {
     const stores = await getStoresService();
@@ -26,6 +27,7 @@ export const getStores = async (_: Request, res: Response) => {
   }
 };
 
+/** GET /stores/me */
 export const getMyStores = async (req: Request, res: Response) => {
   try {
     const stores = await getStoresService(req.auth!.id);
@@ -41,6 +43,7 @@ export const getMyStores = async (req: Request, res: Response) => {
   }
 };
 
+/** GET /stores/:storeId */
 export const getStoreById = async (req: Request, res: Response) => {
   try {
     const store = await getStoreByIdService(req.params.storeId);
@@ -56,6 +59,7 @@ export const getStoreById = async (req: Request, res: Response) => {
   }
 };
 
+/** GET /stores/:storeId/members */
 export const getStoreMembers = async (req: Request, res: Response) => {
   try {
     const isOwner = await isOwnerService(req.auth!.id, req.params.storeId);
@@ -78,6 +82,7 @@ export const getStoreMembers = async (req: Request, res: Response) => {
   }
 };
 
+/** POST /stores */
 export const createStore = async (req: Request, res: Response) => {
   try {
     const store = await createStoreService({
@@ -95,6 +100,7 @@ export const createStore = async (req: Request, res: Response) => {
   }
 };
 
+/** POST /stores/:storeId/members */
 export const addStoreMember = async (req: Request, res: Response) => {
   try {
     const isOwner = await isOwnerService(req.auth!.id, req.params.storeId);
@@ -123,6 +129,7 @@ export const addStoreMember = async (req: Request, res: Response) => {
   }
 };
 
+/** DELETE /stores/:storeId/members/:memberId */
 export const deleteStoreMember = async (req: Request, res: Response) => {
   try {
     const isOwner = await isOwnerService(req.auth!.id, req.params.storeId);
