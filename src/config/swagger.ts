@@ -13,6 +13,12 @@ const doc = {
     description: "",
   },
   host: "localhost:3000",
+  tags: [
+    {
+      name: "Stores",
+      description: "가게 엔드포인트",
+    },
+  ],
   components: {
     schemas: {
       testScheme: {
