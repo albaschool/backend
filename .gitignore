@@ -134,3 +134,4 @@ dist
 build
 .vscode
 coverage
+swagger-output.json
