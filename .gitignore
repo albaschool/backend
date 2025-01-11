@@ -130,7 +130,5 @@ dist
 .pnp.*
 
 # custom
-
-build
 .vscode
 coverage
