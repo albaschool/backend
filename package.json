@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "src/app.ts",
   "scripts": {
-    "start": "tsc && tsc-alias && node ./build/app.js",
-    "dev": "nodemon -w src -e ts --exec \"npm run start\"",
+    "start": "tsx src/app.ts",
+    "dev": "tsx watch --include \"./src/*\" --include \".env*\" src/app.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prettier": "prettier --check --ignore-path .gitignore .",
@@ -35,7 +35,7 @@
     "prettier": "^3.4.2",
     "supertest": "^7.0.0",
     "ts-jest": "^29.2.5",
-    "tsc-alias": "^1.8.10",
+    "tsx": "^4.19.2",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.19.0"
   },
