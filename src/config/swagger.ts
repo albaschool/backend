@@ -59,8 +59,10 @@ const doc = {
   },
 };
 
-const outputFile = path.join(__dirname, "../../swagger-output.json");
+const outputFile = path.join(__dirname, "../../dist/swagger-output.json");
 const endpointsFiles = [path.join(__dirname, "../app.ts")];
+
+fs.mkdir(path.dirname(outputFile), { recursive: true });
 
 const generateSwagger = swaggerAutogen({ openapi: "3.1.1" })(outputFile, endpointsFiles, doc);
 

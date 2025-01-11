@@ -130,8 +130,5 @@ dist
 .pnp.*
 
 # custom
-
-build
 .vscode
 coverage
-swagger-output.json
