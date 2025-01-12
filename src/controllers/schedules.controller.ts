@@ -12,7 +12,7 @@ export const getSchedulesByUser = async (req: Request, res: Response) => {
   }
 
   res.status(200).json(schedules);
-}
+};
 
 export const getSchedulesByStore = async (req: Request, res: Response) => {
   const isUserInStore = await services.isUserInStore(req.auth!.id, req.params.storeId);
@@ -28,4 +28,17 @@ export const getSchedulesByStore = async (req: Request, res: Response) => {
   }
 
   res.status(200).json(schedules);
-}
+};
+
+export const createSchedule = async (req: Request, res: Response) => {
+  const result = await services.createSchedule({
+    userId: req.auth!.id,
+    ...req.body,
+  });
+
+  if (result.numInsertedOrUpdatedRows === BigInt(0)) {
+    throw new Error();
+  }
+
+  res.status(201).json({ message: "일정이 생성되었습니다." });
+};

@@ -46,9 +46,9 @@ const doc = {
         $storeId: "4uDfVBHq",
         $content: "오후타임",
         $dayOfWeek: 1,
-        $startTime: "12:00",
-        $endTime: "18:00",
-      }
+        $startTime: "12:00:00",
+        $endTime: "18:00:00",
+      },
     },
     examples: {
       storesExample: {
@@ -66,6 +66,31 @@ const doc = {
           location: "서울 용산구 한강대로 401",
           contact: "0212345678",
         },
+      },
+      schedulesByUserExample: {
+        value: [
+          {
+            id: "TCYP4hBtP2wpG2YX",
+            title: "GS25 서울역점",
+            content: "오후타임",
+            dayOfWeek: 1,
+            startTime: "12:00:00",
+            endTime: "18:00:00",
+          },
+        ],
+      },
+      schedulesByStoreExample: {
+        value: [
+          {
+            id: "TCYP4hBtP2wpG2YX",
+            name: "테스트계정",
+            title: "GS25 서울역점",
+            content: "오후타임",
+            dayOfWeek: 1,
+            startTime: "12:00:00",
+            endTime: "18:00:00",
+          },
+        ],
       },
     },
   },
