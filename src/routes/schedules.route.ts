@@ -49,6 +49,7 @@ router.get(
     #swagger.tags = ["Schedules"]
     #swagger.description = "특정 가게의 일정을 조회합니다."
     #swagger.security = [{ bearerAuth: [] }]
+    #swagger.parameters['$ref'] = ['#/components/parameters/storeId']
     #swagger.responses[403] = {
       description: "가게에 소속되어 있지 않을 때",
       content: {
@@ -107,6 +108,7 @@ router.put(
     #swagger.tags = ["Schedules"]
     #swagger.description = "일정을 수정합니다."
     #swagger.security = [{ bearerAuth: [] }]
+    #swagger.parameters['$ref'] = ['#/components/parameters/scheduleId']
     #swagger.requestBody = {
       required: true,
       content: {
@@ -152,6 +154,7 @@ router.delete(
     #swagger.tags = ["Schedules"]
     #swagger.description = "일정을 삭제합니다."
     #swagger.security = [{ bearerAuth: [] }]
+    #swagger.parameters['$ref'] = ['#/components/parameters/scheduleId']
     #swagger.responses[200] = {
       description: "OK",
       content: {

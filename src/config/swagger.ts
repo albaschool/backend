@@ -97,6 +97,35 @@ const doc = {
         ],
       },
     },
+    parameters: {
+      storeId: {
+        in: "path",
+        name: "storeId",
+        required: true,
+        description: "가게 아이디 (8자)",
+        schema: {
+          type: "string",
+        },
+      },
+      scheduleId: {
+        in: "path",
+        name: "scheduleId",
+        required: true,
+        description: "일정 아이디 (16자)",
+        schema: {
+          type: "string",
+        },
+      },
+      memberId: {
+        in: "path",
+        name: "storeId",
+        required: true,
+        description: "직원 아이디 (12자)",
+        schema: {
+          type: "string",
+        },
+      },
+    }
   },
 };
 
