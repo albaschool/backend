@@ -51,4 +51,14 @@ export const updateSchedule = async (req: Request, res: Response) => {
   }
 
   res.status(200).json({ message: "일정이 수정되었습니다." });
-}
+};
+
+export const deleteSchedule = async (req: Request, res: Response) => {
+  const result = await services.deleteSchedule(req.params.scheduleId);
+
+  if (result.numDeletedRows === BigInt(0)) {
+    throw new Error();
+  }
+
+  res.status(200).json({ message: "일정이 삭제되었습니다." });
+};

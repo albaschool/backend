@@ -48,6 +48,15 @@ export const updateSchedule = async (scheduleId: string, payload: CreateSchedule
   return result;
 }
 
+export const deleteSchedule = async (scheduleId: string) => {
+  const result = await db
+    .deleteFrom("schedule")
+    .where("id", "=", scheduleId)
+    .executeTakeFirst();
+
+  return result;
+};
+
 export const isUserInStore = async (userId: string, storeId: string) => {
   const result = await db
     .selectFrom("schedule")

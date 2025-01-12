@@ -2,6 +2,7 @@ import express from "express";
 
 import {
   createSchedule,
+  deleteSchedule,
   getSchedulesByStore,
   getSchedulesByUser,
   updateSchedule,
@@ -118,6 +119,25 @@ router.put(
     }
   */
   updateSchedule,
+);
+
+/** DELETE /schedules/{scheduleId} */
+router.delete(
+  "/:scheduleId",
+  /*
+    #swagger.tags = ["Schedules"]
+    #swagger.description = "일정을 삭제합니다."
+    #swagger.security = [{ bearerAuth: [] }]
+    #swagger.responses[200] = {
+      description: "OK",
+      content: {
+        "application/json": {
+          example: { message: "일정이 삭제되었습니다." }
+        }
+      }
+    }
+  */
+  deleteSchedule,
 );
 
 export default router;
