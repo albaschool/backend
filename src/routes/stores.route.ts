@@ -13,6 +13,8 @@ import authMiddleware from "@/middlewares/auth.middleware";
 
 const router = express.Router();
 
+router.use(authMiddleware);
+
 router.get(
   "",
   // #swagger.tags = ["Stores"]
@@ -46,7 +48,6 @@ router.get(
       }
     }
   */
-  authMiddleware,
   getStores,
 );
 
@@ -83,7 +84,6 @@ router.get(
       }
     }
   */
-  authMiddleware,
   getMyStores,
 );
 
@@ -126,7 +126,6 @@ router.get(
       }
     }
   */
-  authMiddleware,
   getStoreById,
 );
 
@@ -167,7 +166,6 @@ router.get(
       }
     }
   */
-  authMiddleware,
   getStoreMembers,
 );
 
@@ -206,7 +204,6 @@ router.post(
       }
     }
   */
-  authMiddleware,
   createStore,
 );
 
@@ -275,7 +272,6 @@ router.post(
       }
     }
   */
-  authMiddleware,
   addStoreMember,
 );
 
@@ -328,7 +324,6 @@ router.delete(
       }
     }
   */
-  authMiddleware,
   deleteStoreMember,
 );
 
