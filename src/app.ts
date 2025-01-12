@@ -1,3 +1,5 @@
+import "express-async-errors";
+
 import cors from "cors";
 import express from "express";
 
@@ -5,6 +7,7 @@ import config from "@/config";
 import { setupSwagger } from "@/config/swagger";
 import { checkDbEstablished } from "@/db";
 import logger, { httpLogger } from "@/logger";
+import errorMiddleware from "@/middlewares/error.middleware";
 import authRoutes from "@/routes/auth.route";
 import defaultRoutes from "@/routes/default.route";
 import defaultRoute from "@/routes/default.route";
@@ -32,6 +35,8 @@ app.use("/", defaultRoutes);
 app.use("/auth", authRoutes);
 app.use("/stores", storesRoute);
 app.use("/", defaultRoute);
+
+app.use(errorMiddleware);
 
 app.listen(parseInt(config.http.port), config.http.host, () => {
   logger.info(`Node environment: ${config.node.env}`);
