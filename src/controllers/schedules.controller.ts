@@ -35,6 +35,10 @@ export const getSchedulesByStore = async (req: Request, res: Response) => {
 
 /** POST /schedules */
 export const createSchedule = async (req: Request, res: Response) => {
+  if (req.auth?.role !== 'manager') {
+    throw new HttpException(403, "가게 주인만 생성할 수 있습니다.");
+  }
+
   const payload: CreateSchedulePayload = req.body;
   if (!await services.isStoreOwner(req.auth!.id, payload.storeId)) {
     throw new HttpException(403, "가게 주인만 생성할 수 있습니다.");
@@ -51,6 +55,10 @@ export const createSchedule = async (req: Request, res: Response) => {
 
 /** PUT /schedules/:scheduleId */
 export const updateSchedule = async (req: Request, res: Response) => {
+  if (req.auth?.role !== 'manager') {
+    throw new HttpException(403, "가게 주인만 수정할 수 있습니다.");
+  }
+
   const schedule = await services.getScheduleById(req.params.scheduleId);
 
   if (!schedule) throw new HttpException(404, "일정이 존재하지 않습니다.");
@@ -70,12 +78,15 @@ export const updateSchedule = async (req: Request, res: Response) => {
 
 /** DELETE /schedules/:scheduleId */
 export const deleteSchedule = async (req: Request, res: Response) => {
-  const schedule = await services.getScheduleById(req.params.scheduleId);
+  if (req.auth?.role !== 'manager') {
+    throw new HttpException(403, "가게 주인만 삭제할 수 있습니다.");
+  }
 
+  const schedule = await services.getScheduleById(req.params.scheduleId);
   if (!schedule) throw new HttpException(404, "일정이 존재하지 않습니다.");
 
   if (!await services.isStoreOwner(req.auth!.id, schedule.storeId)) {
-    throw new HttpException(403, "가게 주인만 수정할 수 있습니다.");
+    throw new HttpException(403, "가게 주인만 삭제할 수 있습니다.");
   }
 
   const result = await services.deleteSchedule(req.params.scheduleId);
