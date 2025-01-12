@@ -42,3 +42,13 @@ export const createSchedule = async (req: Request, res: Response) => {
 
   res.status(201).json({ message: "일정이 생성되었습니다." });
 };
+
+export const updateSchedule = async (req: Request, res: Response) => {
+  const result = await services.updateSchedule(req.params.scheduleId, req.body);
+
+  if (result.numUpdatedRows === BigInt(0)) {
+    throw new Error();
+  }
+
+  res.status(200).json({ message: "일정이 수정되었습니다." });
+}

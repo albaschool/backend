@@ -1,6 +1,11 @@
 import express from "express";
 
-import { createSchedule, getSchedulesByStore, getSchedulesByUser } from "@/controllers/schedules.controller";
+import {
+  createSchedule,
+  getSchedulesByStore,
+  getSchedulesByUser,
+  updateSchedule,
+} from "@/controllers/schedules.controller";
 import authMiddleware from "@/middlewares/auth.middleware";
 
 const router = express.Router();
@@ -92,6 +97,27 @@ router.post(
     }
   */
   createSchedule,
+);
+
+/** PUT /schedules/{scheduleId} */
+router.put(
+  "/:scheduleId",
+  /*
+    #swagger.tags = ["Schedules"]
+    #swagger.description = "일정을 수정합니다."
+    #swagger.security = [{ bearerAuth: [] }]
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            $ref: "#/components/schemas/updateSchedule"
+          }  
+        }
+      }
+    }
+  */
+  updateSchedule,
 );
 
 export default router;

@@ -37,6 +37,17 @@ export const createSchedule = async (payload: CreateSchedulePayload) => {
   return schedule;
 };
 
+export const updateSchedule = async (scheduleId: string, payload: CreateSchedulePayload) => {
+  const { dayOfWeek, content, startTime, endTime } = payload;
+  const result = await db
+    .updateTable("schedule")
+    .set({ dayOfWeek, content, startTime, endTime })
+    .where("id", "=", scheduleId)
+    .executeTakeFirst();
+
+  return result;
+}
+
 export const isUserInStore = async (userId: string, storeId: string) => {
   const result = await db
     .selectFrom("schedule")

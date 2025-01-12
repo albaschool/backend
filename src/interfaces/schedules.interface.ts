@@ -6,3 +6,10 @@ export interface CreateSchedulePayload {
   startTime: string;
   endTime: string;
 }
+
+export interface UpdateSchedulePayload {
+  dayOfWeek?: number;
+  content?: string;
+  startTime?: string;
+  endTime?: string;
+}

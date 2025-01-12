@@ -49,6 +49,10 @@ const doc = {
         $startTime: "12:00:00",
         $endTime: "18:00:00",
       },
+      updateSchedule: {
+        dayOfWeek: 1,
+        startTime: "14:00:00",
+      },
     },
     examples: {
       storesExample: {
