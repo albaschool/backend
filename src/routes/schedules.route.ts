@@ -106,7 +106,7 @@ router.put(
   "/:scheduleId",
   /*
     #swagger.tags = ["Schedules"]
-    #swagger.description = "일정을 수정합니다."
+    #swagger.description = "일정을 수정합니다.<br>수정이 필요한 필드만 넣어주세요."
     #swagger.security = [{ bearerAuth: [] }]
     #swagger.parameters['$ref'] = ['#/components/parameters/scheduleId']
     #swagger.requestBody = {
