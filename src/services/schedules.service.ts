@@ -1,28 +1,40 @@
 import { sql } from "kysely";
+import { nanoid } from "nanoid";
 
 import { db } from "@/db";
+import { CreateSchedulePayload } from "@/interfaces/schedules.interface";
 
 export const getSchedulesByUser = async (userId: string) => {
   const schedules = await db
     .selectFrom("schedule")
     .innerJoin("store", "store.id", "schedule.storeId")
-    .select(["schedule.id", "store.title", "dayOfWeek", "startTime", "endTime"])
+    .select(["schedule.id", "store.title", "content", "dayOfWeek", "startTime", "endTime"])
     .where("userId", "=", userId)
     .execute();
 
   return schedules;
-}
+};
 
 export const getSchedulesByStore = async (storeId: string) => {
   const schedules = await db
     .selectFrom("schedule")
     .innerJoin("user", "user.id", "schedule.userId")
     .innerJoin("store", "store.id", "schedule.storeId")
-    .select(["schedule.id", "user.name", "store.title", "dayOfWeek", "startTime", "endTime"])
+    .select(["schedule.id", "user.name", "store.title", "content", "dayOfWeek", "startTime", "endTime"])
     .where("storeId", "=", storeId)
     .execute();
 
   return schedules;
+};
+
+export const createSchedule = async (payload: CreateSchedulePayload) => {
+  const { userId, storeId, content, dayOfWeek, startTime, endTime } = payload;
+  const schedule = await db
+    .insertInto("schedule")
+    .values({ id: nanoid(16), userId, storeId, content, dayOfWeek, startTime, endTime })
+    .executeTakeFirst();
+
+  return schedule;
 };
 
 export const isUserInStore = async (userId: string, storeId: string) => {
