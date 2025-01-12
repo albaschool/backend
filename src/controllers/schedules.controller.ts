@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 
 import HttpException from "@/interfaces/http-exception.interface";
+import { CreateSchedulePayload } from "@/interfaces/schedules.interface";
 import * as services from "@/services/schedules.service";
 
 export const getSchedulesByUser = async (req: Request, res: Response) => {
@@ -31,10 +32,12 @@ export const getSchedulesByStore = async (req: Request, res: Response) => {
 };
 
 export const createSchedule = async (req: Request, res: Response) => {
-  const result = await services.createSchedule({
-    userId: req.auth!.id,
-    ...req.body,
-  });
+  const payload: CreateSchedulePayload = req.body;
+  if (!await services.isStoreOwner(req.auth!.id, payload.storeId)) {
+    throw new HttpException(403, "가게 주인만 생성할 수 있습니다.");
+  }
+
+  const result = await services.createSchedule(payload);
 
   if (result.numInsertedOrUpdatedRows === BigInt(0)) {
     throw new Error();
@@ -48,7 +51,7 @@ export const updateSchedule = async (req: Request, res: Response) => {
 
   if (!schedule) throw new HttpException(404, "일정이 존재하지 않습니다.");
 
-  if (await services.isStoreOwner(req.auth!.id, schedule.storeId)) {
+  if (!await services.isStoreOwner(req.auth!.id, schedule.storeId)) {
     throw new HttpException(403, "가게 주인만 수정할 수 있습니다.");
   }
 
@@ -66,7 +69,7 @@ export const deleteSchedule = async (req: Request, res: Response) => {
 
   if (!schedule) throw new HttpException(404, "일정이 존재하지 않습니다.");
 
-  if (await services.isStoreOwner(req.auth!.id, schedule.storeId)) {
+  if (!await services.isStoreOwner(req.auth!.id, schedule.storeId)) {
     throw new HttpException(403, "가게 주인만 수정할 수 있습니다.");
   }
 

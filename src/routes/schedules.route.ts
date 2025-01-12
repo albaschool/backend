@@ -97,6 +97,22 @@ router.post(
         }
       }
     }
+    #swagger.responses[201] = {
+      description: "Created",
+      content: {
+        "application/json": {
+          example: { message: "일정이 생성되었습니다." }
+        }
+      }
+    }
+    #swagger.responses[403] = {
+      description: "가게 주인이 아닐 때",
+      content: {
+        "application/json": {
+          example: { message: "가게 주인만 생성할 수 있습니다." }
+        }
+      }
+    }
   */
   createSchedule,
 );
