@@ -59,8 +59,10 @@ const doc = {
   },
 };
 
-const outputFile = path.join(__dirname, "../swagger-output.json");
-const endpointsFiles = [path.join(__dirname, "../../src/app.ts")];
+const outputFile = path.join(__dirname, "../../dist/swagger-output.json");
+const endpointsFiles = [path.join(__dirname, "../app.ts")];
+
+fs.mkdir(path.dirname(outputFile), { recursive: true });
 
 const generateSwagger = swaggerAutogen({ openapi: "3.1.1" })(outputFile, endpointsFiles, doc);
 
@@ -72,10 +74,9 @@ export const setupSwagger = async (app: Express): Promise<boolean> => {
       await import("@/config/swagger")
     ).default;
 
-    const filePath = path.join(__dirname, "../swagger-output.json");
     try {
-      await fs.access(filePath);
-      const swaggerDocument = await import(filePath);
+      await fs.access(outputFile);
+      const swaggerDocument = await import(outputFile);
       app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
       return true;
     } catch {
