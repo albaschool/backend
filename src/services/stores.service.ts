@@ -4,7 +4,7 @@ import { nanoid } from "nanoid";
 import { db } from "@/db";
 import { CreateStorePayload } from "@/interfaces/stores.interface";
 
-export const getStoresService = async (userId?: string) => {
+export const getStores = async (userId?: string) => {
   const stores = await db
     .selectFrom("store")
     .select(["id", "title", "location"])
@@ -14,7 +14,7 @@ export const getStoresService = async (userId?: string) => {
   return stores;
 };
 
-export const getStoreByIdService = async (storeId: string) => {
+export const getStoreById = async (storeId: string) => {
   const store = await db
     .selectFrom("store")
     .select(["title", "location", "contact"])
@@ -24,7 +24,7 @@ export const getStoreByIdService = async (storeId: string) => {
   return store;
 };
 
-export const getStoreMembersService = async (storeId: string) => {
+export const getStoreMembers = async (storeId: string) => {
   const members = await db
     .selectFrom("storeMember")
     .innerJoin("user", (join) =>
@@ -36,7 +36,7 @@ export const getStoreMembersService = async (storeId: string) => {
   return members;
 };
 
-export const createStoreService = async (payload: CreateStorePayload) => {
+export const createStore = async (payload: CreateStorePayload) => {
   const { ownerId, title, location, contact, password } = payload;
 
   const store = await db
@@ -47,13 +47,13 @@ export const createStoreService = async (payload: CreateStorePayload) => {
   return store;
 };
 
-export const addStoreMemberService = async (storeId: string, userId: string) => {
+export const addStoreMember = async (storeId: string, userId: string) => {
   const result = await db.insertInto("storeMember").values({ storeId, userId }).executeTakeFirst();
 
   return result;
 };
 
-export const deleteStoreMemberService = async (storeId: string, memberId: string) => {
+export const deleteStoreMember = async (storeId: string, memberId: string) => {
   const result = await db
     .deleteFrom("storeMember")
     .where("storeId", "=", storeId)
@@ -63,7 +63,7 @@ export const deleteStoreMemberService = async (storeId: string, memberId: string
   return result;
 };
 
-export const isUserExistsService = async (userId: string) => {
+export const isUserExists = async (userId: string) => {
   const result = await db
     .selectFrom("user")
     .select(sql`1`.as("exists"))
@@ -73,7 +73,7 @@ export const isUserExistsService = async (userId: string) => {
   return result !== undefined;
 }
 
-export const isOwnerService = async (userId: string, storeId: string) => {
+export const isOwner = async (userId: string, storeId: string) => {
   const result = await db
     .selectFrom("store")
     .select(sql`1`.as("exists"))
@@ -84,7 +84,7 @@ export const isOwnerService = async (userId: string, storeId: string) => {
   return result !== undefined;
 };
 
-export const isStoreMemberService = async (userId: string, storeId: string) => {
+export const isStoreMember = async (userId: string, storeId: string) => {
   const result = await db
     .selectFrom("storeMember")
     .select(sql`1`.as("exists"))

@@ -13,8 +13,10 @@ import authMiddleware from "@/middlewares/auth.middleware";
 
 const router = express.Router();
 
+router.use(authMiddleware);
+
 router.get(
-  "/",
+  "",
   /*
     #swagger.tags = ["Stores"]
     #swagger.description = "모든 가게를 조회합니다."
@@ -46,7 +48,6 @@ router.get(
       }
     }
   */
-  authMiddleware,
   getStores,
 );
 
@@ -83,7 +84,6 @@ router.get(
       }
     }
   */
-  authMiddleware,
   getMyStores,
 );
 
@@ -121,7 +121,6 @@ router.get(
       }
     }
   */
-  authMiddleware,
   getStoreById,
 );
 
@@ -157,12 +156,11 @@ router.get(
       }
     }
   */
-  authMiddleware,
   getStoreMembers,
 );
 
 router.post(
-  "/",
+  "",
   /*
     #swagger.tags = ["Stores"]
     #swagger.description = "가게를 생성합니다."
@@ -194,7 +192,6 @@ router.post(
       }
     }
   */
-  authMiddleware,
   createStore,
 );
 
@@ -256,7 +253,6 @@ router.post(
       }
     }
   */
-  authMiddleware,
   addStoreMember,
 );
 
@@ -300,7 +296,6 @@ router.delete(
       }
     }
   */
-  authMiddleware,
   deleteStoreMember,
 );
 
