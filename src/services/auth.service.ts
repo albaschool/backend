@@ -27,8 +27,31 @@ export const verifyEmail = async (email : string, code : string) => {
     else return true;
 };
 
-export const registUser = async (auth : RegistRequest) =>{
+export const saveUser = async (auth : RegistRequest) =>{
     const {name, password, contact, role, email} = auth;
-    const result = await db.insertInto("user").values({id : nanoid(12), password, email, contact, role, name});
+    const result = await db
+                            .insertInto("user")
+                            .values({id : nanoid(12), password, email, contact, role, name})
+                            .executeTakeFirst();
     return result;   
+}
+
+export const isUser = async (email : string, password : string) => {
+    const user = await db.selectFrom('user')
+                            .select(['id', 'name', 'role'])
+                            .where(({eb, and})=> 
+                                    and([eb('email', '=', email), 
+                                        eb('password', '=', password)]))
+                            .executeTakeFirst();
+    return user;
+}
+
+export const updatePassword = async (password : string, id : string)=>{
+    const result = await db.updateTable('user')
+                            .set({
+                                password: password,
+                              })
+                              .where('id', '=', id)
+                              .executeTakeFirst()
+    return result;
 }
