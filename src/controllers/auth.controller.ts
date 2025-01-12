@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
-import { isUser,saveCode, saveUser, updatePassword, verifyEmail } from "@/services/auth.service";
+import { checkPassword, isUser,saveCode, saveUser, updatePassword, verifyEmail } from "@/services/auth.service";
 
 import {getMailOptions,transport} from "../provider/emailProvider";
 
@@ -39,7 +39,7 @@ const emailVerify = async (req : Request, res: Response) =>{
         const isverified = await verifyEmail(body.email, body.code);
         if (!isverified) {
             res.status(404).json({
-            message : "이메일이 올바르지 않습니다.",
+            message : "인증번호를 확인해 주세요",
         });
         }
         else{
@@ -55,13 +55,14 @@ const emailVerify = async (req : Request, res: Response) =>{
 const regist = async ( req: Request, res : Response)=>{
     try {
         const body = req.body;
+        console.log(body);
         const result = await saveUser(body);
-        res.status(201).json({
-            message : "회원가입이 완료됐습니다."
-        })
         if ((result.numInsertedOrUpdatedRows ?? 0) !== 0) {
             throw new Error("Failed to add store");
           }
+        else res.status(201).json({
+            message : "회원가입이 완료됐습니다."
+        })
     } catch {
         res.status(500).json({ message: "Internal server error" });
     }
@@ -108,9 +109,10 @@ const login = async (req : Request, res : Response) => {
 const fixPassword = async(req : Request, res: Response)=>{
     try {
         const body = req.body;
-
+        console.log(body);
         const result = await updatePassword(body.password, req.auth!.id);
-        if(result.numUpdatedRows !== BigInt(0)) 
+        
+        if((result.numUpdatedRows.toString()) === '0n') 
             res.status(500).json({message : "Internal sercer error."})
         else
             res.status(200).json({message : "비밀번호 변경이 완료됐습니다."})
@@ -121,6 +123,23 @@ const fixPassword = async(req : Request, res: Response)=>{
         })
     }
 
-} 
+}
 
-export { email, emailVerify, fixPassword,login,regist};
+const checkUserPassword = async(req : Request, res: Response)=>{
+    try {
+        const body = req.body;
+
+        const result = checkPassword(body.password, body.id);
+        if(!result) 
+            res.status(500).json({message : "Internal sercer error."})
+        else
+            res.status(200).json({message : "비밀번호 확인이 완료됐습니다."})
+    }
+    catch{
+        res.status(401).json({
+            message : "토큰이 만료 됐습니다."
+        })
+    }
+
+}
+export { checkUserPassword,email, emailVerify, fixPassword, login, regist};

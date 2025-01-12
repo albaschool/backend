@@ -10,94 +10,134 @@
       "url": "http://localhost:3000/"
     }
   ],
-  "paths": {
-    "/email": {
-      "post": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "성공",
-            "content": {
-              "application/json": {
-                "example": {
-                  "message": "Hello World!"
-                }
-              }
-            }
-          },
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "example": "any"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/email/verify": {
-      "post": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "성공",
-            "content": {
-              "application/json": {
-                "example": {
-                  "message": "Hello World!"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/": {
-      "get": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
+  "tags": [
+    {
+      "name": "Stores",
+      "description": "가게 엔드포인트"
     }
-  },
+  ],
+  "paths": {},
   "components": {
     "schemas": {
-      "testScheme": {
+      "createStore": {
         "type": "object",
         "properties": {
-          "name": {
+          "title": {
             "type": "string",
-            "example": "John Doe"
+            "example": "GS25 서울역점"
           },
-          "age": {
-            "type": "number",
-            "example": 29
+          "location": {
+            "type": "string",
+            "example": "서울 용산구 한강대로 401"
           },
-          "about": {
+          "contact": {
+            "type": "string",
+            "example": "0212345678"
+          },
+          "password": {
+            "type": "string",
+            "example": "password"
+          }
+        },
+        "required": [
+          "title",
+          "location",
+          "contact",
+          "password"
+        ]
+      },
+      "addMember": {
+        "type": "object",
+        "properties": {
+          "memberId": {
             "type": "string",
             "example": ""
           }
         },
         "required": [
-          "name",
-          "age"
+          "memberId"
         ]
+      },
+      "emailSend": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "example@mail.com"
+          }
+        }
+      },
+      "emailVerify": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "example@mail.com"
+          },
+          "code": {
+            "type": "string",
+            "example": "00000"
+          }
+        }
+      },
+      "saveUser": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "김철수"
+          },
+          "email": {
+            "type": "string",
+            "example": "example@mail.com"
+          },
+          "role": {
+            "type": "string",
+            "example": "staff"
+          },
+          "password": {
+            "type": "string",
+            "example": "0000"
+          },
+          "contact": {
+            "type": "string",
+            "example": "01012341234"
+          }
+        }
+      },
+      "password": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string",
+            "example": "0000"
+          }
+        }
+      }
+    },
+    "examples": {
+      "storesExample": {
+        "value": [
+          {
+            "id": "4uDfVBHq",
+            "title": "GS25 서울역점",
+            "location": "서울 용산구 한강대로 401"
+          }
+        ]
+      },
+      "storeExample": {
+        "value": {
+          "title": "GS25 서울역점",
+          "location": "서울 용산구 한강대로 401",
+          "contact": "0212345678"
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   }

@@ -7,6 +7,7 @@ import { checkDbEstablished } from "@/db";
 import logger, { httpLogger } from "@/logger";
 import authRoutes from "@/routes/auth.route";
 import defaultRoutes from "@/routes/default.route";
+import defaultRoute from "@/routes/default.route";
 import storesRoute from "@/routes/stores.route";
 
 const app = express();
@@ -30,6 +31,7 @@ checkDbEstablished();
 app.use("/", defaultRoutes);
 app.use("/auth", authRoutes);
 app.use("/stores", storesRoute);
+app.use("/", defaultRoute);
 
 app.listen(parseInt(config.http.port), config.http.host, () => {
   logger.info(`Node environment: ${config.node.env}`);

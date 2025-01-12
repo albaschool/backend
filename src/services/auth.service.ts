@@ -1,4 +1,3 @@
-import { sql } from "kysely";
 import { nanoid } from "nanoid";
 
 import { db } from "@/db";
@@ -15,16 +14,12 @@ export const saveCode = async (email : string , code : string) => {
 }
 
 export const verifyEmail = async (email : string, code : string) => {
-    const result = await db.selectFrom("verification")
-                            .select(sql`1`.as('exist'))
-                            .where(({eb, and})=> 
-                                and([eb('code', '=', code), 
-                                    eb('email', '=', email)]
-                            )
-                        ).executeTakeFirst();
-
-    if (result!==undefined) return false;
-    else return true;
+    const results = await db.selectFrom("verification")
+                            .select('code')
+                            .where('email', '=', email)
+                            .execute();
+   if(results[Object.keys(results).length-1].code === code) return true;
+    else return false;
 };
 
 export const saveUser = async (auth : RegistRequest) =>{
@@ -47,11 +42,22 @@ export const isUser = async (email : string, password : string) => {
 }
 
 export const updatePassword = async (password : string, id : string)=>{
+    console.log(password);
     const result = await db.updateTable('user')
                             .set({
                                 password: password,
                               })
                               .where('id', '=', id)
-                              .executeTakeFirst()
+                              .executeTakeFirst();
+    console.log(result);
     return result;
+    
+}
+
+export const checkPassword = async (password : string, id : string)=>{
+    const result = await db.selectFrom('user')
+                              .where('id', '=', id)
+                              .select('password')
+                              .executeTakeFirst();
+    return result!.password === password;
 }

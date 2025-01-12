@@ -6,6 +6,7 @@ import swaggerUi from "swagger-ui-express";
 
 import logger from "@/logger";
 
+
 const doc = {
   info: {
     version: "1.0.0",
@@ -37,6 +38,23 @@ const doc = {
       addMember: {
         $memberId: "",
       },
+      emailSend : {
+        "email" : "example@mail.com"
+      },
+      emailVerify : {
+        "email" : "example@mail.com",
+        "code" : "00000"
+      },
+      saveUser : {
+        "name" : "김철수",
+        "email" : "example@mail.com",
+        "role" : "staff",
+        "password" : "0000",
+        "contact" : "01012341234"
+      },
+      password : {
+        "password" : "0000"
+      }
     },
     examples: {
       storesExample: {
@@ -59,7 +77,7 @@ const doc = {
   },
 };
 
-const outputFile = path.join(__dirname, "../../dist/swagger-output.json");
+const outputFile = path.join(__dirname, "..", ".." , "dist", "swagger-output.json");
 const endpointsFiles = [path.join(__dirname, "../app.ts")];
 
 fs.mkdir(path.dirname(outputFile), { recursive: true });
