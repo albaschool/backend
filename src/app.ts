@@ -10,7 +10,6 @@ import logger, { httpLogger } from "@/logger";
 import errorMiddleware from "@/middlewares/error.middleware";
 import authRoutes from "@/routes/auth.route";
 import defaultRoutes from "@/routes/default.route";
-import defaultRoute from "@/routes/default.route";
 import storesRoute from "@/routes/stores.route";
 
 const app = express();
@@ -34,7 +33,6 @@ checkDbEstablished();
 app.use("/", defaultRoutes);
 app.use("/auth", authRoutes);
 app.use("/stores", storesRoute);
-app.use("/", defaultRoute);
 
 app.use(errorMiddleware);
 

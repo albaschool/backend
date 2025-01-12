@@ -77,8 +77,10 @@ const doc = {
   },
 };
 
-const outputFile = path.join(__dirname, "..", ".." , "dist", "swagger-output.json");
+const outputFile = path.join(__dirname, "../../dist/swagger-output.json");
 const endpointsFiles = [path.join(__dirname, "../app.ts")];
+console.log("outputFile : " + outputFile);
+console.log("endpointFiles : " + endpointsFiles );
 
 fs.mkdir(path.dirname(outputFile), { recursive: true });
 
