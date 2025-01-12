@@ -116,11 +116,11 @@ const doc = {
           type: "string",
         },
       },
-      memberId: {
+      usreId: {
         in: "path",
-        name: "storeId",
+        name: "usreId",
         required: true,
-        description: "직원 아이디 (12자)",
+        description: "유저 아이디 (12자)",
         schema: {
           type: "string",
         },

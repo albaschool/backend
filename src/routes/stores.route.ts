@@ -261,12 +261,12 @@ router.post(
 );
 
 router.delete(
-  "/:storeId/members/:memberId",
+  "/:storeId/members/:userId",
   /*
     #swagger.tags = ["Stores"]
     #swagger.description = "특정 가게의 직원을 삭제합니다."
     #swagger.security = [{ bearerAuth: [] }]
-    #swagger.parameters['$ref'] = ['#/components/parameters/storeId', '#/components/parameters/memberId']
+    #swagger.parameters['$ref'] = ['#/components/parameters/storeId', '#/components/parameters/userId']
     #swagger.responses[200] = {
       description: "OK",
       content: {
