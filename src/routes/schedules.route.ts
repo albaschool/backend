@@ -13,7 +13,6 @@ const router = express.Router();
 
 router.use(authMiddleware);
 
-/** GET /schedules */
 router.get(
   "",
   /*
@@ -42,7 +41,6 @@ router.get(
   getSchedulesByUser,
 );
 
-/** /schedules/:storeId */
 router.get(
   "/:storeId",
   /*
@@ -80,7 +78,6 @@ router.get(
   getSchedulesByStore,
 );
 
-/** POST /schedules */
 router.post(
   "",
   /*
@@ -117,7 +114,6 @@ router.post(
   createSchedule,
 );
 
-/** PUT /schedules/{scheduleId} */
 router.put(
   "/:scheduleId",
   /*
@@ -163,7 +159,6 @@ router.put(
   updateSchedule,
 );
 
-/** DELETE /schedules/{scheduleId} */
 router.delete(
   "/:scheduleId",
   /*

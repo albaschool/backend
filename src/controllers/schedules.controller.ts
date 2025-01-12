@@ -4,6 +4,7 @@ import HttpException from "@/interfaces/http-exception.interface";
 import { CreateSchedulePayload } from "@/interfaces/schedules.interface";
 import * as services from "@/services/schedules.service";
 
+/** GET /schedules */
 export const getSchedulesByUser = async (req: Request, res: Response) => {
   const schedules = await services.getSchedulesByUser(req.auth!.id);
 
@@ -15,6 +16,7 @@ export const getSchedulesByUser = async (req: Request, res: Response) => {
   res.status(200).json(schedules);
 };
 
+/** GET /schedules/:storeId */
 export const getSchedulesByStore = async (req: Request, res: Response) => {
   const isUserInStore = await services.isUserInStore(req.auth!.id, req.params.storeId);
   if (!isUserInStore) {
@@ -31,6 +33,7 @@ export const getSchedulesByStore = async (req: Request, res: Response) => {
   res.status(200).json(schedules);
 };
 
+/** POST /schedules */
 export const createSchedule = async (req: Request, res: Response) => {
   const payload: CreateSchedulePayload = req.body;
   if (!await services.isStoreOwner(req.auth!.id, payload.storeId)) {
@@ -46,6 +49,7 @@ export const createSchedule = async (req: Request, res: Response) => {
   res.status(201).json({ message: "일정이 생성되었습니다." });
 };
 
+/** PUT /schedules/:scheduleId */
 export const updateSchedule = async (req: Request, res: Response) => {
   const schedule = await services.getScheduleById(req.params.scheduleId);
 
@@ -64,6 +68,7 @@ export const updateSchedule = async (req: Request, res: Response) => {
   res.status(200).json({ message: "일정이 수정되었습니다." });
 };
 
+/** DELETE /schedules/:scheduleId */
 export const deleteSchedule = async (req: Request, res: Response) => {
   const schedule = await services.getScheduleById(req.params.scheduleId);
 
