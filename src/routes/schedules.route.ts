@@ -117,6 +117,30 @@ router.put(
         }
       }
     }
+    #swagger.responses[200] = {
+      description: "OK",
+      content: {
+        "application/json": {
+          example: { message: "일정이 수정되었습니다." }
+        }
+      }
+    }
+    #swagger.responses[403] = {
+      description: "가게 주인이 아닐 때",
+      content: {
+        "application/json": {
+          example: { message: "가게 주인만 수정할 수 있습니다." }
+        }
+      }
+    }
+    #swagger.responses[404] = {
+      description: "일정이 존재하지 않을 때",
+      content: {
+        "application/json": {
+          example: { message: "일정이 존재하지 않습니다." }
+        }
+      }
+    }
   */
   updateSchedule,
 );
@@ -133,6 +157,22 @@ router.delete(
       content: {
         "application/json": {
           example: { message: "일정이 삭제되었습니다." }
+        }
+      }
+    }
+    #swagger.responses[403] = {
+      description: "가게 주인이 아닐 때",
+      content: {
+        "application/json": {
+          example: { message: "가게 주인만 삭제할 수 있습니다." }
+        }
+      }
+    }
+    #swagger.responses[404] = {
+      description: "일정이 존재하지 않을 때",
+      content: {
+        "application/json": {
+          example: { message: "일정이 존재하지 않습니다." }
         }
       }
     }
