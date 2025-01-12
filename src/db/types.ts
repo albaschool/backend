@@ -85,6 +85,7 @@ export interface ScheduleTable {
   id: string;
   userId: string;
   storeId: string;
+  content: string;
   dayOfWeek: number;
   startTime: Date;
   endTime: Date;
