@@ -50,8 +50,10 @@ const doc = {
         $endTime: "18:00:00",
       },
       updateSchedule: {
-        dayOfWeek: 1,
-        startTime: "14:00:00",
+        content: "오전타임",
+        dayOfWeek: 5,
+        startTime: "07:00:00",
+        endTime: "12:00:00",
       },
     },
     examples: {
