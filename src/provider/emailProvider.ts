@@ -13,8 +13,8 @@ const transport = nodemailer.createTransport({
     rejectUnauthorized: false,
     }
 });
-const getMailOptions = (email : string)=>{
-    const verificationNumber = Math.random().toString().slice(2, 6);
+const getMailOptions = (verificationNumber : string ,email : string)=>{
+    
     const mailContent = `<h1 style='text-align : center;'> [알바스쿨] 인증메일</h1>
                        <h3 style='text-align : center;'> 인증코드 ${verificationNumber}</h3>`;
     const mailOptions: nodemailer.SendMailOptions = {

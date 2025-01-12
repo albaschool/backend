@@ -13,19 +13,54 @@ const doc = {
     description: "",
   },
   host: "localhost:3000",
+  tags: [
+    {
+      name: "Stores",
+      description: "가게 엔드포인트",
+    },
+  ],
+  securityDefinitions: {
+    bearerAuth: {
+      type: "http",
+      scheme: "bearer",
+      bearerFormat: "JWT",
+    },
+  },
   components: {
     schemas: {
-      testScheme: {
-        $name: "John Doe",
-        $age: 29,
-        about: "",
+      createStore: {
+        $title: "GS25 서울역점",
+        $location: "서울 용산구 한강대로 401",
+        $contact: "0212345678",
+        $password: "password",
+      },
+      addMember: {
+        $memberId: "",
+      },
+    },
+    examples: {
+      storesExample: {
+        value: [
+          {
+            id: "4uDfVBHq",
+            title: "GS25 서울역점",
+            location: "서울 용산구 한강대로 401",
+          },
+        ],
+      },
+      storeExample: {
+        value: {
+          title: "GS25 서울역점",
+          location: "서울 용산구 한강대로 401",
+          contact: "0212345678",
+        },
       },
     },
   },
 };
 
 const outputFile = path.join(__dirname, "../swagger-output.json");
-const endpointsFiles = [path.join(__dirname, "../app.js"), path.join(__dirname, "../routes/*.js")];
+const endpointsFiles = [path.join(__dirname, "../../src/app.ts")];
 
 const generateSwagger = swaggerAutogen({ openapi: "3.1.1" })(outputFile, endpointsFiles, doc);
 

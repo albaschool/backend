@@ -1,3 +1,4 @@
+import { Request } from "express";
 import pino from "pino";
 import pinoHttp from "pino-http";
 
@@ -16,11 +17,11 @@ const httpLogger = pinoHttp({
     }
     return "info";
   },
-  customSuccessMessage: (_, res, responseTime) => {
-    return `HTTP ${res.statusCode} ${res.req.method} ${res.req.url} - ${responseTime}ms`;
+  customSuccessMessage: (req: Request, res, responseTime) => {
+    return `HTTP ${res.statusCode} ${req.method} ${req.originalUrl} - ${responseTime}ms`;
   },
-  customErrorMessage: (_, res, error) => {
-    return `HTTP ${res.statusCode} ${res.req.method} ${res.req.url} ${error.message}`;
+  customErrorMessage: (req: Request, res, error) => {
+    return `HTTP ${res.statusCode} ${req.method} ${req.originalUrl} ${error.message}`;
   },
   serializers: {
     req: () => undefined,

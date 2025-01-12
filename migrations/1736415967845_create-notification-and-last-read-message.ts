@@ -6,9 +6,9 @@ export async function up(db: Kysely<unknown>): Promise<void> {
     .addColumn("user_id", "varchar(12)", (col) => col.notNull())
     .addColumn("room_id", "varchar(8)", (col) => col.notNull())
     .addColumn("message_id", "varchar(12)", (col) => col.notNull())
-		.addForeignKeyConstraint("last_read_messages_user_id_fk", ["user_id"], "user", ["id"])
-		.addForeignKeyConstraint("last_read_messages_room_id_fk", ["room_id"], "chat_room", ["id"])
-		.addForeignKeyConstraint("last_read_messages_message_id_fk", ["message_id"], "message", ["id"])
+    .addForeignKeyConstraint("last_read_messages_user_id_fk", ["user_id"], "user", ["id"])
+    .addForeignKeyConstraint("last_read_messages_room_id_fk", ["room_id"], "chat_room", ["id"])
+    .addForeignKeyConstraint("last_read_messages_message_id_fk", ["message_id"], "message", ["id"])
     .execute();
 
   await db.schema
