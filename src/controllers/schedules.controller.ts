@@ -44,6 +44,14 @@ export const createSchedule = async (req: Request, res: Response) => {
 };
 
 export const updateSchedule = async (req: Request, res: Response) => {
+  const schedule = await services.getScheduleById(req.params.scheduleId);
+
+  if (!schedule) throw new HttpException(404, "일정이 존재하지 않습니다.");
+
+  if (await services.isStoreOwner(req.auth!.id, schedule.storeId)) {
+    throw new HttpException(403, "가게 주인만 수정할 수 있습니다.");
+  }
+
   const result = await services.updateSchedule(req.params.scheduleId, req.body);
 
   if (result.numUpdatedRows === BigInt(0)) {
@@ -54,6 +62,14 @@ export const updateSchedule = async (req: Request, res: Response) => {
 };
 
 export const deleteSchedule = async (req: Request, res: Response) => {
+  const schedule = await services.getScheduleById(req.params.scheduleId);
+
+  if (!schedule) throw new HttpException(404, "일정이 존재하지 않습니다.");
+
+  if (await services.isStoreOwner(req.auth!.id, schedule.storeId)) {
+    throw new HttpException(403, "가게 주인만 수정할 수 있습니다.");
+  }
+
   const result = await services.deleteSchedule(req.params.scheduleId);
 
   if (result.numDeletedRows === BigInt(0)) {

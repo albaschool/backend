@@ -67,3 +67,24 @@ export const isUserInStore = async (userId: string, storeId: string) => {
 
   return result !== undefined;
 };
+
+export const isStoreOwner = async (userId: string, storeId: string) => {
+  const result = await db
+    .selectFrom("store")
+    .select(sql`1`.as("exists"))
+    .where("ownerId", "=", userId)
+    .where("id", "=", storeId)
+    .executeTakeFirst();
+
+  return result !== undefined;
+}
+
+export const getScheduleById = async (scheduleId: string) => {
+  const schedule = await db
+    .selectFrom("schedule")
+    .select(["storeId"])
+    .where("id", "=", scheduleId)
+    .executeTakeFirst();
+
+  return schedule;
+}
