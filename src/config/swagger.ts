@@ -18,6 +18,10 @@ const doc = {
       name: "Stores",
       description: "가게 엔드포인트",
     },
+    {
+      name: "Schedules",
+      description: " 일정 엔드포인트",
+    },
   ],
   securityDefinitions: {
     bearerAuth: {
