@@ -119,9 +119,9 @@ const doc = {
           type: "string",
         },
       },
-      usreId: {
+      userId: {
         in: "path",
-        name: "usreId",
+        name: "userId",
         required: true,
         description: "유저 아이디 (12자)",
         schema: {

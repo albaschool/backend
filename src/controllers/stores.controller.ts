@@ -22,7 +22,7 @@ export const createStore = async (req: Request, res: Response) => {
     ...req.body,
   });
 
-  if ((store.numInsertedOrUpdatedRows ?? 0) !== 0) {
+  if ((store.numInsertedOrUpdatedRows ?? 0) === 0) {
     throw new Error("Failed to add store");
   }
 

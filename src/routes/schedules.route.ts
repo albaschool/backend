@@ -8,6 +8,9 @@ import {
   updateSchedule,
 } from "@/controllers/schedules.controller";
 import authMiddleware from "@/middlewares/auth.middleware";
+import validate from "@/middlewares/validate.middleware";
+import { scheduleIdParamsSchema, storeIdParamsSchema } from "@/schemas/common.schema";
+import { createScheduleBodySchema } from "@/schemas/schedules.schema";
 
 const router = express.Router();
 
@@ -75,6 +78,7 @@ router.get(
       }
     }
   */
+  validate(storeIdParamsSchema),
   getSchedulesByStore,
 );
 
@@ -111,6 +115,7 @@ router.post(
       }
     }
   */
+  validate(createScheduleBodySchema),
   createSchedule,
 );
 
@@ -156,6 +161,7 @@ router.put(
       }
     }
   */
+  validate(scheduleIdParamsSchema),
   updateSchedule,
 );
 
@@ -191,6 +197,7 @@ router.delete(
       }
     }
   */
+  validate(scheduleIdParamsSchema),
   deleteSchedule,
 );
 

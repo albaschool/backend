@@ -10,6 +10,9 @@ import {
   getStores,
 } from "@/controllers/stores.controller";
 import authMiddleware from "@/middlewares/auth.middleware";
+import validate from "@/middlewares/validate.middleware";
+import { storeIdParamsSchema, userIdParamsSchema } from "@/schemas/common.schema";
+import { createStoreSchema } from "@/schemas/stores.schema";
 
 const router = express.Router();
 
@@ -121,6 +124,7 @@ router.get(
       }
     }
   */
+  validate(storeIdParamsSchema),
   getStoreById,
 );
 
@@ -156,6 +160,7 @@ router.get(
       }
     }
   */
+  validate(storeIdParamsSchema),
   getStoreMembers,
 );
 
@@ -192,6 +197,7 @@ router.post(
       }
     }
   */
+  validate(createStoreSchema),
   createStore,
 );
 
@@ -253,6 +259,7 @@ router.post(
       }
     }
   */
+  validate(storeIdParamsSchema),
   addStoreMember,
 );
 
@@ -262,7 +269,8 @@ router.delete(
     #swagger.tags = ["Stores"]
     #swagger.description = "특정 가게의 직원을 삭제합니다."
     #swagger.security = [{ bearerAuth: [] }]
-    #swagger.parameters['$ref'] = ['#/components/parameters/storeId', '#/components/parameters/userId']
+    #swagger.parameters['$ref'] = ['#/components/parameters/storeId']
+    #swagger.parameters['$ref'] = ['#/components/parameters/userId']
     #swagger.responses[200] = {
       description: "OK",
       content: {
@@ -296,6 +304,7 @@ router.delete(
       }
     }
   */
+  validate(storeIdParamsSchema.merge(userIdParamsSchema)),
   deleteStoreMember,
 );
 
