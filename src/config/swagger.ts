@@ -3,6 +3,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import swaggerAutogen from "swagger-autogen";
 import swaggerUi from "swagger-ui-express";
+import { pathToFileURL } from "url";
 
 import logger from "@/logger";
 
@@ -131,10 +132,13 @@ const doc = {
   },
 };
 
-const outputFile = path.join(__dirname, "../../dist/swagger-output.json");
-const endpointsFiles = [path.join(__dirname, "../app.ts")];
+const outputFile = path.join(__dirname, "..", "..", "dist", "swagger-output.json");
+const endpointsFiles = ["./app.ts"];
 
-fs.mkdir(path.dirname(outputFile), { recursive: true });
+fs.mkdir(path.dirname(outputFile), { recursive: true }).catch((error) => {
+  if (error.code === "EEXIST") return;
+  logger.error(error, "Failed to create swagger-output.json directory.");
+});
 
 const generateSwagger = swaggerAutogen({ openapi: "3.1.1" })(outputFile, endpointsFiles, doc);
 
@@ -148,11 +152,11 @@ export const setupSwagger = async (app: Express): Promise<boolean> => {
 
     try {
       await fs.access(outputFile);
-      const swaggerDocument = await import(outputFile);
+      const swaggerDocument = await import(pathToFileURL(outputFile).href);
       app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
       return true;
-    } catch {
-      logger.error("swagger-output.json does not exists.");
+    } catch (error) {
+      logger.error(error, "swagger-output.json does not exists.");
       return false;
     }
   } catch (error) {
