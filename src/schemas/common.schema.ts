@@ -14,6 +14,6 @@ export const storeIdParamsSchema = z.object({
 
 export const scheduleIdParamsSchema = z.object({
   params: z.object({
-    scheduleId: z.string().length(16),
+    scheduleId: z.string().length(12),
   }),
 });

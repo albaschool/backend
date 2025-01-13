@@ -31,7 +31,7 @@ export const createSchedule = async (payload: CreateSchedulePayload) => {
   const { userId, storeId, content, dayOfWeek, startTime, endTime } = payload;
   const schedule = await db
     .insertInto("schedule")
-    .values({ id: nanoid(16), userId, storeId, content, dayOfWeek, startTime, endTime })
+    .values({ id: nanoid(12), userId, storeId, content, dayOfWeek, startTime, endTime })
     .executeTakeFirst();
 
   return schedule;

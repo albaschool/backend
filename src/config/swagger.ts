@@ -114,7 +114,7 @@ const doc = {
         in: "path",
         name: "scheduleId",
         required: true,
-        description: "일정 아이디 (16자)",
+        description: "일정 아이디 (12자)",
         schema: {
           type: "string",
         },
