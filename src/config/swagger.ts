@@ -3,6 +3,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import swaggerAutogen from "swagger-autogen";
 import swaggerUi from "swagger-ui-express";
+import { pathToFileURL } from "url";
 
 import logger from "@/logger";
 
@@ -39,21 +40,25 @@ const doc = {
         $memberId: "",
       },
       emailSend : {
-        "email" : "example@mail.com"
+        email : "example@mail.com"
       },
       emailVerify : {
-        "email" : "example@mail.com",
-        "code" : "00000"
+        email : "example@mail.com",
+        code : "00000"
       },
       saveUser : {
-        "name" : "김철수",
-        "email" : "example@mail.com",
-        "role" : "staff",
-        "password" : "0000",
-        "contact" : "01012341234"
+        name : "김철수",
+        email : "example@mail.com",
+        role : "staff",
+        password : "0000",
+        contact : "01012341234"
+      },
+      login : {
+        email : "example@mail.com",
+        password : "example@mail.com"
       },
       password : {
-        "password" : "0000"
+        password : "0000"
       }
     },
     examples: {
@@ -77,10 +82,9 @@ const doc = {
   },
 };
 
-const outputFile = path.join(__dirname, "../../dist/swagger-output.json");
+const outputFile = path.join(__dirname,  "..", "..", "dist", "swagger-output.json");
 const endpointsFiles = [path.join(__dirname, "../app.ts")];
-console.log("outputFile : " + outputFile);
-console.log("endpointFiles : " + endpointsFiles );
+
 
 fs.mkdir(path.dirname(outputFile), { recursive: true });
 
@@ -96,7 +100,7 @@ export const setupSwagger = async (app: Express): Promise<boolean> => {
 
     try {
       await fs.access(outputFile);
-      const swaggerDocument = await import(outputFile);
+      const swaggerDocument = await import(pathToFileURL(outputFile).href);
       app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
       return true;
     } catch {

@@ -1,6 +1,6 @@
 import express from "express";
 
-import { email, emailVerify, fixPassword, login, regist } from "@/controllers/auth.controller";
+import { checkUserPassword, email, emailVerify, fixPassword, login, regist } from "@/controllers/auth.controller";
 import authMiddleware from "@/middlewares/auth.middleware";
 const router = express.Router()
 
@@ -91,7 +91,7 @@ router.post(
 router.post(
     "/register",
     // #swagger.tags = ["Auth"]
-  // #swagger.description = "이메일 인증번호를 전송합니다."
+  // #swagger.description = "회원가입."
   // #swagger.security = [{ bearerAuth: [] }]
   /*
     #swagger.requestBody = {
@@ -99,7 +99,7 @@ router.post(
       content: {
         "application/json": {
           schema: {
-            $ref: "#/components/schemas/createStore"
+            $ref: "#/components/schemas/saveUser"
           }  
         }
       }
@@ -110,7 +110,7 @@ router.post(
       description: "Created",
       content: {
         "application/json": {
-          example: { message: "가게가 생성되었습니다." }
+          example: { message: "회원가입이 완료 됐습니다." }
         }
       }
     }
@@ -129,7 +129,7 @@ router.post(
 router.post(
     "/login",
     // #swagger.tags = ["Auth"]
-  // #swagger.description = "이메일 인증번호를 전송합니다."
+  // #swagger.description = "로그인을 진행합니다."
   // #swagger.security = [{ bearerAuth: [] }]
   /*
     #swagger.requestBody = {
@@ -137,21 +137,30 @@ router.post(
       content: {
         "application/json": {
           schema: {
-            $ref: "#/components/schemas/createStore"
+            $ref: "#/components/schemas/login"
           }  
         }
       }
     }
   */
   /*
-    #swagger.responses[201] = {
+    #swagger.responses[200] = {
       description: "Created",
       content: {
         "application/json": {
-          example: { message: "가게가 생성되었습니다." }
+          example: { message: "로그인이 완료 됐습니다." }
         }
       }
     }
+
+    #swagger.responses[404] = {
+    description: "Not Found",
+    content: {
+      "application/json": {
+        example: { message: "아이디 혹은 비밀번호가 일치하지 않습니다." }
+      }
+    }
+  }
     #swagger.responses[500] = {
       description: "Internal Server Error",
       content: {
@@ -167,7 +176,7 @@ router.post(
 router.put(
     "/fixPassword",
     // #swagger.tags = ["Auth"]
-  // #swagger.description = "이메일 인증번호를 전송합니다."
+  // #swagger.description = "비밀번호를 변경합니다."
   // #swagger.security = [{ bearerAuth: [] }]
   /*
     #swagger.requestBody = {
@@ -175,21 +184,29 @@ router.put(
       content: {
         "application/json": {
           schema: {
-            $ref: "#/components/schemas/createStore"
+            $ref: "#/components/schemas/password"
           }  
         }
       }
     }
   */
   /*
-    #swagger.responses[201] = {
+    #swagger.responses[200] = {
       description: "Created",
       content: {
         "application/json": {
-          example: { message: "가게가 생성되었습니다." }
+          example: { message: "비밀번호 변경이 완료됐습니다." }
         }
       }
     }
+    #swagger.responses[401] = {
+    description: "토큰 만료",
+    content: {
+      "application/json": {
+        example: { message: "토큰이 만료 됐습니다." }
+      }
+    }
+  }
     #swagger.responses[500] = {
       description: "Internal Server Error",
       content: {
@@ -201,5 +218,53 @@ router.put(
   */
     authMiddleware,
     fixPassword,
+)
+
+router.put(
+  "/fixPassword",
+  // #swagger.tags = ["Auth"]
+// #swagger.description = "사용자의 비밀번호를 확인합니다."
+// #swagger.security = [{ bearerAuth: [] }]
+/*
+  #swagger.requestBody = {
+    required: true,
+    content: {
+      "application/json": {
+        schema: {
+          $ref: "#/components/schemas/password"
+        }  
+      }
+    }
+  }
+*/
+/*
+  #swagger.responses[200] = {
+    description: "Ok",
+    content: {
+      "application/json": {
+        example: { message: "비밀번호 확인이 완료됐습니다." }
+      }
+    }
+  }
+  #swagger.responses[401] = {
+    description: "토큰 만료",
+    content: {
+      "application/json": {
+        example: { message: "토큰이 만료 됐습니다." }
+      }
+    }
+  }
+  #swagger.responses[500] = {
+    description: "Internal Server Error",
+    content: {
+      "application/json": {
+        example: { message: "Internal server error" }
+      }
+    }
+  }
+  
+*/
+  authMiddleware,
+  checkUserPassword,
 )
 export default router;

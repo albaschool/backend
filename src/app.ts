@@ -25,6 +25,7 @@ app.use(
 );
 
 if (config.node.env === "development") {
+
   (async () => await setupSwagger(app))();
 }
 
