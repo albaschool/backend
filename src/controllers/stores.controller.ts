@@ -97,7 +97,7 @@ export const addStoreMember = async (req: Request, res: Response) => {
   res.status(200).json({ message: "직원이 추가되었습니다." });
 };
 
-/** DELETE /stores/:storeId/members/:memberId */
+/** DELETE /stores/:storeId/members/:userId */
 export const deleteStoreMember = async (req: Request, res: Response) => {
   const isOwner = await services.isOwner(req.auth!.id, req.params.storeId);
 

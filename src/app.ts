@@ -9,6 +9,7 @@ import { checkDbEstablished } from "@/db";
 import logger, { httpLogger } from "@/logger";
 import errorMiddleware from "@/middlewares/error.middleware";
 import defaultRoute from "@/routes/default.route";
+import schedulesRoute from "@/routes/schedules.route";
 import storesRoute from "@/routes/stores.route";
 
 const app = express();
@@ -30,6 +31,7 @@ if (config.node.env === "development") {
 checkDbEstablished();
 
 app.use("/stores", storesRoute);
+app.use("/schedules", schedulesRoute);
 app.use("/", defaultRoute);
 
 app.use(errorMiddleware);

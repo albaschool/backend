@@ -18,6 +18,10 @@ const doc = {
       name: "Stores",
       description: "가게 엔드포인트",
     },
+    {
+      name: "Schedules",
+      description: " 일정 엔드포인트",
+    },
   ],
   securityDefinitions: {
     bearerAuth: {
@@ -37,6 +41,20 @@ const doc = {
       addMember: {
         $memberId: "",
       },
+      createSchedule: {
+        $userId: "0pm8MlHvf366",
+        $storeId: "4uDfVBHq",
+        $content: "오후타임",
+        $dayOfWeek: 1,
+        $startTime: "12:00:00",
+        $endTime: "18:00:00",
+      },
+      updateSchedule: {
+        content: "오전타임",
+        dayOfWeek: 5,
+        startTime: "07:00:00",
+        endTime: "12:00:00",
+      },
     },
     examples: {
       storesExample: {
@@ -55,7 +73,61 @@ const doc = {
           contact: "0212345678",
         },
       },
+      schedulesByUserExample: {
+        value: [
+          {
+            id: "TCYP4hBtP2wpG2YX",
+            title: "GS25 서울역점",
+            content: "오후타임",
+            dayOfWeek: 1,
+            startTime: "12:00:00",
+            endTime: "18:00:00",
+          },
+        ],
+      },
+      schedulesByStoreExample: {
+        value: [
+          {
+            id: "TCYP4hBtP2wpG2YX",
+            name: "테스트계정",
+            title: "GS25 서울역점",
+            content: "오후타임",
+            dayOfWeek: 1,
+            startTime: "12:00:00",
+            endTime: "18:00:00",
+          },
+        ],
+      },
     },
+    parameters: {
+      storeId: {
+        in: "path",
+        name: "storeId",
+        required: true,
+        description: "가게 아이디 (8자)",
+        schema: {
+          type: "string",
+        },
+      },
+      scheduleId: {
+        in: "path",
+        name: "scheduleId",
+        required: true,
+        description: "일정 아이디 (16자)",
+        schema: {
+          type: "string",
+        },
+      },
+      usreId: {
+        in: "path",
+        name: "usreId",
+        required: true,
+        description: "유저 아이디 (12자)",
+        schema: {
+          type: "string",
+        },
+      },
+    }
   },
 };
 

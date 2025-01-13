@@ -17,10 +17,10 @@ router.use(authMiddleware);
 
 router.get(
   "",
-  // #swagger.tags = ["Stores"]
-  // #swagger.description = "모든 가게를 조회합니다."
-  // #swagger.security = [{ bearerAuth: [] }]
   /*
+    #swagger.tags = ["Stores"]
+    #swagger.description = "모든 가게를 조회합니다."
+    #swagger.security = [{ bearerAuth: [] }]
     #swagger.responses[200] = {
       description: "OK",
       content: {
@@ -89,16 +89,11 @@ router.get(
 
 router.get(
   "/:storeId",
-  // #swagger.tags = ["Stores"]
-  // #swagger.description = "특정 가게를 조회합니다."
-  // #swagger.security = [{ bearerAuth: [] }]
   /*
-    #swagger.parameters['storeId'] = {
-      description: '가게 아이디',
-      required: true,
-    }
-  */
-  /*
+    #swagger.tags = ["Stores"]
+    #swagger.description = "특정 가게를 조회합니다."
+    #swagger.security = [{ bearerAuth: [] }]
+    #swagger.parameters['$ref'] = ['#/components/parameters/storeId']
     #swagger.responses[200] = {
       description: "OK",
       content: {
@@ -131,16 +126,11 @@ router.get(
 
 router.get(
   "/:storeId/members",
-  // #swagger.tags = ["Stores"]
-  // #swagger.description = "특정 가게의 직원 목록을 조회합니다."
-  // #swagger.security = [{ bearerAuth: [] }]
   /*
-    #swagger.parameters['storeId'] = {
-      description: '가게 아이디',
-      required: true,
-    }
-  */
-  /*
+    #swagger.tags = ["Stores"]
+    #swagger.description = "특정 가게의 직원 목록을 조회합니다."
+    #swagger.security = [{ bearerAuth: [] }]
+    #swagger.parameters['$ref'] = ['#/components/parameters/storeId']
     #swagger.responses[403] = {
       description: "가게 소유자가 아닐 때",
       content: {
@@ -171,10 +161,10 @@ router.get(
 
 router.post(
   "",
-  // #swagger.tags = ["Stores"]
-  // #swagger.description = "가게를 생성합니다."
-  // #swagger.security = [{ bearerAuth: [] }]
   /*
+    #swagger.tags = ["Stores"]
+    #swagger.description = "가게를 생성합니다."
+    #swagger.security = [{ bearerAuth: [] }]
     #swagger.requestBody = {
       required: true,
       content: {
@@ -185,8 +175,6 @@ router.post(
         }
       }
     }
-  */
-  /*
     #swagger.responses[201] = {
       description: "Created",
       content: {
@@ -209,10 +197,10 @@ router.post(
 
 router.post(
   "/:storeId/members",
-  // #swagger.tags = ["Stores"]
-  // #swagger.description = "특정 가게에 직원을 추가합니다."
-  // #swagger.security = [{ bearerAuth: [] }]
   /*
+    #swagger.tags = ["Stores"]
+    #swagger.description = "특정 가게에 직원을 추가합니다."
+    #swagger.security = [{ bearerAuth: [] }]
     #swagger.requestBody = {
       required: true,
       content: {
@@ -223,14 +211,7 @@ router.post(
         }
       }
     }
-  */
-  /*
-    #swagger.parameters['storeId'] = {
-      description: '가게 아이디',
-      required: true,
-    }
-  */
-  /*
+    #swagger.parameters['$ref'] = ['#/components/parameters/storeId']
     #swagger.responses[200] = {
       description: "OK",
       content: {
@@ -276,21 +257,12 @@ router.post(
 );
 
 router.delete(
-  "/:storeId/members/:memberId",
-  // #swagger.tags = ["Stores"]
-  // #swagger.description = "특정 가게의 직원을 삭제합니다."
-  // #swagger.security = [{ bearerAuth: [] }]
+  "/:storeId/members/:userId",
   /*
-    #swagger.parameters['storeId'] = {
-      description: '가게 아이디',
-      required: true,
-    }
-      #swagger.parameters['memberId'] = {
-      description: '직원 아이디',
-      required: true,
-    }
-  */
-  /*
+    #swagger.tags = ["Stores"]
+    #swagger.description = "특정 가게의 직원을 삭제합니다."
+    #swagger.security = [{ bearerAuth: [] }]
+    #swagger.parameters['$ref'] = ['#/components/parameters/storeId', '#/components/parameters/userId']
     #swagger.responses[200] = {
       description: "OK",
       content: {
