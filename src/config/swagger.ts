@@ -5,15 +5,21 @@ import swaggerAutogen from "swagger-autogen";
 import swaggerUi from "swagger-ui-express";
 import { pathToFileURL } from "url";
 
+import config from "@/config";
 import logger from "@/logger";
 
 const doc = {
   info: {
     version: "1.0.0",
-    title: "REST API",
-    description: "",
+    title: "알바스쿨 API",
+    description: "<https://github.com/albaschool/backend>",
   },
-  host: "localhost:3000",
+  servers: [
+    {
+      url: `http://localhost:${config.http.port}`,
+      description: "로컬 서버"
+    },
+  ],
   tags: [
     {
       name: "Stores",
