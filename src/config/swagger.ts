@@ -21,7 +21,11 @@ const doc = {
     },
     {
       name: "Schedules",
-      description: " 일정 엔드포인트",
+      description: "일정 엔드포인트",
+    },
+    {
+      name: "Notifications",
+      description: "알림 엔드포인트",
     },
   ],
   securityDefinitions: {
