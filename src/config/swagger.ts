@@ -56,6 +56,27 @@ const doc = {
         startTime: "07:00:00",
         endTime: "12:00:00",
       },
+      emailSend : {
+        email : "example@mail.com"
+      },
+      emailVerify : {
+        email : "example@mail.com",
+        code : "00000"
+      },
+      saveUser : {
+        name : "김철수",
+        email : "example@mail.com",
+        role : "staff",
+        password : "0000",
+        contact : "01012341234"
+      },
+      login : {
+        email : "example@mail.com",
+        password : "example@mail.com"
+      },
+      password : {
+        password : "0000"
+      }
     },
     examples: {
       storesExample: {

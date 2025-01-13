@@ -8,3 +8,5 @@ export const createStoreSchema = z.object({
     password: z.string().min(1).max(255),
   }),
 });
+
+

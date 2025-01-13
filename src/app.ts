@@ -12,6 +12,8 @@ import defaultRoute from "@/routes/default.route";
 import schedulesRoute from "@/routes/schedules.route";
 import storesRoute from "@/routes/stores.route";
 
+import authRoute from "./routes/auth.route";
+
 const app = express();
 
 app.use(express.json());
@@ -30,6 +32,7 @@ if (config.node.env === "development") {
 
 checkDbEstablished();
 
+app.use("/auth", authRoute);
 app.use("/stores", storesRoute);
 app.use("/schedules", schedulesRoute);
 app.use("/", defaultRoute);
