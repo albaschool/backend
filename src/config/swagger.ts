@@ -20,6 +20,10 @@ const doc = {
       name: "Stores",
       description: "가게 엔드포인트",
     },
+    {
+      name: "Schedules",
+      description: " 일정 엔드포인트",
+    },
   ],
   securityDefinitions: {
     bearerAuth: {
@@ -39,27 +43,6 @@ const doc = {
       addMember: {
         $memberId: "",
       },
-      emailSend : {
-        email : "example@mail.com"
-      },
-      emailVerify : {
-        email : "example@mail.com",
-        code : "00000"
-      },
-      saveUser : {
-        name : "김철수",
-        email : "example@mail.com",
-        role : "staff",
-        password : "0000",
-        contact : "01012341234"
-      },
-      login : {
-        email : "example@mail.com",
-        password : "example@mail.com"
-      },
-      password : {
-        password : "0000"
-      }
     },
     examples: {
       storesExample: {
@@ -78,15 +61,71 @@ const doc = {
           contact: "0212345678",
         },
       },
+      schedulesByUserExample: {
+        value: [
+          {
+            id: "TCYP4hBtP2wpG2YX",
+            title: "GS25 서울역점",
+            content: "오후타임",
+            dayOfWeek: 1,
+            startTime: "12:00:00",
+            endTime: "18:00:00",
+          },
+        ],
+      },
+      schedulesByStoreExample: {
+        value: [
+          {
+            id: "TCYP4hBtP2wpG2YX",
+            name: "테스트계정",
+            title: "GS25 서울역점",
+            content: "오후타임",
+            dayOfWeek: 1,
+            startTime: "12:00:00",
+            endTime: "18:00:00",
+          },
+        ],
+      },
     },
+    parameters: {
+      storeId: {
+        in: "path",
+        name: "storeId",
+        required: true,
+        description: "가게 아이디 (8자)",
+        schema: {
+          type: "string",
+        },
+      },
+      scheduleId: {
+        in: "path",
+        name: "scheduleId",
+        required: true,
+        description: "일정 아이디 (16자)",
+        schema: {
+          type: "string",
+        },
+      },
+      usreId: {
+        in: "path",
+        name: "usreId",
+        required: true,
+        description: "유저 아이디 (12자)",
+        schema: {
+          type: "string",
+        },
+      },
+    }
   },
 };
 
-const outputFile = path.join(__dirname,  "..", "..", "dist", "swagger-output.json");
+const outputFile = path.join(__dirname, "../../dist/swagger-output.json");
 const endpointsFiles = [path.join(__dirname, "../app.ts")];
 
-
-fs.mkdir(path.dirname(outputFile), { recursive: true });
+fs.mkdir(path.dirname(outputFile), { recursive: true }).catch((error) => {
+  if (error.code === "EEXIST") return;
+  logger.error(error, "Failed to create swagger-output.json directory.");
+});
 
 const generateSwagger = swaggerAutogen({ openapi: "3.1.1" })(outputFile, endpointsFiles, doc);
 
@@ -103,8 +142,8 @@ export const setupSwagger = async (app: Express): Promise<boolean> => {
       const swaggerDocument = await import(pathToFileURL(outputFile).href);
       app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
       return true;
-    } catch {
-      logger.error("swagger-output.json does not exists.");
+    } catch (error) {
+      logger.error(error, "swagger-output.json does not exists.");
       return false;
     }
   } catch (error) {

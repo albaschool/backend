@@ -8,8 +8,9 @@ import { setupSwagger } from "@/config/swagger";
 import { checkDbEstablished } from "@/db";
 import logger, { httpLogger } from "@/logger";
 import errorMiddleware from "@/middlewares/error.middleware";
-import authRoutes from "@/routes/auth.route";
-import defaultRoutes from "@/routes/default.route";
+import authRoute from "@/routes/auth.route";
+import defaultRoute from "@/routes/default.route";
+import schedulesRoute from "@/routes/schedules.route";
 import storesRoute from "@/routes/stores.route";
 
 const app = express();
@@ -31,9 +32,10 @@ if (config.node.env === "development") {
 
 checkDbEstablished();
 
-app.use("/", defaultRoutes);
-app.use("/auth", authRoutes);
+app.use("/", defaultRoute);
+app.use("/auth", authRoute);
 app.use("/stores", storesRoute);
+app.use("/schedules", schedulesRoute);
 
 app.use(errorMiddleware);
 

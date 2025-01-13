@@ -85,9 +85,10 @@ export interface ScheduleTable {
   id: string;
   userId: string;
   storeId: string;
+  content: string;
   dayOfWeek: number;
-  startTime: Date;
-  endTime: Date;
+  startTime: string;
+  endTime: string;
   createdAt: ColumnType<Date, string | undefined, never>;
 }
 
