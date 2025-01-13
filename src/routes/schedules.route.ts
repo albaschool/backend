@@ -9,7 +9,8 @@ import {
 } from "@/controllers/schedules.controller";
 import authMiddleware from "@/middlewares/auth.middleware";
 import validate from "@/middlewares/validate.middleware";
-import { createScheduleBodySchema, scheduleIdParamsSchema, storeIdParamsSchema } from "@/schemas/schedules.schema";
+import { scheduleIdParamsSchema, storeIdParamsSchema } from "@/schemas/common.schema";
+import { createScheduleBodySchema } from "@/schemas/schedules.schema";
 
 const router = express.Router();
 
