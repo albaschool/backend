@@ -11,8 +11,8 @@ import logger from "@/logger";
 const doc = {
   info: {
     version: "1.0.0",
-    title: "REST API",
-    description: "",
+    title: "알바스쿨 API",
+    description: "<https://github.com/albaschool/backend>",
   },
   servers: [
     {
