@@ -5,6 +5,7 @@ import swaggerAutogen from "swagger-autogen";
 import swaggerUi from "swagger-ui-express";
 import { pathToFileURL } from "url";
 
+import config from "@/config";
 import logger from "@/logger";
 
 const doc = {
@@ -13,7 +14,12 @@ const doc = {
     title: "REST API",
     description: "",
   },
-  host: "localhost:3000",
+  servers: [
+    {
+      url: `http://localhost:${config.http.port}`,
+      description: "로컬 서버"
+    },
+  ],
   tags: [
     {
       name: "Stores",
