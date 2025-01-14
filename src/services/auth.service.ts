@@ -20,6 +20,7 @@ export const verifyEmail = async (email: string, code: string) => {
   else return false;
 };
 
+
 export const saveUser = async (auth: RegistRequest) => {
   const { name, password, contact, role, email } = auth;
   const result = await db
