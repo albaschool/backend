@@ -46,13 +46,10 @@ export const updateSchedule = async (scheduleId: string, payload: CreateSchedule
     .executeTakeFirst();
 
   return result;
-}
+};
 
 export const deleteSchedule = async (scheduleId: string) => {
-  const result = await db
-    .deleteFrom("schedule")
-    .where("id", "=", scheduleId)
-    .executeTakeFirst();
+  const result = await db.deleteFrom("schedule").where("id", "=", scheduleId).executeTakeFirst();
 
   return result;
 };
@@ -77,14 +74,10 @@ export const isStoreOwner = async (userId: string, storeId: string) => {
     .executeTakeFirst();
 
   return result !== undefined;
-}
+};
 
 export const getScheduleById = async (scheduleId: string) => {
-  const schedule = await db
-    .selectFrom("schedule")
-    .select(["storeId"])
-    .where("id", "=", scheduleId)
-    .executeTakeFirst();
+  const schedule = await db.selectFrom("schedule").select(["storeId"]).where("id", "=", scheduleId).executeTakeFirst();
 
   return schedule;
-}
+};
