@@ -132,3 +132,4 @@ dist
 # custom
 .vscode
 coverage
+pnpm-lock.yaml
