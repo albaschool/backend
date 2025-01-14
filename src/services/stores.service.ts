@@ -38,13 +38,14 @@ export const getStoreMembers = async (storeId: string) => {
 
 export const createStore = async (payload: CreateStorePayload) => {
   const { ownerId, title, location, contact, password, openTime, closeTime } = payload;
+  const storeId = nanoid(8);
 
-  const store = await db
+  const result = await db
     .insertInto("store")
-    .values({ id: nanoid(8), ownerId, title, location, contact, password, openTime, closeTime })
+    .values({ id: storeId, ownerId, title, location, contact, password, openTime, closeTime })
     .executeTakeFirst();
 
-  return store;
+  return { result, storeId };
 };
 
 export const addStoreMember = async (storeId: string, userId: string) => {

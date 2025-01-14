@@ -17,13 +17,18 @@ export const getStores = async (_: Request, res: Response) => {
 
 /** POST /stores */
 export const createStore = async (req: Request, res: Response) => {
-  const store = await services.createStore({
+  const { result, storeId } = await services.createStore({
     ownerId: req.auth!.id,
     ...req.body,
   });
 
-  if ((store.numInsertedOrUpdatedRows ?? 0) === 0) {
+  if ((result.numInsertedOrUpdatedRows ?? 0) === 0) {
     throw new Error("Failed to add store");
+  }
+
+  const memberResult = await services.addStoreMember(storeId, req.auth!.id);
+  if (memberResult.numInsertedOrUpdatedRows === BigInt(0)) {
+    throw new Error("Failed to add store member");
   }
 
   res.status(201).json({ message: "가게가 생성되었습니다." });
