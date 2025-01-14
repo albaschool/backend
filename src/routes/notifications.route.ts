@@ -1,6 +1,6 @@
 import express from "express";
 
-import { initializeSse } from "@/controllers/notifications.controller";
+import { initializeSse, readNotifications } from "@/controllers/notifications.controller";
 import authMiddleware from "@/middlewares/auth.middleware";
 
 const router = express.Router();
@@ -33,10 +33,16 @@ router.put(
     #swagger.tags = ["Notifications"]
     #swagger.description = "알림을 읽음 처리합니다."
     #swagger.security = [{ bearerAuth: [] }]
-    #swagger.responses[204] = {
-      description: "No Content"
+    #swagger.responses[200] = {
+      description: "OK",
+      content: {
+        "application/json": {
+          example: { success: true }
+        }
+      }
     }
   */
+  readNotifications,
 );
 
 export default router;
