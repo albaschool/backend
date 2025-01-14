@@ -1,14 +1,16 @@
 import { Request, Response } from "express";
+import { nanoid } from "nanoid";
 
 import * as services from "@/services/notifications.service";
+import { notificationsSessionManager as sessionManager } from "@/utils/session-manager";
 
-export const getMyNotifications = async (req: Request, res: Response) => {
-  const notifications = await services.getNotificationByUserId(req.auth!.id);
+export const initializeSse = async (req: Request, res: Response) => {
+  const session = await sessionManager.createSession(req.auth!.id, req, res, {
+    userId: req.auth!.id,
+    storeId: "",
+  });
 
-  if (notifications.length === 0) {
-    res.status(404).json([]);
-    return;
-  }
+  const notifications = await services.getNotificationsByUserId(req.auth!.id, 10);
 
-  res.json(notifications);
+  session.push(notifications, "data", nanoid(12));
 };

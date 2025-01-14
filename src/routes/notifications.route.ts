@@ -1,6 +1,6 @@
 import express from "express";
 
-import { getMyNotifications } from "@/controllers/notifications.controller";
+import { initializeSse } from "@/controllers/notifications.controller";
 import authMiddleware from "@/middlewares/auth.middleware";
 
 const router = express.Router();
@@ -11,28 +11,32 @@ router.get(
   "",
   /*
     #swagger.tags = ["Notifications"]
-    #swagger.description = "내 알림을 조회합니다."
+    #swagger.description = "Server-Sent Events를 통해 실시간 알림을 받습니다.<br>연결 후 최근 10개의 알림을 한 메시지에 전송합니다."
     #swagger.security = [{ bearerAuth: [] }]
     #swagger.responses[200] = {
       description: "OK",
       content: {
-        "application/json": {
-          examples: {
-            example: { $ref: "#/components/examples/notificationsByUserExample" }
+        "text/event-stream": {
+          schema: {
+            type: "string"
           }
         }
       }
     }
-    #swagger.responses[404] = {
-      description: "알림이 존재하지 않을 때",
-      content: {
-        "application/json": {
-          example: []
-        }
-      }
+  */
+  initializeSse,
+);
+
+router.put(
+  "/read",
+  /*
+    #swagger.tags = ["Notifications"]
+    #swagger.description = "알림을 읽음 처리합니다."
+    #swagger.security = [{ bearerAuth: [] }]
+    #swagger.responses[204] = {
+      description: "No Content"
     }
   */
-  getMyNotifications,
 );
 
 export default router;
