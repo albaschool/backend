@@ -206,7 +206,7 @@ router.put(
   "/:storeId",
   /*
     #swagger.tags = ["Stores"]
-    #swagger.description = "특정 가게를 수정합니다."
+    #swagger.description = "특정 가게를 수정합니다.<br>수정이 필요한 필드만 넣어주세요."
     #swagger.security = [{ bearerAuth: [] }]
     #swagger.parameters['$ref'] = ['#/components/parameters/storeId']
     #swagger.requestBody = {
