@@ -82,7 +82,11 @@ const doc = {
       },
       password : {
         password : "0000"
-      }
+      },
+      createChatRoom :{
+        storeId : "00s012",
+        title : "솥뚜껑 삼겹"
+      },
     },
     examples: {
       storesExample: {
@@ -126,6 +130,42 @@ const doc = {
           },
         ],
       },
+      chatRoomExample: {
+        value: [
+          {
+            id: "TCYP4hBtP2wpG2YX",
+            title: "GS25 서울역점",
+            lastMessage : "고생했다!"
+          },
+        ],
+      },
+      chatRoomDetailExample : {
+        members :[{
+           userId : "",
+           name : "김사장"
+          }
+        ],
+        messages : [
+          {
+            content: "hi",
+            name: "김사장",
+            id: "O8aZpbWUwYEw",
+            createdAt: "2025-01-14 00:44:31"
+          },
+          {
+            content: "hi",
+            name: "김사장",
+            id: "O8aZpbWUwYEw",
+            createdAt: "2025-01-14 00:44:46"
+          },
+          {
+            content: "hi2",
+            name: "김사장",
+            id: "O8aZpbWUwYEw",
+            createdAt: "2025-01-14 00:44:53"
+          }
+        ]
+      }
     },
     parameters: {
       storeId: {

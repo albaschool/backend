@@ -24,10 +24,12 @@ export const verifyEmail = async (email : string, code : string) => {
 
 export const saveUser = async (auth : RegistRequest) =>{
     const {name, password, contact, role, email} = auth;
+    console.log(name);
     const result = await db
                             .insertInto("user")
                             .values({id : nanoid(12), password, email, contact, role, name})
                             .executeTakeFirst();
+    console.log(result);
     return result;   
 }
 

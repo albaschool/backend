@@ -56,9 +56,9 @@ const emailVerify = async (req : Request, res: Response) =>{
 const regist = async ( req: Request, res : Response)=>{
     try {
         const body = req.body;
-        console.log(body);
+        
         const result = await saveUser(body);
-        if ((result.numInsertedOrUpdatedRows ?? 0) !== 0) {
+        if (result.numInsertedOrUpdatedRows === BigInt(0)) {
             throw new Error("Failed to add store");
           }
         else res.status(201).json({
@@ -79,7 +79,7 @@ const login = async (req : Request, res : Response) => {
             const token = jwt.sign(
                 {
                   id: user.id,
-                  email: user.name,
+                  name: user.name,
                   role : user.role
                 },
                 SECRETKEY,
