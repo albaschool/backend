@@ -44,6 +44,8 @@ const doc = {
         $location: "서울 용산구 한강대로 401",
         $contact: "0212345678",
         $password: "password",
+        $openTime: "09:00:00",
+        $closeTime: "21:00:00",
       },
       addMember: {
         $memberId: "",
