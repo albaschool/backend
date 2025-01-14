@@ -93,6 +93,8 @@ const doc = {
             id: "4uDfVBHq",
             title: "GS25 서울역점",
             location: "서울 용산구 한강대로 401",
+            $openTime: "09:00:00",
+            $closeTime: "21:00:00",
           },
         ],
       },
@@ -101,6 +103,8 @@ const doc = {
           title: "GS25 서울역점",
           location: "서울 용산구 한강대로 401",
           contact: "0212345678",
+          $openTime: "09:00:00",
+          $closeTime: "21:00:00",
         },
       },
       schedulesByUserExample: {
