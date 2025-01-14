@@ -17,13 +17,18 @@ export const getStores = async (_: Request, res: Response) => {
 
 /** POST /stores */
 export const createStore = async (req: Request, res: Response) => {
-  const store = await services.createStore({
+  const { result, storeId } = await services.createStore({
     ownerId: req.auth!.id,
     ...req.body,
   });
 
-  if ((store.numInsertedOrUpdatedRows ?? 0) === 0) {
+  if ((result.numInsertedOrUpdatedRows ?? 0) === 0) {
     throw new Error("Failed to add store");
+  }
+
+  const memberResult = await services.addStoreMember(storeId, req.auth!.id);
+  if (memberResult.numInsertedOrUpdatedRows === BigInt(0)) {
+    throw new Error("Failed to add store member");
   }
 
   res.status(201).json({ message: "가게가 생성되었습니다." });
@@ -50,6 +55,29 @@ export const getStoreById = async (req: Request, res: Response) => {
   }
 
   res.status(200).json(store);
+};
+
+/** PUT /stores/:storeId */
+export const updateStoreById = async (req: Request, res: Response) => {
+  const store = await services.getStoreById(req.params.storeId);
+
+  if (!store) {
+    throw new HttpException(404, "존재하지 않는 가게입니다.");
+  }
+
+  const isOwner = await services.isOwner(req.auth!.id, req.params.storeId);
+
+  if (!isOwner) {
+    throw new HttpException(403, "가게 소유자만 수정할 수 있습니다.");
+  }
+
+  const result = await services.updateStoreById(req.params.storeId, req.body);
+
+  if (result.numUpdatedRows === BigInt(0)) {
+    throw new Error("Failed to update store");
+  }
+
+  res.status(200).json({ message: "가게 정보가 수정되었습니다." });
 };
 
 /** GET /stores/:storeId/members */

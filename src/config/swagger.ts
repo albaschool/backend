@@ -17,7 +17,7 @@ const doc = {
   servers: [
     {
       url: `http://localhost:${config.http.port}`,
-      description: "로컬 서버"
+      description: "로컬 서버",
     },
   ],
   tags: [
@@ -44,6 +44,16 @@ const doc = {
         $location: "서울 용산구 한강대로 401",
         $contact: "0212345678",
         $password: "password",
+        $openTime: "09:00:00",
+        $closeTime: "21:00:00",
+      },
+      updateStore: {
+        $title: "GS25 서울역점",
+        $location: "서울 용산구 한강대로 401",
+        $contact: "0212345678",
+        $password: "password",
+        $openTime: "07:00:00",
+        $closeTime: "19:00:00",
       },
       addMember: {
         $memberId: "",
@@ -62,27 +72,28 @@ const doc = {
         startTime: "07:00:00",
         endTime: "12:00:00",
       },
-      emailSend : {
-        email : "example@mail.com"
+      emailSend: {
+        email: "example@mail.com",
       },
-      emailVerify : {
-        email : "example@mail.com",
-        code : "00000"
+      emailVerify: {
+        email: "example@mail.com",
+        code: "00000",
       },
-      saveUser : {
-        name : "김철수",
-        email : "example@mail.com",
-        role : "staff",
-        password : "0000",
-        contact : "01012341234"
+      saveUser: {
+        name: "김철수",
+        email: "example@mail.com",
+        role: "staff",
+        password: "0000",
+        contact: "01012341234",
       },
-      login : {
-        email : "example@mail.com",
-        password : "example@mail.com"
+      login: {
+        email: "example@mail.com",
+        password: "example@mail.com",
       },
-      password : {
-        password : "0000"
+      password: {
+        password: "0000",
       },
+
       createChatRoom :{
         storeId : "00s012",
         title : "솥뚜껑 삼겹"
@@ -95,6 +106,8 @@ const doc = {
             id: "4uDfVBHq",
             title: "GS25 서울역점",
             location: "서울 용산구 한강대로 401",
+            $openTime: "09:00:00",
+            $closeTime: "21:00:00",
           },
         ],
       },
@@ -103,6 +116,8 @@ const doc = {
           title: "GS25 서울역점",
           location: "서울 용산구 한강대로 401",
           contact: "0212345678",
+          $openTime: "09:00:00",
+          $closeTime: "21:00:00",
         },
       },
       schedulesByUserExample: {
@@ -195,7 +210,7 @@ const doc = {
           type: "string",
         },
       },
-    }
+    },
   },
 };
 
