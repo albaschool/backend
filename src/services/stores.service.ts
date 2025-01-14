@@ -2,12 +2,12 @@ import { sql } from "kysely";
 import { nanoid } from "nanoid";
 
 import { db } from "@/db";
-import { CreateStorePayload } from "@/interfaces/stores.interface";
+import { CreateStorePayload, UpdateStorePayload } from "@/interfaces/stores.interface";
 
 export const getStores = async (userId?: string) => {
   const stores = await db
     .selectFrom("store")
-    .select(["id", "title", "location"])
+    .select(["id", "title", "location", "openTime", "closeTime"])
     .$if(!!userId, (q) => q.where("ownerId", "=", userId!))
     .execute();
 
@@ -37,11 +37,11 @@ export const getStoreMembers = async (storeId: string) => {
 };
 
 export const createStore = async (payload: CreateStorePayload) => {
-  const { ownerId, title, location, contact, password } = payload;
+  const { ownerId, title, location, contact, password, openTime, closeTime } = payload;
 
   const store = await db
     .insertInto("store")
-    .values({ id: nanoid(8), ownerId, title, location, contact, password })
+    .values({ id: nanoid(8), ownerId, title, location, contact, password, openTime, closeTime })
     .executeTakeFirst();
 
   return store;
@@ -63,6 +63,12 @@ export const deleteStoreMember = async (storeId: string, memberId: string) => {
   return result;
 };
 
+export const updateStoreById = async (storeId: string, payload: Partial<UpdateStorePayload>) => {
+  const result = await db.updateTable("store").set(payload).where("id", "=", storeId).executeTakeFirst();
+
+  return result;
+};
+
 export const isUserExists = async (userId: string) => {
   const result = await db
     .selectFrom("user")
@@ -71,7 +77,7 @@ export const isUserExists = async (userId: string) => {
     .executeTakeFirst();
 
   return result !== undefined;
-}
+};
 
 export const isOwner = async (userId: string, storeId: string) => {
   const result = await db
