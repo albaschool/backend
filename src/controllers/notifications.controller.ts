@@ -12,5 +12,5 @@ export const initializeSse = async (req: Request, res: Response) => {
 
   const notifications = await services.getNotificationsByUserId(req.auth!.id, 10);
 
-  session.push(notifications, "data", nanoid(12));
+  session.push(notifications, "initialize", nanoid(12));
 };
