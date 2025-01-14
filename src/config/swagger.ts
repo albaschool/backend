@@ -144,6 +144,27 @@ const doc = {
           },
         ],
       },
+      notificationsInitialize: {
+        description: "최초 연결 시 받는 메시지입니다. 최근 10개의 알림을 최신순으로 받습니다.",
+        value: [
+          {
+            id: "dQk9ZkCMze6y",
+            content: "박사장님이 게시글을 추가했습니다.",
+            title: "솥뚜껑 삼겹살",
+            target: "/pages/2",
+            isChecked: false,
+            createdAt: "2025-01-14T04:20:50.000Z",
+          },
+          {
+            id: "krzJssbmzKXE",
+            content: "김사장님이 게시글을 수정했습니다.",
+            title: "솥뚜껑 삼겹살",
+            target: "/pages/1",
+            isChecked: true,
+            createdAt: "2025-01-13T08:06:01.000Z",
+          },
+        ],
+      },
     },
     parameters: {
       storeId: {
