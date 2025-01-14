@@ -4,10 +4,10 @@ import { checkUserPassword, email, emailVerify, fixPassword, login, regist } fro
 import authMiddleware from "@/middlewares/auth.middleware";
 import validate from "@/middlewares/validate.middleware";
 import { emailSendSchema, passwordSchema, saveUserSchema } from "@/schemas/auth.schema";
-const router = express.Router()
+const router = express.Router();
 
 router.post(
-    "/email",
+  "/email",
   // #swagger.tags = ["Auth"]
   // #swagger.description = "이메일 인증번호를 전송합니다."
   // #swagger.security = [{ bearerAuth: [] }]
@@ -41,13 +41,12 @@ router.post(
       }
     }
   */
-   validate(emailSendSchema),
-    email,
-    
+  validate(emailSendSchema),
+  email,
 );
 router.post(
-    "/email/verify",
-    // #swagger.tags = ["Auth"]
+  "/email/verify",
+  // #swagger.tags = ["Auth"]
   // #swagger.description = "이메일 인증번호를 전송합니다."
   // #swagger.security = [{ bearerAuth: [] }]
   /*
@@ -88,12 +87,12 @@ router.post(
       }
     }
   */
-  
-  emailVerify
-)
+
+  emailVerify,
+);
 router.post(
-    "/register",
-    // #swagger.tags = ["Auth"]
+  "/register",
+  // #swagger.tags = ["Auth"]
   // #swagger.description = "회원가입."
   // #swagger.security = [{ bearerAuth: [] }]
   /*
@@ -126,13 +125,13 @@ router.post(
       }
     }
   */
- validate(saveUserSchema),
- regist
-)
+  validate(saveUserSchema),
+  regist,
+);
 
 router.post(
-    "/login",
-    // #swagger.tags = ["Auth"]
+  "/login",
+  // #swagger.tags = ["Auth"]
   // #swagger.description = "로그인을 진행합니다."
   // #swagger.security = [{ bearerAuth: [] }]
   /*
@@ -174,12 +173,12 @@ router.post(
       }
     }
   */
-    login
-)
+  login,
+);
 
 router.put(
-    "/fixPassword",
-    // #swagger.tags = ["Auth"]
+  "/fixPassword",
+  // #swagger.tags = ["Auth"]
   // #swagger.description = "비밀번호를 변경합니다."
   // #swagger.security = [{ bearerAuth: [] }]
   /*
@@ -220,16 +219,16 @@ router.put(
       }
     }
   */
-    authMiddleware,
-    fixPassword,
-)
+  authMiddleware,
+  fixPassword,
+);
 
 router.put(
   "/fixPassword",
   // #swagger.tags = ["Auth"]
-// #swagger.description = "사용자의 비밀번호를 확인합니다."
-// #swagger.security = [{ bearerAuth: [] }]
-/*
+  // #swagger.description = "사용자의 비밀번호를 확인합니다."
+  // #swagger.security = [{ bearerAuth: [] }]
+  /*
   #swagger.requestBody = {
     required: true,
     content: {
@@ -241,7 +240,7 @@ router.put(
     }
   }
 */
-/*
+  /*
   #swagger.responses[200] = {
     description: "Ok",
     content: {
@@ -271,5 +270,5 @@ router.put(
   validate(passwordSchema),
   authMiddleware,
   checkUserPassword,
-)
+);
 export default router;

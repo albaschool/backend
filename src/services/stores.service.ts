@@ -64,14 +64,10 @@ export const deleteStoreMember = async (storeId: string, memberId: string) => {
 };
 
 export const updateStoreById = async (storeId: string, payload: Partial<UpdateStorePayload>) => {
-  const result = await db
-    .updateTable("store")
-    .set(payload)
-    .where("id", "=", storeId)
-    .executeTakeFirst();
+  const result = await db.updateTable("store").set(payload).where("id", "=", storeId).executeTakeFirst();
 
   return result;
-}
+};
 
 export const isUserExists = async (userId: string) => {
   const result = await db

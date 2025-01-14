@@ -73,7 +73,7 @@ export const updateStoreById = async (req: Request, res: Response) => {
   }
 
   res.status(200).json({ message: "가게 정보가 수정되었습니다." });
-}
+};
 
 /** GET /stores/:storeId/members */
 export const getStoreMembers = async (req: Request, res: Response) => {
