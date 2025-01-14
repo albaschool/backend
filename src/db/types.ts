@@ -33,6 +33,8 @@ export interface StoreTable {
   location: string;
   contact: string;
   password: string;
+  openTime: string;
+  closeTime: string;
   createdAt: ColumnType<Date, string | undefined, never>;
 }
 
