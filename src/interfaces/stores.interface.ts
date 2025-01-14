@@ -5,3 +5,12 @@ export interface CreateStorePayload {
   contact: string;
   password: string;
 }
+
+export interface UpdateStorePayload {
+  title: string;
+  location: string;
+  contact: string;
+  password: string;
+  openTime: string;
+  closeTime: string;
+}

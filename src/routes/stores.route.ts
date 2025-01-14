@@ -8,6 +8,7 @@ import {
   getStoreById,
   getStoreMembers,
   getStores,
+  updateStoreById,
 } from "@/controllers/stores.controller";
 import authMiddleware from "@/middlewares/auth.middleware";
 import validate from "@/middlewares/validate.middleware";
@@ -52,6 +53,43 @@ router.get(
     }
   */
   getStores,
+);
+
+router.post(
+  "",
+  /*
+    #swagger.tags = ["Stores"]
+    #swagger.description = "가게를 생성합니다."
+    #swagger.security = [{ bearerAuth: [] }]
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            $ref: "#/components/schemas/createStore"
+          }  
+        }
+      }
+    }
+    #swagger.responses[201] = {
+      description: "Created",
+      content: {
+        "application/json": {
+          example: { message: "가게가 생성되었습니다." }
+        }
+      }
+    }
+    #swagger.responses[500] = {
+      description: "Internal Server Error",
+      content: {
+        "application/json": {
+          example: { message: "Internal server error" }
+        }
+      }
+    }
+  */
+  validate(createStoreSchema),
+  createStore,
 );
 
 router.get(
@@ -164,27 +202,44 @@ router.get(
   getStoreMembers,
 );
 
-router.post(
-  "",
+router.put(
+  "/:storeId",
   /*
     #swagger.tags = ["Stores"]
-    #swagger.description = "가게를 생성합니다."
+    #swagger.description = "특정 가게를 수정합니다."
     #swagger.security = [{ bearerAuth: [] }]
+    #swagger.parameters['$ref'] = ['#/components/parameters/storeId']
     #swagger.requestBody = {
       required: true,
       content: {
         "application/json": {
           schema: {
-            $ref: "#/components/schemas/createStore"
+            $ref: "#/components/schemas/updateStore"
           }  
         }
       }
     }
-    #swagger.responses[201] = {
-      description: "Created",
+    #swagger.responses[200] = {
+      description: "OK",
       content: {
         "application/json": {
-          example: { message: "가게가 생성되었습니다." }
+          example: { message: "가게 정보가 수정되었습니다." }
+        }
+      }
+    }
+    #swagger.responses[403] = {
+      description: "가게 소유자가 아닐 때",
+      content: {
+        "application/json": {
+          example: { message: "가게 소유자만 수정할 수 있습니다." }
+        }
+      }
+    }
+    #swagger.responses[404] = {
+      description: "존재하지 않는 가게일 때",
+      content: {
+        "application/json": {
+          example: { message: "존재하지 않는 가게입니다." }
         }
       }
     }
@@ -197,8 +252,7 @@ router.post(
       }
     }
   */
-  validate(createStoreSchema),
-  createStore,
+  updateStoreById,
 );
 
 router.post(
