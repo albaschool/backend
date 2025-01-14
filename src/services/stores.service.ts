@@ -2,7 +2,7 @@ import { sql } from "kysely";
 import { nanoid } from "nanoid";
 
 import { db } from "@/db";
-import { CreateStorePayload } from "@/interfaces/stores.interface";
+import { CreateStorePayload, UpdateStorePayload } from "@/interfaces/stores.interface";
 
 export const getStores = async (userId?: string) => {
   const stores = await db
@@ -62,6 +62,16 @@ export const deleteStoreMember = async (storeId: string, memberId: string) => {
 
   return result;
 };
+
+export const updateStoreById = async (storeId: string, payload: Partial<UpdateStorePayload>) => {
+  const result = await db
+    .updateTable("store")
+    .set(payload)
+    .where("id", "=", storeId)
+    .executeTakeFirst();
+
+  return result;
+}
 
 export const isUserExists = async (userId: string) => {
   const result = await db
