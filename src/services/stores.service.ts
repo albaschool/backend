@@ -7,7 +7,7 @@ import { CreateStorePayload } from "@/interfaces/stores.interface";
 export const getStores = async (userId?: string) => {
   const stores = await db
     .selectFrom("store")
-    .select(["id", "title", "location"])
+    .select(["id", "title", "location", "openTime", "closeTime"])
     .$if(!!userId, (q) => q.where("ownerId", "=", userId!))
     .execute();
 
@@ -37,11 +37,11 @@ export const getStoreMembers = async (storeId: string) => {
 };
 
 export const createStore = async (payload: CreateStorePayload) => {
-  const { ownerId, title, location, contact, password } = payload;
+  const { ownerId, title, location, contact, password, openTime, closeTime } = payload;
 
   const store = await db
     .insertInto("store")
-    .values({ id: nanoid(8), ownerId, title, location, contact, password })
+    .values({ id: nanoid(8), ownerId, title, location, contact, password, openTime, closeTime })
     .executeTakeFirst();
 
   return store;
@@ -71,7 +71,7 @@ export const isUserExists = async (userId: string) => {
     .executeTakeFirst();
 
   return result !== undefined;
-}
+};
 
 export const isOwner = async (userId: string, storeId: string) => {
   const result = await db
