@@ -11,14 +11,14 @@ router.get(
   "",
   /*
     #swagger.tags = ["Notifications"]
-    #swagger.description = "Server-Sent Events를 통해 실시간 알림을 받습니다.<br>연결 후 최근 10개의 알림을 한 메시지에 전송합니다."
+    #swagger.description = "Server-Sent Events를 통해 실시간 알림을 받습니다."
     #swagger.security = [{ bearerAuth: [] }]
     #swagger.responses[200] = {
       description: "OK",
       content: {
         "text/event-stream": {
-          schema: {
-            type: "string"
+          examples: {
+            initialize: { $ref: "#/components/examples/notificationsInitialize" }
           }
         }
       }
