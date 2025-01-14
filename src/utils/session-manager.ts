@@ -1,5 +1,6 @@
 import { createSession, Session } from "better-sse";
 import { Request, Response } from "express";
+import { nanoid } from "nanoid";
 
 interface SessionMetadata {
   userId: string;
@@ -14,7 +15,6 @@ interface SessionData {
 interface Payload {
   data: unknown;
   eventName?: string;
-  eventId?: string;
 }
 
 export class SessionManager {
@@ -36,8 +36,8 @@ export class SessionManager {
   }
 
   push(session: Session, payload: Payload) {
-    const { data, eventName, eventId } = payload;
-    session.push(data, eventName, eventId);
+    const { data, eventName } = payload;
+    session.push(data, eventName, nanoid(12));
   }
 
   pushToUser(userId: string, payload: Payload) {
