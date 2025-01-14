@@ -56,3 +56,5 @@ export class SessionManager {
     return this.sessions.size;
   }
 }
+
+export const notificationsSessionManager = new SessionManager();
