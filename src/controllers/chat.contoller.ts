@@ -36,10 +36,14 @@ export const getChatRoomDetail = async (req: Request, res: Response) => {
     const  chatRoomDetail = {members : {}, messages : {}} ;
     const members = await services.getChatRoomMemebers(id);
     const messages = await services.getChatRoomMessages(id);
-    console.log(members);
+    if(messages.length > 0){
+      const result = await services.saveLastMessage(req.auth!.id, id, messages[messages.length-1].id);
+      if(result === BigInt(0)){
+        throw new HttpException(500, "Internal server error.");
+      }
+    }
     chatRoomDetail.members = members;
     chatRoomDetail.messages = messages;
-
     res.status(200).json({  
         chatRoomDetail
     });

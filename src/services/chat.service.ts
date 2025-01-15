@@ -62,7 +62,7 @@ export const getChatRoomMessages = async (chatRoomId: string) => {
   const messages = await db
     .selectFrom("message")
     .innerJoin("user", "user.id", "message.senderId")
-    .select(["content", "user.name", "user.id", "createdAt"])
+    .select(["content", "user.name", "senderId", "createdAt", 'message.id'])
     .where("roomId", "=", chatRoomId)
     .orderBy("createdAt asc")
     .execute();
