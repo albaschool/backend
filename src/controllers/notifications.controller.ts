@@ -5,13 +5,8 @@ import * as services from "@/services/notifications.service";
 import { notificationsSessionManager as sessionManager } from "@/utils/session-manager";
 
 export const initializeSse = async (req: Request, res: Response) => {
-  const session = await sessionManager.createSession(req.auth!.id, req, res, {
-    userId: req.auth!.id,
-    storeId: "", // TODO: storeId를 어떻게 저장할지 결정 저장 할 필요가 있나?
-  });
-
+  const session = await sessionManager.createSession(req.auth!.id, req, res);
   const notifications = await services.getNotificationsByUserId(req.auth!.id, 10);
-
   session.push(notifications, "initialize", nanoid(12));
 };
 
