@@ -122,6 +122,7 @@ export type VerificationUpdate = Updateable<VerificationTable>;
 export interface NotificationTable {
   id: string;
   userId: string;
+  title: string;
   content: string;
   target: string;
   isChecked: boolean;

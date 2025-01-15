@@ -42,7 +42,6 @@ const emailVerify = async (req: Request, res: Response) => {
         message: "인증이 완료 됐습니다.",
       });
     }
-
   } catch {
     res.status(500).json({ message: "Internal server error" });
   }
@@ -62,7 +61,6 @@ const regist = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-
 
 const login = async (req: Request, res: Response) => {
   try {

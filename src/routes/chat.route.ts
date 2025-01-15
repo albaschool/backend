@@ -2,16 +2,15 @@ import express from "express";
 
 import { chatRoomSave, getChatRoomDetail, getChatRooms, setLastMessage } from "@/controllers/chat.contoller";
 import authMiddleware from "@/middlewares/auth.middleware";
-const router = express.Router()
-
+const router = express.Router();
 
 // 채팅방 생성
-router. post(
-    "/",
-    // #swagger.tags = ["Chat"]
-    // #swagger.description = "채팅방 생성."
-    // #swagger.security = [{ bearerAuth: [] }]
-    /*
+router.post(
+  "/",
+  // #swagger.tags = ["Chat"]
+  // #swagger.description = "채팅방 생성."
+  // #swagger.security = [{ bearerAuth: [] }]
+  /*
         #swagger.requestBody = {
         required: true,
         content: {
@@ -23,7 +22,7 @@ router. post(
         }
         }
     */
-    /*
+  /*
         #swagger.responses[201] = {
         description: "Created",
         content: {
@@ -82,13 +81,13 @@ router.put(
   */
   authMiddleware,
   setLastMessage
-)
+);
 
 
 //채팅방 목록 조회
 router.get(
-    "/",
-    /*
+  "/",
+  /*
     #swagger.tags = ["Chat"]
     #swagger.description = "소속돼 있는 채팅방을 조회 합니다."
     #swagger.security = [{ bearerAuth: [] }]
@@ -120,14 +119,13 @@ router.get(
       }
     }
   */
-    authMiddleware,
-    getChatRooms
-)
+  authMiddleware,
+  getChatRooms,
+);
 //채팅방 상세 조회
 router.get(
-    
-    "/:id",
-    /*
+  "/:id",
+  /*
     #swagger.tags = ["Chat"]
     #swagger.description = "채팅방의 상세 내역을 가져옵니다."
     #swagger.security = [{ bearerAuth: [] }]
@@ -158,8 +156,8 @@ router.get(
       }
     }
     */
-    authMiddleware,
-    getChatRoomDetail
-)
+  authMiddleware,
+  getChatRoomDetail,
+);
 
 export default router;

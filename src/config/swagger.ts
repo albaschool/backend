@@ -27,7 +27,11 @@ const doc = {
     },
     {
       name: "Schedules",
-      description: " 일정 엔드포인트",
+      description: "일정 엔드포인트",
+    },
+    {
+      name: "Notifications",
+      description: "알림 엔드포인트",
     },
   ],
   securityDefinitions: {
@@ -94,9 +98,9 @@ const doc = {
         password: "0000",
       },
 
-      createChatRoom :{
-        storeId : "00s012",
-        title : "솥뚜껑 삼겹"
+      createChatRoom: {
+        storeId: "00s012",
+        title: "솥뚜껑 삼겹",
       },
       saveLastMessage :{
         chatRoomId : "",
@@ -149,42 +153,75 @@ const doc = {
           },
         ],
       },
+      notificationsInitialize: {
+        description: "최초 연결 시 받는 메시지입니다. 최근 10개의 알림을 최신순으로 받습니다.",
+        value: [
+          {
+            id: "dQk9ZkCMze6y",
+            content: "박사장님이 게시글을 추가했습니다.",
+            title: "솥뚜껑 삼겹살",
+            target: "/pages/2",
+            isChecked: false,
+            createdAt: "2025-01-14T04:20:50.000Z",
+          },
+          {
+            id: "krzJssbmzKXE",
+            content: "김사장님이 게시글을 수정했습니다.",
+            title: "솥뚜껑 삼겹살",
+            target: "/pages/1",
+            isChecked: true,
+            createdAt: "2025-01-13T08:06:01.000Z",
+          },
+        ],
+      },
+      notification: {
+        description: "알림이 생성될 때 받는 메시지입니다.",
+        value: {
+          id: "17nNjxKohds0",
+          content: "박사장님이 게시글을 추가했습니다.",
+          title: "솥뚜껑 삼겹살",
+          target: "/pages/3",
+          isChecked: false,
+          createdAt: "2025-01-15T02:10:30.000Z",
+        },
+      },
       chatRoomExample: {
         value: [
           {
             id: "TCYP4hBtP2wpG2YX",
             title: "GS25 서울역점",
-            lastMessage : "고생했다!"
+            lastMessage: "고생했다!",
           },
         ],
       },
-      chatRoomDetailExample : {
-        members :[{
-           userId : "",
-           name : "김사장"
-          }
+      chatRoomDetailExample: {
+        members: [
+          {
+            userId: "",
+            name: "김사장",
+          },
         ],
-        messages : [
+        messages: [
           {
             content: "hi",
             name: "김사장",
             id: "O8aZpbWUwYEw",
-            createdAt: "2025-01-14 00:44:31"
+            createdAt: "2025-01-14 00:44:31",
           },
           {
             content: "hi",
             name: "김사장",
             id: "O8aZpbWUwYEw",
-            createdAt: "2025-01-14 00:44:46"
+            createdAt: "2025-01-14 00:44:46",
           },
           {
             content: "hi2",
             name: "김사장",
             id: "O8aZpbWUwYEw",
-            createdAt: "2025-01-14 00:44:53"
-          }
-        ]
-      }
+            createdAt: "2025-01-14 00:44:53",
+          },
+        ],
+      },
     },
     parameters: {
       storeId: {
