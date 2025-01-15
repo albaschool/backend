@@ -40,9 +40,9 @@ router.post(
         }
         }
     */
-    authMiddleware,
-    chatRoomSave
-)
+  authMiddleware,
+  chatRoomSave,
+);
 
 router.put(
   "/message/last",
@@ -80,9 +80,8 @@ router.put(
       }
   */
   authMiddleware,
-  setLastMessage
+  setLastMessage,
 );
-
 
 //채팅방 목록 조회
 router.get(

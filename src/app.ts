@@ -2,7 +2,7 @@ import "express-async-errors";
 
 import cors from "cors";
 import express from "express";
-import http from 'http';
+import http from "http";
 
 import config from "@/config";
 import { setupSwagger } from "@/config/swagger";
@@ -46,8 +46,8 @@ app.use("/schedules", schedulesRoute);
 app.use("/notifications", notificationsRoute);
 
 app.use(errorMiddleware);
-app.set('port', config.http.port);
-server.listen(parseInt(config.http.port), config.http.host, ()=>{
+app.set("port", config.http.port);
+server.listen(parseInt(config.http.port), config.http.host, () => {
   logger.info(`Node environment: ${config.node.env}`);
   logger.info(`Server is running on http://${config.http.host}:${config.http.port}`);
   if (config.node.env === "development") {
