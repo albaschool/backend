@@ -27,6 +27,7 @@
     "@types/node": "^22.10.5",
     "@types/supertest": "^6.0.2",
     "@types/swagger-ui-express": "^4.1.7",
+    "@types/zongji": "^0.5.3",
     "eslint": "^9.17.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
@@ -41,6 +42,7 @@
   },
   "dependencies": {
     "@types/nodemailer": "^6.4.17",
+    "better-sse": "^0.14.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
@@ -58,6 +60,7 @@
     "swagger-autogen": "^2.23.7",
     "swagger-ui-express": "^5.0.1",
     "zod": "^3.24.1",
-    "zod-i18n-map": "^2.27.0"
+    "zod-i18n-map": "^2.27.0",
+    "zongji": "^0.5.1"
   }
 }
