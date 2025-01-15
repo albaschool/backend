@@ -8,6 +8,7 @@ import { setupSwagger } from "@/config/swagger";
 import { checkDbEstablished } from "@/db";
 import logger, { httpLogger } from "@/logger";
 import errorMiddleware from "@/middlewares/error.middleware";
+import chatRoute from "@/routes/chat.route";
 import notificationsRoute from "@/routes/notifications.route";
 import schedulesRoute from "@/routes/schedules.route";
 import storesRoute from "@/routes/stores.route";
@@ -32,6 +33,7 @@ if (config.node.env === "development") {
 
 checkDbEstablished();
 
+app.use("/chat", chatRoute);
 app.use("/auth", authRoute);
 app.use("/stores", storesRoute);
 app.use("/schedules", schedulesRoute);

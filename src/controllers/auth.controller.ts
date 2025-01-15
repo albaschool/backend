@@ -43,6 +43,7 @@ const emailVerify = async (req: Request, res: Response) => {
         message: "인증이 완료 됐습니다.",
       });
     }
+
   } catch {
     res.status(500).json({ message: "Internal server error" });
   }
@@ -64,6 +65,7 @@ const regist = async (req: Request, res: Response) => {
   }
 };
 
+
 const login = async (req: Request, res: Response) => {
   try {
     const body = req.body;
@@ -73,7 +75,7 @@ const login = async (req: Request, res: Response) => {
       const token = jwt.sign(
         {
           id: user.id,
-          email: user.name,
+          name: user.name,
           role: user.role,
         },
         SECRETKEY,
