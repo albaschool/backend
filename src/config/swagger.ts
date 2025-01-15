@@ -102,6 +102,10 @@ const doc = {
         storeId: "00s012",
         title: "솥뚜껑 삼겹",
       },
+      saveLastMessage :{
+        chatRoomId : "",
+        messageId : ""
+      },
     },
     examples: {
       storesExample: {

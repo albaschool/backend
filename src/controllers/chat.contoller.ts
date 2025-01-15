@@ -32,15 +32,31 @@ export const getChatRooms = async (req: Request, res: Response) => {
 //채팅방 상세조회
 
 export const getChatRoomDetail = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const chatRoomDetail = { members: {}, messages: {} };
-  const members = await services.getChatRoomMemebers(id);
-  const messages = await services.getChatRoomMessages(id);
-  console.log(members);
-  chatRoomDetail.members = members;
-  chatRoomDetail.messages = messages;
+    const {id} = req.params;
+    const  chatRoomDetail = {members : {}, messages : {}} ;
+    const members = await services.getChatRoomMemebers(id);
+    const messages = await services.getChatRoomMessages(id);
+    console.log(members);
+    chatRoomDetail.members = members;
+    chatRoomDetail.messages = messages;
 
-  res.status(200).json({
-    chatRoomDetail,
-  });
+    res.status(200).json({  
+        chatRoomDetail
+    });
 };
+
+export const setLastMessage = async (req: Request, res: Response) => {
+    const body = req.body;
+    const userId = req.auth!.id
+    const result = await services.saveLastMessage( userId, body.chatRoomId, body.messageId);
+    if(result === BigInt(0)) {
+        res.status(500).json({
+            message: "Internal Server Error."
+        })
+        return;
+    }
+    res.status(201).json({  
+        message : "채팅방 생성이 완료 됐습니다."
+    });
+};
+

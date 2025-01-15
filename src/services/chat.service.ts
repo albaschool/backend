@@ -1,3 +1,4 @@
+import { sql } from "kysely";
 import { nanoid } from "nanoid";
 
 import { db } from "@/db";
@@ -17,18 +18,17 @@ export const createChatRoom = async (roomInfo: CreateChatRoom) => {
   return result;
 };
 //메시지 저장 socket controller에서 사용
-export const saveMessage = async (content: string, senderId: string, roomId: string) => {
-  const result = await db
-    .insertInto("message")
-    .values({
-      id: nanoid(12),
-      roomId,
-      senderId,
-      content,
-    })
-    .executeTakeFirst();
-  return result;
-};
+export const saveMessage = async (content : string, senderId : string, roomId: string, messageId : string) => {
+    const result = await db.insertInto('message')
+            .values({ 
+                id : messageId,
+                roomId,
+                senderId,
+                content
+            }).executeTakeFirst();
+
+    return result;
+}
 
 //채팅방 조회
 export const getChatRooms = async (userId: string) => {
@@ -66,10 +66,42 @@ export const getChatRoomMessages = async (chatRoomId: string) => {
     .where("roomId", "=", chatRoomId)
     .orderBy("createdAt asc")
     .execute();
-  console.log(messages);
   return messages;
 };
 
+export const saveLastMessage = async (userId : string, roomId : string, messageId : string) =>{
+    const isHere = await db.selectFrom('lastReadMessage')
+                           .select( sql`1`.as('exists'))
+                           .where(({ eb, and }) => 
+                            and([eb("userId", "=", userId), 
+                                eb("roomId", "=", roomId)]))
+                            .executeTakeFirst();
+    
+    if (!isHere)  {
+        const result = await db.insertInto('lastReadMessage')
+                           .values({
+                            userId,
+                            roomId,
+                            messageId
+                           })
+                           .executeTakeFirst();
+        console.log(result);
+        return result.numInsertedOrUpdatedRows;
+    }
+    else {
+        const result = await db.updateTable('lastReadMessage')
+        .set({
+            messageId: messageId,
+          })
+          .where(({ eb, and }) => 
+            and([eb("userId", "=", userId), 
+                eb("roomId", "=", roomId)]))
+          .executeTakeFirst();
+        console.log(result);
+        return result.numUpdatedRows;
+    }
+
+}
 export const getChatRoomMemebers = async (chatRoomId: string) => {
   const members = await db
     .selectFrom("chatRoom")
@@ -78,7 +110,6 @@ export const getChatRoomMemebers = async (chatRoomId: string) => {
     .select(["userId", "name"])
     .where("chatRoom.id", "=", chatRoomId)
     .execute();
-  console.log(chatRoomId);
 
   return members;
 };

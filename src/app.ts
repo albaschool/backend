@@ -2,6 +2,7 @@ import "express-async-errors";
 
 import cors from "cors";
 import express from "express";
+import http from 'http';
 
 import config from "@/config";
 import { setupSwagger } from "@/config/swagger";
@@ -14,9 +15,12 @@ import notificationsRoute from "@/routes/notifications.route";
 import schedulesRoute from "@/routes/schedules.route";
 import storesRoute from "@/routes/stores.route";
 
+import socketRun from "./controllers/socket.controller";
 import authRoute from "./routes/auth.route";
 
 const app = express();
+const server = http.createServer(app);
+socketRun(server);
 
 app.use(express.json());
 app.use(httpLogger);
@@ -42,8 +46,8 @@ app.use("/schedules", schedulesRoute);
 app.use("/notifications", notificationsRoute);
 
 app.use(errorMiddleware);
-
-app.listen(parseInt(config.http.port), config.http.host, () => {
+app.set('port', config.http.port);
+server.listen(parseInt(config.http.port), config.http.host, ()=>{
   logger.info(`Node environment: ${config.node.env}`);
   logger.info(`Server is running on http://${config.http.host}:${config.http.port}`);
   if (config.node.env === "development") {

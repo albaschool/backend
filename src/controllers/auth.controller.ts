@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { SentMessageInfo } from "nodemailer";
 
+import logger from "@/logger";
 import { checkPassword, isUser, saveCode, saveUser, updatePassword, verifyEmail } from "@/services/auth.service";
 
 import { getMailOptions, transport } from "../provider/emailProvider";
@@ -12,16 +12,15 @@ const email = (req: Request, res: Response) => {
   const code = Math.random().toString().slice(2, 8);
   const mailOptions = getMailOptions(code, body.email);
 
-  transport.sendMail(mailOptions, async (err: Error | null, info: SentMessageInfo) => {
+  transport.sendMail(mailOptions, async (err: Error | null) => {
     if (err) {
       console.error("Failed to send mail" + err);
       res.status(500).json({
         message: "Mail send failed.",
       });
     } else {
-      console.log("success to send mail");
-      const result = await saveCode(body.email, code);
-      console.log(result, info);
+      logger.info("success to send mail");
+      await saveCode(body.email, code);
       res.status(201).json({
         message: "메일이 성공적으로 전송됐습니다.",
       });
@@ -51,10 +50,9 @@ const emailVerify = async (req: Request, res: Response) => {
 const regist = async (req: Request, res: Response) => {
   try {
     const body = req.body;
-    console.log(body);
     const result = await saveUser(body);
-    if ((result.numInsertedOrUpdatedRows ?? 0) !== 0) {
-      throw new Error("Failed to add store");
+    if ((result.numInsertedOrUpdatedRows ?? 0) === 0) {
+      throw new Error("Failed to regist user");
     } else
       res.status(201).json({
         message: "회원가입이 완료됐습니다.",
