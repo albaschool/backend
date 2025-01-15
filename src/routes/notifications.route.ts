@@ -18,7 +18,8 @@ router.get(
       content: {
         "text/event-stream": {
           examples: {
-            initialize: { $ref: "#/components/examples/notificationsInitialize" }
+            initialize: { $ref: "#/components/examples/notificationsInitialize" },
+            notification: { $ref: "#/components/examples/notification" }
           }
         }
       }

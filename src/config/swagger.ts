@@ -170,6 +170,17 @@ const doc = {
           },
         ],
       },
+      notification: {
+        description: "알림이 생성될 때 받는 메시지입니다.",
+        value: {
+          id: "17nNjxKohds0",
+          content: "박사장님이 게시글을 추가했습니다.",
+          title: "솥뚜껑 삼겹살",
+          target: "/pages/3",
+          isChecked: false,
+          createdAt: "2025-01-15T02:10:30.000Z",
+        },
+      },
       chatRoomExample: {
         value: [
           {
