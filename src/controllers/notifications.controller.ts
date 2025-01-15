@@ -18,4 +18,4 @@ export const initializeSse = async (req: Request, res: Response) => {
 export const readNotifications = async (req: Request, res: Response) => {
   // TODO: 읽음 처리를 한번에 처리할지, 알림 ID를 받아와서 하나씩 읽음 처리할지 결정
   res.status(200).json({ success: true });
-}
+};
