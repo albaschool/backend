@@ -43,11 +43,10 @@ app.use("/schedules", schedulesRoute);
 
 app.use(errorMiddleware);
 app.set('port', config.http.port);
-server.listen(parseInt(config.http.port), ()=>{
+server.listen(parseInt(config.http.port), config.http.host, ()=>{
   logger.info(`Node environment: ${config.node.env}`);
   logger.info(`Server is running on http://${config.http.host}:${config.http.port}`);
   if (config.node.env === "development") {
     logger.info(`Swagger UI is running on http://${config.http.host}:${config.http.port}/swagger`);
   }
-
 });

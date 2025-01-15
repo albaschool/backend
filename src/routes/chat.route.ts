@@ -1,6 +1,6 @@
 import express from "express";
 
-import { chatRoomSave, getChatRoomDetail, getChatRooms } from "@/controllers/chat.contoller";
+import { chatRoomSave, getChatRoomDetail, getChatRooms, setLastMessage } from "@/controllers/chat.contoller";
 import authMiddleware from "@/middlewares/auth.middleware";
 const router = express.Router()
 
@@ -43,6 +43,45 @@ router. post(
     */
     authMiddleware,
     chatRoomSave
+)
+
+router.put(
+  "/message/last",
+  // #swagger.tags = ["Chat"]
+  // #swagger.description = "채팅방 생성."
+  // #swagger.security = [{ bearerAuth: [] }]
+  /*
+      #swagger.requestBody = {
+      required: true,
+      content: {
+          "application/json": {
+          schema: {
+              $ref: "#/components/schemas/saveLastMessage"
+          }  
+          }
+      }
+      }
+  */
+  /*
+      #swagger.responses[201] = {
+      description: "Created",
+      content: {
+          "application/json": {
+          example: { message: "마지막 메시지가 변경 됐습니다." }
+          }
+      }
+      }
+      #swagger.responses[500] = {
+      description: "Internal Server Error",
+      content: {
+          "application/json": {
+          example: { message: "Internal server error" }
+          }
+      }
+      }
+  */
+  authMiddleware,
+  setLastMessage
 )
 
 

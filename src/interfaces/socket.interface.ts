@@ -6,5 +6,6 @@ export interface SendSocketData {
     userId : string;
     name : string;
     content : string;
-    roomId : string
+    roomId : string;
+    messageId : string;
 }

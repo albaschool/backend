@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
+import logger from "@/logger";
 import { checkPassword, isUser, saveCode, saveUser, updatePassword, verifyEmail } from "@/services/auth.service";
 
 import { getMailOptions, transport } from "../provider/emailProvider";
@@ -18,7 +19,7 @@ const email = (req: Request, res: Response) => {
         message: "Mail send failed.",
       });
     } else {
-      console.log("success to send mail");
+      logger.info("success to send mail");
       await saveCode(body.email, code);
       res.status(201).json({
         message: "메일이 성공적으로 전송됐습니다.",
@@ -50,7 +51,6 @@ const emailVerify = async (req: Request, res: Response) => {
 const regist = async (req: Request, res: Response) => {
   try {
     const body = req.body;
-    console.log(body);
     const result = await saveUser(body);
     if ((result.numInsertedOrUpdatedRows ?? 0) === 0) {
       throw new Error("Failed to regist user");
