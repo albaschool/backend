@@ -21,4 +21,4 @@ export const readAllNotifications = async (userId: string) => {
     .executeTakeFirst();
 
   return result;
-}
+};
