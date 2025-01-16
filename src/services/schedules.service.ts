@@ -2,7 +2,7 @@ import { sql } from "kysely";
 import { nanoid } from "nanoid";
 
 import { db } from "@/db";
-import { CreateSchedulePayload } from "@/interfaces/schedules.interface";
+import { CreateSchedulePayload, UpdateSchedulePayload } from "@/interfaces/schedules.interface";
 
 export const getSchedulesByUser = async (userId: string) => {
   const schedules = await db
@@ -37,7 +37,7 @@ export const createSchedule = async (payload: CreateSchedulePayload) => {
   return schedule;
 };
 
-export const updateSchedule = async (scheduleId: string, payload: CreateSchedulePayload) => {
+export const updateSchedule = async (scheduleId: string, payload: UpdateSchedulePayload) => {
   const { dayOfWeek, content, startTime, endTime } = payload;
   const result = await db
     .updateTable("schedule")

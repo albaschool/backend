@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
 import HttpException from "@/interfaces/http-exception.interface";
-import { CreateSchedulePayload } from "@/interfaces/schedules.interface";
+import { CreateSchedulePayload, UpdateSchedulePayload } from "@/interfaces/schedules.interface";
 import { createNotification, getNameOfDay, getStoreNameById } from "@/services/notifications.service";
 import * as services from "@/services/schedules.service";
 
@@ -76,7 +76,7 @@ export const updateSchedule = async (req: Request, res: Response) => {
     throw new HttpException(403, "가게 주인만 수정할 수 있습니다.");
   }
 
-  const payload: CreateSchedulePayload = req.body;
+  const payload: UpdateSchedulePayload = req.body;
   const result = await services.updateSchedule(req.params.scheduleId, payload);
 
   if (result.numUpdatedRows === BigInt(0)) {
@@ -87,8 +87,8 @@ export const updateSchedule = async (req: Request, res: Response) => {
   await createNotification({
     content: `${getNameOfDay(schedule.dayOfWeek)}요일 일정이 수정되었습니다.`,
     target: "/schedules",
-    title: await getStoreNameById(payload.storeId) ?? '알 수 없는 가게',
-    userId: payload.userId
+    title: await getStoreNameById(schedule.storeId) ?? '알 수 없는 가게',
+    userId: schedule.storeId
   })
 
   res.status(200).json({ message: "일정이 수정되었습니다." });
