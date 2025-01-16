@@ -34,7 +34,7 @@ jobs:
         run: pnpm install
 
       - name: Run TypeScript type check
-        run: pnpm tsc --noEmit
+        run: pnpm tsc --noEmit --strict
 
       - name: Run ESLint
         run: pnpm lint
