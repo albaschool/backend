@@ -11,6 +11,7 @@ export interface Database {
   educationPage: EducationPageTable;
   verification: VerificationTable;
   notification: NotificationTable;
+  chatNotification : ChatNotification;
 }
 
 export interface UserTable {
@@ -75,7 +76,7 @@ export type MessageUpdate = Updateable<MessageTable>;
 
 export interface LastReadMessageTable {
   userId: string;
-  chatRoomId: string;
+  roomId: string;
   messageId: string;
 }
 
@@ -132,3 +133,12 @@ export interface NotificationTable {
 export type Notification = Selectable<NotificationTable>;
 export type NewNotification = Insertable<NotificationTable>;
 export type NotificationUpdate = Updateable<NotificationTable>;
+
+export interface ChatNotificationTable {
+  userId: string;
+  createdAt: ColumnType<Date, string | undefined, never>;
+}
+
+export type ChatNotification = Selectable<ChatNotificationTable>;
+export type NewChatNotification = Insertable<ChatNotificationTable>;
+export type ChatNotificationUpdate = Updateable<ChatNotificationTable>;
