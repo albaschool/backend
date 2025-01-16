@@ -1,6 +1,6 @@
 import express from "express";
 
-import { chatRoomSave, getChatRoomDetail, getChatRooms, setLastMessage } from "@/controllers/chat.contoller";
+import { chatRoomSave, getChatRoomDetail, setLastMessage } from "@/controllers/chat.contoller";
 import authMiddleware from "@/middlewares/auth.middleware";
 const router = express.Router();
 
@@ -47,7 +47,7 @@ router.post(
 router.put(
   "/message/last",
   // #swagger.tags = ["Chat"]
-  // #swagger.description = "채팅방 생성."
+  // #swagger.description = "마지막으로 읽은 메시지 설정."
   // #swagger.security = [{ bearerAuth: [] }]
   /*
       #swagger.requestBody = {
@@ -83,44 +83,6 @@ router.put(
   setLastMessage,
 );
 
-//채팅방 목록 조회
-router.get(
-  "/",
-  /*
-    #swagger.tags = ["Chat"]
-    #swagger.description = "소속돼 있는 채팅방을 조회 합니다."
-    #swagger.security = [{ bearerAuth: [] }]
-    
-    #swagger.responses[200] = {
-      description: "OK",
-      content: {
-        "application/json": {
-          examples: {
-            example: { $ref: "#/components/examples/chatRoomExample" }
-          }
-        }
-      }
-    }
-    #swagger.responses[404] = {
-      description: "가게가 존재하지 않을 때",
-      content: {
-        "application/json": {
-          example: []
-        }
-      }
-    }
-    #swagger.responses[500] = {
-      description: "Internal Server Error",
-      content: {
-        "application/json": {
-          example: { message: "Internal server error" }
-        }
-      }
-    }
-  */
-  authMiddleware,
-  getChatRooms,
-);
 //채팅방 상세 조회
 router.get(
   "/:id",

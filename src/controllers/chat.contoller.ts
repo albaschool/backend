@@ -18,17 +18,6 @@ export const chatRoomSave = async (req: Request, res: Response) => {
   });
 };
 
-//채팅방 목록 조회
-export const getChatRooms = async (req: Request, res: Response) => {
-  const user = req.auth!;
-  const chatRooms = await services.getChatRooms(user.id);
-
-  if (chatRooms.length === 0) throw new HttpException(404, "참여 중인 채팅 목록이 없습니다.");
-
-  res.status(200).json({
-    chatRooms,
-  });
-};
 //채팅방 상세조회
 
 export const getChatRoomDetail = async (req: Request, res: Response) => {
