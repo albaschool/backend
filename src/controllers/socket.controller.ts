@@ -30,7 +30,7 @@ const socket = (server: http.Server) => {
     const auth = jwt.verify(token.substring(7), config.jwt.secretKey) as AuthPayload;
     const userId = auth.id;
     const userName = auth.name;
-    
+
     socket.on("joinRoom", async (data) => {
       const { roomId } = data;
       try {
@@ -67,7 +67,7 @@ const socket = (server: http.Server) => {
           name: userName,
           messageId: messageId,
         };
-        if (((result.numInsertedOrUpdatedRows ?? 0) === 0) || (chatNoti == 0)) 
+        if ((result.numInsertedOrUpdatedRows ?? 0) === 0 || chatNoti == 0)
           throw new HttpException(500, "Internal Server Error.");
 
         io.to(roomId).emit("message", message);

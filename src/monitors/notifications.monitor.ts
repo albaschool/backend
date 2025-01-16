@@ -19,41 +19,38 @@ class NotificationMonitor {
     this.zongji.on("binlog", (event) => {
       if (event.getEventName() !== "writerows") return;
 
-      (event.rows as { [key: string]: string | number }[]).forEach( async (row) => {
-        let eventName : string;
-        let payload ;
-        let sendToId : string ;
-        if(row['id'] === undefined){
-            const userId = row['user_id'];
-            console.log(userId);
-            payload = await getChatRooms(userId as string);
-            eventName = "chatNotification";
-            sendToId = row['userId'] as string;
-            console.log(payload);
-          }
-        else {
-            payload = {
+      (event.rows as { [key: string]: string | number }[]).forEach(async (row) => {
+        let eventName: string;
+        let payload;
+        let sendToId: string;
+        if (row["id"] === undefined) {
+          const userId = row["user_id"];
+          console.log(userId);
+          payload = await getChatRooms(userId as string);
+          eventName = "chatNotification";
+          sendToId = row["userId"] as string;
+          console.log(payload);
+        } else {
+          payload = {
             id: row["id"],
             content: row["content"],
             title: row["title"],
             target: row["target"],
             isChecked: row["is_checked"] === 0 ? false : true,
             createdAt: row["created_at"],
-          }
-            eventName = "notification"
-            sendToId = row["user_id"] as string;
-        };
-        
-        
+          };
+          eventName = "notification";
+          sendToId = row["user_id"] as string;
+        }
+
         sessionManager.pushToUser(sendToId as string, { data: payload, eventName: eventName });
       });
     });
 
     this.zongji.start({
       startAtEnd: true,
-      includeSchema: { 
+      includeSchema: {
         albaschool: ["notification", "chat_notification"],
-        
       },
     });
   }

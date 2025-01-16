@@ -83,7 +83,6 @@ router.put(
   setLastMessage,
 );
 
-
 //채팅방 상세 조회
 router.get(
   "/:id",

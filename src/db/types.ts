@@ -11,8 +11,7 @@ export interface Database {
   educationPage: EducationPageTable;
   verification: VerificationTable;
   notification: NotificationTable;
-  chatNotification : ChatNotificationTable;
-
+  chatNotification: ChatNotificationTable;
 }
 
 export interface UserTable {
@@ -143,4 +142,3 @@ export interface ChatNotificationTable {
 export type ChatNotification = Selectable<ChatNotificationTable>;
 export type NewChatNotification = Insertable<ChatNotificationTable>;
 export type ChatNotificationUpdate = Updateable<ChatNotificationTable>;
-
