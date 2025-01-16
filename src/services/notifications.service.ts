@@ -43,3 +43,18 @@ export const createNotification = async (notification: CreateNotificationPayload
 
   return result;
 };
+
+export const getNameOfDay = (dayOfWeek: number) => {
+  const days = ["일", "월", "화", "수", "목", "금", "토"];
+  return days[dayOfWeek];
+}
+
+export const getStoreNameById = async (storeId: string) => {
+  const store = await db
+    .selectFrom("store")
+    .select(["title"])
+    .where("id", "=", storeId)
+    .executeTakeFirst();
+
+  return store?.title;
+}
