@@ -88,7 +88,7 @@ export const updateSchedule = async (req: Request, res: Response) => {
     content: `${getNameOfDay(schedule.dayOfWeek)}요일 일정이 수정되었습니다.`,
     target: "/schedules",
     title: await getStoreNameById(schedule.storeId) ?? '알 수 없는 가게',
-    userId: schedule.storeId
+    userId: schedule.userId
   })
 
   res.status(200).json({ message: "일정이 수정되었습니다." });
