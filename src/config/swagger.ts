@@ -191,7 +191,14 @@ const doc = {
             id: "TCYP4hBtP2wpG2YX",
             title: "GS25 서울역점",
             lastMessage: "고생했다!",
+            notReadCount : 1,
           },
+          {
+            id: 'Eg2NOSD5',
+            title: '솥뚜껑 삼겹',
+            lastMessage: 'hi22',
+            notReadCount: 9
+          }
         ],
       },
       chatRoomDetailExample: {

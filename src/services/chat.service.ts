@@ -41,22 +41,45 @@ export const getChatRooms = async (userId: string) => {
     .where("userId", "=", userId)
     .execute();
   for (let i = 0; i < chatRooms.length; i++) {
-    chatRooms[i].lastMessage = await getLastMessage(chatRooms[i].id);
+    const {count, lastContent} = await getLastMessageAndCount(chatRooms[i].id, userId);
+    chatRooms[i].lastMessage = lastContent;
+    chatRooms[i].notReadCount = count;
   }
   console.log(chatRooms);
   return chatRooms;
 };
 
-//마지막 메시지 얻어오기
-export const getLastMessage = async (chatRoomId: string) => {
+//마지막 메시지 및 안읽은 채팅 갯수 가져오기
+export const getLastMessageAndCount = async (chatRoomId: string, userId : string) => {
+  const lastReadMessage = await db
+    .selectFrom("lastReadMessage")
+    .select('messageId')
+    .where(({ eb, and }) => and([eb("userId", "=", userId), eb("roomId", "=", chatRoomId)]))
+    .executeTakeFirst();
+
   const messages = await db
     .selectFrom("message")
-    .select("content")
+    .selectAll()
     .where("message.roomId", "=", chatRoomId)
     .orderBy("createdAt asc")
     .execute();
-  if (messages.length !== 0) return messages[messages.length - 1].content;
-  else return "";
+  let startIdx = 0;
+  if(lastReadMessage !== undefined){
+    for(let i = 0; i < messages.length; i++){
+      if(lastReadMessage?.messageId == messages[i].id){
+          startIdx = i;
+          break;
+      }}
+  }
+  
+  if (messages.length !== 0) return { 
+    lastContent : messages[messages.length - 1].content,
+    count : messages.length - startIdx
+  };
+  else return { 
+    lastContent : "",
+    count : messages.length - startIdx
+  };;
 };
 
 // 채팅방 상세조회
@@ -112,3 +135,23 @@ export const getChatRoomMemebers = async (chatRoomId: string) => {
 
   return members;
 };
+
+export const chatNotification = async (chatRoomId : string) => {
+  const members = await db
+    .selectFrom("chatRoom")
+    .innerJoin("storeMember", "storeMember.storeId", "chatRoom.storeId")
+    .select("userId")
+    .where("chatRoom.id", "=", chatRoomId)
+    .execute();
+
+  for(let i = 0; i < members.length; i++){
+    const userId = members[i].userId
+    await db.insertInto("chatNotification")
+            .values({
+                    userId
+                  })
+            .executeTakeFirst();
+  }
+  return members.length;
+}
+
