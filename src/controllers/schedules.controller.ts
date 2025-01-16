@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 
 import HttpException from "@/interfaces/http-exception.interface";
 import { CreateSchedulePayload } from "@/interfaces/schedules.interface";
+import { createNotification, getNameOfDay, getStoreNameById } from "@/services/notifications.service";
 import * as services from "@/services/schedules.service";
 
 /** GET /schedules */
@@ -38,7 +39,7 @@ export const createSchedule = async (req: Request, res: Response) => {
   if (req.auth?.role !== "manager") {
     throw new HttpException(403, "가게 주인만 생성할 수 있습니다.");
   }
-
+  
   const payload: CreateSchedulePayload = req.body;
   if (!(await services.isStoreOwner(req.auth!.id, payload.storeId))) {
     throw new HttpException(403, "가게 주인만 생성할 수 있습니다.");
@@ -49,6 +50,14 @@ export const createSchedule = async (req: Request, res: Response) => {
   if (result.numInsertedOrUpdatedRows === BigInt(0)) {
     throw new Error();
   }
+
+  // TODO: 프론트엔드 라우팅 경로 수정
+  await createNotification({
+    content: `${getNameOfDay(payload.dayOfWeek)}요일 일정이 추가되었습니다.`,
+    target: "/schedules",
+    title: await getStoreNameById(payload.storeId) ?? '알 수 없는 가게',
+    userId: payload.userId
+  })
 
   res.status(201).json({ message: "일정이 생성되었습니다." });
 };
