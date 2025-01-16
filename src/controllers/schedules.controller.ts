@@ -85,7 +85,7 @@ export const updateSchedule = async (req: Request, res: Response) => {
 
   // TODO: 프론트엔드 라우팅 경로 수정
   await createNotification({
-    content: `${getNameOfDay(payload.dayOfWeek)}요일 일정이 수정되었습니다.`,
+    content: `${getNameOfDay(schedule.dayOfWeek)}요일 일정이 수정되었습니다.`,
     target: "/schedules",
     title: await getStoreNameById(payload.storeId) ?? '알 수 없는 가게',
     userId: payload.userId

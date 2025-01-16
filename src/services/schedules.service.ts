@@ -77,7 +77,11 @@ export const isStoreOwner = async (userId: string, storeId: string) => {
 };
 
 export const getScheduleById = async (scheduleId: string) => {
-  const schedule = await db.selectFrom("schedule").select(["storeId"]).where("id", "=", scheduleId).executeTakeFirst();
+  const schedule = await db
+    .selectFrom("schedule")
+    .select(["storeId", "dayOfWeek"])
+    .where("id", "=", scheduleId)
+    .executeTakeFirst();
 
   return schedule;
 };
