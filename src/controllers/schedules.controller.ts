@@ -39,7 +39,7 @@ export const createSchedule = async (req: Request, res: Response) => {
   if (req.auth?.role !== "manager") {
     throw new HttpException(403, "가게 주인만 생성할 수 있습니다.");
   }
-  
+
   const payload: CreateSchedulePayload = req.body;
   if (!(await services.isStoreOwner(req.auth!.id, payload.storeId))) {
     throw new HttpException(403, "가게 주인만 생성할 수 있습니다.");
@@ -55,9 +55,9 @@ export const createSchedule = async (req: Request, res: Response) => {
   await createNotification({
     content: `${getNameOfDay(payload.dayOfWeek)}요일 일정이 추가되었습니다.`,
     target: "/schedules",
-    title: await getStoreNameById(payload.storeId) ?? '알 수 없는 가게',
-    userId: payload.userId
-  })
+    title: (await getStoreNameById(payload.storeId)) ?? "알 수 없는 가게",
+    userId: payload.userId,
+  });
 
   res.status(201).json({ message: "일정이 생성되었습니다." });
 };
@@ -87,9 +87,9 @@ export const updateSchedule = async (req: Request, res: Response) => {
   await createNotification({
     content: `${getNameOfDay(schedule.dayOfWeek)}요일 일정이 수정되었습니다.`,
     target: "/schedules",
-    title: await getStoreNameById(schedule.storeId) ?? '알 수 없는 가게',
-    userId: schedule.userId
-  })
+    title: (await getStoreNameById(schedule.storeId)) ?? "알 수 없는 가게",
+    userId: schedule.userId,
+  });
 
   res.status(200).json({ message: "일정이 수정되었습니다." });
 };
@@ -117,9 +117,9 @@ export const deleteSchedule = async (req: Request, res: Response) => {
   await createNotification({
     content: `${getNameOfDay(schedule.dayOfWeek)}요일 일정이 삭제되었습니다.`,
     target: "/schedules",
-    title: await getStoreNameById(schedule.storeId) ?? '알 수 없는 가게',
-    userId: schedule.userId
-  })
+    title: (await getStoreNameById(schedule.storeId)) ?? "알 수 없는 가게",
+    userId: schedule.userId,
+  });
 
   res.status(200).json({ message: "일정이 삭제되었습니다." });
 };
