@@ -113,5 +113,13 @@ export const deleteSchedule = async (req: Request, res: Response) => {
     throw new Error();
   }
 
+  // TODO: 프론트엔드 라우팅 경로 수정
+  await createNotification({
+    content: `${getNameOfDay(schedule.dayOfWeek)}요일 일정이 삭제되었습니다.`,
+    target: "/schedules",
+    title: await getStoreNameById(schedule.storeId) ?? '알 수 없는 가게',
+    userId: schedule.userId
+  })
+
   res.status(200).json({ message: "일정이 삭제되었습니다." });
 };
