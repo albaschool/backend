@@ -12,6 +12,7 @@ export interface Database {
   verification: VerificationTable;
   notification: NotificationTable;
   chatNotification : ChatNotificationTable;
+
 }
 
 export interface UserTable {
@@ -142,3 +143,4 @@ export interface ChatNotificationTable {
 export type ChatNotification = Selectable<ChatNotificationTable>;
 export type NewChatNotification = Insertable<ChatNotificationTable>;
 export type ChatNotificationUpdate = Updateable<ChatNotificationTable>;
+
