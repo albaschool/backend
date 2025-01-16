@@ -6,6 +6,7 @@ export interface CreateStorePayload {
   password: string;
   openTime: string;
   closeTime: string;
+  salt: string;
 }
 
 export interface UpdateStorePayload {

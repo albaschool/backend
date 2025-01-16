@@ -1,7 +1,9 @@
 import { Request, Response } from "express";
 
 import HttpException from "@/interfaces/http-exception.interface";
+import { CreateStorePayload } from "@/interfaces/stores.interface";
 import * as services from "@/services/stores.service";
+import { createHashedPassword, createSalt } from "@/utils/password";
 
 /** GET /stores */
 export const getStores = async (_: Request, res: Response) => {
@@ -17,9 +19,18 @@ export const getStores = async (_: Request, res: Response) => {
 
 /** POST /stores */
 export const createStore = async (req: Request, res: Response) => {
-  const { result, storeId } = await services.createStore({
+  const payload: CreateStorePayload = {
     ownerId: req.auth!.id,
     ...req.body,
+  };
+
+  const salt = await createSalt();
+  const hashedPassword = await createHashedPassword(payload.password, salt);
+
+  const { result, storeId } = await services.createStore({
+    ...payload,
+    password: hashedPassword,
+    salt,
   });
 
   if ((result.numInsertedOrUpdatedRows ?? 0) === 0) {
@@ -98,10 +109,12 @@ export const getStoreMembers = async (req: Request, res: Response) => {
   res.status(200).json(members);
 };
 
+// TODO: 비밀번호 입력 받아서 비교 필요
 /** POST /stores/:storeId/members */
 export const addStoreMember = async (req: Request, res: Response) => {
   const isOwner = await services.isOwner(req.auth!.id, req.params.storeId);
   if (!isOwner) {
+    // TODO: isOwner 제거
     throw new HttpException(403, "가게 소유자만 조회할 수 있습니다.");
   }
 
@@ -137,7 +150,6 @@ export const deleteStoreMember = async (req: Request, res: Response) => {
 
   if (result.numDeletedRows === BigInt(0)) {
     throw new HttpException(404, "존재하지 않는 직원입니다.");
-    return;
   }
 
   res.status(200).json({ message: "직원이 삭제되었습니다." });
