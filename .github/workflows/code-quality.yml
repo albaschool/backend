@@ -16,6 +16,7 @@ jobs:
       - uses: pnpm/action-setup@v4
         with:
           version: 9
+          run_install: false
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -23,16 +24,8 @@ jobs:
           node-version: 22
           cache: "pnpm"
 
-      - name: Cache pnpm modules
-        uses: actions/cache@v4
-        with:
-          path: ~/.pnpm-store
-          key: pnpm-store-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            pnpm-store-${{ runner.os }}-
-
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
 
       - name: Run TypeScript type check
         run: pnpm tsc --noEmit --strict
