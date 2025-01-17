@@ -17,7 +17,7 @@ export const getStores = async (userId?: string) => {
 export const getStoreById = async (storeId: string) => {
   const store = await db
     .selectFrom("store")
-    .select(["title", "location", "contact"])
+    .select(["title", "location", "contact", "password", "salt"])
     .where("id", "=", storeId)
     .executeTakeFirst();
 
@@ -37,12 +37,12 @@ export const getStoreMembers = async (storeId: string) => {
 };
 
 export const createStore = async (payload: CreateStorePayload) => {
-  const { ownerId, title, location, contact, password, openTime, closeTime } = payload;
+  const { ownerId, title, location, contact, password, openTime, closeTime, salt } = payload;
   const storeId = nanoid(8);
 
   const result = await db
     .insertInto("store")
-    .values({ id: storeId, ownerId, title, location, contact, password, openTime, closeTime })
+    .values({ id: storeId, ownerId, title, location, contact, password, openTime, closeTime, salt })
     .executeTakeFirst();
 
   return { result, storeId };
@@ -91,7 +91,7 @@ export const isOwner = async (userId: string, storeId: string) => {
   return result !== undefined;
 };
 
-export const isStoreMember = async (userId: string, storeId: string) => {
+export const isStoreMember = async (storeId: string, userId: string) => {
   const result = await db
     .selectFrom("storeMember")
     .select(sql`1`.as("exists"))

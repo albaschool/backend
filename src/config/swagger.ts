@@ -60,7 +60,7 @@ const doc = {
         $closeTime: "19:00:00",
       },
       addMember: {
-        $memberId: "",
+        $password: "",
       },
       createSchedule: {
         $userId: "0pm8MlHvf366",
@@ -114,8 +114,8 @@ const doc = {
             id: "4uDfVBHq",
             title: "GS25 서울역점",
             location: "서울 용산구 한강대로 401",
-            $openTime: "09:00:00",
-            $closeTime: "21:00:00",
+            openTime: "09:00:00",
+            closeTime: "21:00:00",
           },
         ],
       },

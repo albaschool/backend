@@ -21,6 +21,7 @@ export interface UserTable {
   name: string;
   contact: string;
   role: "manager" | "staff";
+  salt: string;
 }
 
 export type User = Selectable<UserTable>;
@@ -36,6 +37,7 @@ export interface StoreTable {
   password: string;
   openTime: string;
   closeTime: string;
+  salt: string;
   createdAt: ColumnType<Date, string | undefined, never>;
 }
 

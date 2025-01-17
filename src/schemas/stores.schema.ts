@@ -14,3 +14,9 @@ export const createStoreSchema = z.object({
       .regex(/^([01][0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$/, "HH:mm:ss 혹은 HH:mm 형식이어야 합니다."),
   }),
 });
+
+export const passwordSchema = z.object({
+  body: z.object({
+    password: z.string().min(1).max(255),
+  }),
+});

@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 
 import logger from "@/logger";
 import { checkPassword, isUser, saveCode, saveUser, updatePassword, verifyEmail } from "@/services/auth.service";
+import { createHashedPassword, createSalt } from "@/utils/password";
 
 import { getMailOptions, transport } from "../provider/emailProvider";
 
@@ -50,7 +51,15 @@ const emailVerify = async (req: Request, res: Response) => {
 const regist = async (req: Request, res: Response) => {
   try {
     const body = req.body;
-    const result = await saveUser(body);
+
+    const salt = await createSalt();
+    const hashedPassword = await createHashedPassword(body.password, salt);
+
+    const result = await saveUser({
+      ...body,
+      password: hashedPassword,
+      salt,
+    });
     if ((result.numInsertedOrUpdatedRows ?? 0) === 0) {
       throw new Error("Failed to regist user");
     } else
