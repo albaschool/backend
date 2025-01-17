@@ -2,6 +2,7 @@ import { nanoid } from "nanoid";
 
 import { db } from "@/db";
 import { RegistRequest } from "@/interfaces/auth.interface";
+import { comparePassword, createHashedPassword, createSalt } from "@/utils/password";
 
 export const saveCode = async (email: string, code: string) => {
   const result = await db
@@ -32,26 +33,37 @@ export const saveUser = async (auth: RegistRequest) => {
 export const isUser = async (email: string, password: string) => {
   const user = await db
     .selectFrom("user")
-    .select(["id", "name", "role"])
-    .where(({ eb, and }) => and([eb("email", "=", email), eb("password", "=", password)]))
+    .select(["id", "name", "role", "password", "salt"])
+    .where("email", "=", email)
     .executeTakeFirst();
-  return user;
+
+  if (user === undefined) return undefined;
+
+  const { password: userPassword, salt, ...userData } = user;
+
+  if (!(await comparePassword(userPassword, password, salt))) {
+    return undefined;
+  }
+
+  return userData;
 };
 
 export const updatePassword = async (password: string, id: string) => {
-  console.log(password);
+  const salt = await createSalt();
+  const hashedPassword = await createHashedPassword(password, salt);
   const result = await db
     .updateTable("user")
     .set({
-      password: password,
+      password: hashedPassword,
+      salt,
     })
     .where("id", "=", id)
     .executeTakeFirst();
-  console.log(result);
   return result;
 };
 
 export const checkPassword = async (password: string, id: string) => {
-  const result = await db.selectFrom("user").where("id", "=", id).select("password").executeTakeFirst();
-  return result!.password === password;
+  const result = await db.selectFrom("user").select(["password", "salt"]).where("id", "=", id).executeTakeFirst();
+  if (result === undefined) return false;
+  return await comparePassword(result.password, password, result.salt);
 };
