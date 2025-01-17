@@ -5,4 +5,5 @@ export interface RegistRequest {
   password: string;
   role: "staff" | "manager";
   contact: string;
+  salt: string;
 }
