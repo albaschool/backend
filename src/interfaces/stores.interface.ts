@@ -17,3 +17,7 @@ export interface UpdateStorePayload {
   openTime: string;
   closeTime: string;
 }
+
+export interface AddStoreMemberPayload {
+  password: string;
+}
