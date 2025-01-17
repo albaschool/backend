@@ -60,7 +60,7 @@ const doc = {
         $closeTime: "19:00:00",
       },
       addMember: {
-        $memberId: "",
+        $password: "",
       },
       createSchedule: {
         $userId: "0pm8MlHvf366",

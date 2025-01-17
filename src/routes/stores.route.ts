@@ -276,23 +276,31 @@ router.post(
       description: "OK",
       content: {
         "application/json": {
-          example: { message: "직원이 추가되었습니다." }
+          example: { message: "GS25 서울역점 가게에 추가되었습니다." }
+        }
+      }
+    }
+    #swagger.responses[401] = {
+      description: "비밀번호가 일치하지 않을 때",
+      content: {
+        "application/json": {
+          example: { message: "비밀번호가 일치하지 않습니다." }
         }
       }
     }
     #swagger.responses[403] = {
-      description: "가게 소유자가 아닐 때",
+      description: "직원 계정이 아닐 때",
       content: {
         "application/json": {
-          example: { message: "가게 소유자만 추가할 수 있습니다." }
+          example: { message: "직원만 사용할 수 있습니다." }
         }
       }
     }
     #swagger.responses[404] = {
-      description: "존재하지 않는 직원일 때",
+      description: "가게가 존재하지 않을 때",
       content: {
         "application/json": {
-          example: { message: "존재하지 않는 직원입니다." }
+          example: { message: "존재하지 않는 가게입니다." }
         }
       }
     }
@@ -300,15 +308,7 @@ router.post(
       description: "이미 존재하는 직원일 때",
       content: {
         "application/json": {
-          example: { message: "이미 존재하는 직원입니다." }
-        }
-      }
-    }
-    #swagger.responses[500] = {
-      description: "Internal Server Error",
-      content: {
-        "application/json": {
-          example: { message: "Internal server error" }
+          example: { message: "이미 가게에 소속되어 있습니다."" }
         }
       }
     }

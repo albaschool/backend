@@ -110,7 +110,6 @@ export const getStoreMembers = async (req: Request, res: Response) => {
   res.status(200).json(members);
 };
 
-// TODO: 비밀번호 입력 받아서 비교 필요
 /** POST /stores/:storeId/members */
 export const addStoreMember = async (req: Request, res: Response) => {
   if (req.auth!.role !== "staff") {
