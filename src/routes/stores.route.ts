@@ -13,7 +13,7 @@ import {
 import authMiddleware from "@/middlewares/auth.middleware";
 import validate from "@/middlewares/validate.middleware";
 import { storeIdParamsSchema, userIdParamsSchema } from "@/schemas/common.schema";
-import { createStoreSchema } from "@/schemas/stores.schema";
+import { createStoreSchema, passwordSchema } from "@/schemas/stores.schema";
 
 const router = express.Router();
 
@@ -308,12 +308,12 @@ router.post(
       description: "이미 존재하는 직원일 때",
       content: {
         "application/json": {
-          example: { message: "이미 가게에 소속되어 있습니다."" }
+          example: { message: "이미 가게에 소속되어 있습니다." }
         }
       }
     }
   */
-  validate(storeIdParamsSchema),
+  validate(storeIdParamsSchema.merge(passwordSchema)),
   addStoreMember,
 );
 
