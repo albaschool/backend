@@ -8,4 +8,5 @@ export interface getChatRoom {
   id: string;
   lastMessage?: string;
   notReadCount?: number;
+  memberCount?: number;
 }

@@ -44,6 +44,7 @@ export const getChatRooms = async (userId: string) => {
     const { count, lastContent } = await getLastMessageAndCount(chatRooms[i].id, userId);
     chatRooms[i].lastMessage = lastContent;
     chatRooms[i].notReadCount = count;
+    chatRooms[i].memberCount = (await getChatRoomMemebers(chatRooms[i].id)).length;
   }
   console.log(chatRooms);
   return chatRooms;
