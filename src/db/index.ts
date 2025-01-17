@@ -8,10 +8,13 @@ import logger from "@/logger";
 const dialect = new MysqlDialect({
   pool: createPool({
     uri: config.database.url,
-    dateStrings: true,
     typeCast(field, next) {
       if (field.type === "TINY" && field.length === 1) {
         return field.string() === "1";
+      }
+      if (field.type === "TIMESTAMP") {
+        const value = field.string();
+        return value ? new Date(new Date(value).getTime() + (9 * 60 * 60 * 1000)) : null;
       }
       return next();
     },
