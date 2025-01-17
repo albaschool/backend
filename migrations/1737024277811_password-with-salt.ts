@@ -1,7 +1,7 @@
 import type { Kysely } from "kysely";
 
 export async function up(db: Kysely<unknown>): Promise<void> {
-	await db.schema
+  await db.schema
     .alterTable("user")
     .addColumn("salt", "varchar(88)", (col) => col.notNull())
     .execute();
