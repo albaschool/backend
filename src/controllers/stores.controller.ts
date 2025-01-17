@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
 import HttpException from "@/interfaces/http-exception.interface";
-import { AddStoreMemberPayload, CreateStorePayload } from "@/interfaces/stores.interface";
+import { AddStoreMemberPayload, CreateStorePayload, UpdateStorePayload } from "@/interfaces/stores.interface";
 import * as services from "@/services/stores.service";
 import { comparePassword, createHashedPassword, createSalt } from "@/utils/password";
 
@@ -83,7 +83,16 @@ export const updateStoreById = async (req: Request, res: Response) => {
     throw new HttpException(403, "가게 소유자만 수정할 수 있습니다.");
   }
 
-  const result = await services.updateStoreById(req.params.storeId, req.body);
+  const payload: Partial<UpdateStorePayload> = req.body;
+
+  if (payload.password) {
+    const salt = await createSalt();
+    const hashedPassword = await createHashedPassword(payload.password, salt);
+    payload.password = hashedPassword;
+    payload.salt = salt;
+  }
+
+  const result = await services.updateStoreById(req.params.storeId, payload);
 
   if (result.numUpdatedRows === BigInt(0)) {
     throw new Error("Failed to update store");
