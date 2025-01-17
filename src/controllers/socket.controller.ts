@@ -8,7 +8,7 @@ import HttpException from "@/interfaces/http-exception.interface";
 import { AuthPayload } from "@/interfaces/jwt.interface";
 import { RecievedSocketData, SendSocketData } from "@/interfaces/socket.interface";
 import logger from "@/logger";
-import { saveMessage } from "@/services/chat.service";
+import { chatNotification, saveMessage } from "@/services/chat.service";
 
 const socket = (server: http.Server) => {
   const io = new Server(server, {
@@ -30,6 +30,7 @@ const socket = (server: http.Server) => {
     const auth = jwt.verify(token.substring(7), config.jwt.secretKey) as AuthPayload;
     const userId = auth.id;
     const userName = auth.name;
+
     socket.on("joinRoom", async (data) => {
       const { roomId } = data;
       try {
@@ -58,6 +59,7 @@ const socket = (server: http.Server) => {
         logger.info(`Message received: ${content} in room ${roomId}`);
         const messageId = nanoid(12);
         const result = await saveMessage(content, userId, roomId, messageId);
+        const chatNoti = await chatNotification(roomId);
         const message: SendSocketData = {
           content: content,
           roomId: roomId,
@@ -65,7 +67,8 @@ const socket = (server: http.Server) => {
           name: userName,
           messageId: messageId,
         };
-        if ((result.numInsertedOrUpdatedRows ?? 0) === 0) throw new HttpException(500, "Internal Server Error.");
+        if ((result.numInsertedOrUpdatedRows ?? 0) === 0 || chatNoti == 0)
+          throw new HttpException(500, "Internal Server Error.");
 
         io.to(roomId).emit("message", message);
       } catch (error) {
