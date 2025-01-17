@@ -14,7 +14,7 @@ const dialect = new MysqlDialect({
       }
       if (field.type === "TIMESTAMP") {
         const value = field.string();
-        return value ? new Date(new Date(value).getTime() + (9 * 60 * 60 * 1000)) : null;
+        return value ? new Date(new Date(value).getTime() + 9 * 60 * 60 * 1000) : null;
       }
       return next();
     },
