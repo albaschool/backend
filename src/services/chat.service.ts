@@ -41,12 +41,15 @@ export const getChatRooms = async (userId: string) => {
     .where("userId", "=", userId)
     .execute();
   for (let i = 0; i < chatRooms.length; i++) {
-    const { count, lastContent } = await getLastMessageAndCount(chatRooms[i].id, userId);
+    const { count, lastContent, createdAt} = await getLastMessageAndCount(chatRooms[i].id, userId);
     chatRooms[i].lastMessage = lastContent;
     chatRooms[i].notReadCount = count;
+    chatRooms[i].createdAt = createdAt;
     chatRooms[i].memberCount = (await getChatRoomMemebers(chatRooms[i].id)).length;
   }
-  console.log(chatRooms);
+  chatRooms.sort((a,b)=>{
+    return a.createdAt < b.createdAt ? -1 : 1;
+  })
   return chatRooms;
 };
 
@@ -78,6 +81,7 @@ export const getLastMessageAndCount = async (chatRoomId: string, userId: string)
     return {
       lastContent: messages[messages.length - 1].content,
       count: messages.length - startIdx,
+      createdAt : messages[messages.length - 1].createdAt
     };
   else
     return {
