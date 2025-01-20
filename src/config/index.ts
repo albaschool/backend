@@ -36,7 +36,7 @@ const config = {
   mail: {
     user: getEnvVar("MAIL_USER"),
     password: getEnvVar("MAIL_PASSWORD"),
-  }
+  },
 };
 
 export default config;
