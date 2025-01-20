@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
+import config from "@/config";
 import HttpException from "@/interfaces/http-exception.interface";
 import logger from "@/logger";
 import { getMailOptions, transport } from "@/providers/email.provider";
@@ -70,14 +71,13 @@ const login = async (req: Request, res: Response) => {
     throw new HttpException(404, "아이디 또는 비밀번호가 일치하지 않습니다.");
   }
 
-  const SECRETKEY = process.env.JWT_SECRET_KEY || "";
   const token = jwt.sign(
     {
       id: user.id,
       name: user.name,
       role: user.role,
     },
-    SECRETKEY,
+    config.jwt.secretKey,
   );
   logger.debug(`JWT Token: ${token}`);
 
