@@ -29,10 +29,10 @@ export const saveMessage = async (content: string, senderId: string, roomId: str
       roomId,
       senderId,
       content,
-      createdAt
+      createdAt,
     })
     .executeTakeFirst();
-  return {result, createdAt};
+  return { result, createdAt };
 };
 
 //채팅방 조회
@@ -44,13 +44,13 @@ export const getChatRooms = async (userId: string) => {
     .where("userId", "=", userId)
     .execute();
   for (let i = 0; i < chatRooms.length; i++) {
-    const { count, lastContent, createdAt} = await getLastMessageAndCount(chatRooms[i].id, userId);
+    const { count, lastContent, createdAt } = await getLastMessageAndCount(chatRooms[i].id, userId);
     chatRooms[i].lastMessage = lastContent;
     chatRooms[i].notReadCount = count;
     chatRooms[i].createdAt = createdAt;
     chatRooms[i].memberCount = (await getChatRoomMemebers(chatRooms[i].id)).length;
   }
-  chatRooms.sort((a,b)=> a.createdAt! >= b.createdAt! ? -1 : 1)
+  chatRooms.sort((a, b) => (a.createdAt! >= b.createdAt! ? -1 : 1));
   return chatRooms;
 };
 
@@ -82,12 +82,12 @@ export const getLastMessageAndCount = async (chatRoomId: string, userId: string)
     return {
       lastContent: messages[messages.length - 1].content,
       count: messages.length - startIdx - 1,
-      createdAt : messages[messages.length - 1].createdAt
+      createdAt: messages[messages.length - 1].createdAt,
     };
   else
     return {
       lastContent: "",
-      count: messages.length - startIdx -1 ,
+      count: messages.length - startIdx - 1,
     };
 };
 
@@ -151,5 +151,5 @@ export const getNotiMembers = async (chatRoomId: string) => {
     .where("chatRoom.id", "=", chatRoomId)
     .execute();
 
-  return members
+  return members;
 };

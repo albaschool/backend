@@ -20,8 +20,8 @@ const socket = (server: http.Server) => {
     },
   });
 
-  const socketListByUserId : Map<string, string> = new Map();
-  const userListBySocketId : Map<string, string> = new Map();
+  const socketListByUserId: Map<string, string> = new Map();
+  const userListBySocketId: Map<string, string> = new Map();
 
   io.on("connection", (socket) => {
     logger.info("Client is connected", socket.id);
@@ -65,9 +65,8 @@ const socket = (server: http.Server) => {
         const { content, roomId } = data;
         logger.info(`Message received: ${content} in room ${roomId}`);
         const messageId = nanoid(12);
-        const {result, createdAt} = await saveMessage(content, userId, roomId, messageId);
-        if ((result.numInsertedOrUpdatedRows ?? 0) === 0)
-          throw new HttpException(500, "Internal Server Error.");
+        const { result, createdAt } = await saveMessage(content, userId, roomId, messageId);
+        if ((result.numInsertedOrUpdatedRows ?? 0) === 0) throw new HttpException(500, "Internal Server Error.");
 
         const message: SendSocketData = {
           content: content,
@@ -75,40 +74,38 @@ const socket = (server: http.Server) => {
           userId: userId,
           name: userName,
           messageId: messageId,
-          createdAt : createdAt
+          createdAt: createdAt,
         };
-        
+
         io.to(roomId).emit("broadcast", message);
-        callback({message:"Ok"})
+        callback({ message: "Ok" });
 
         const notificationMembers = await getNotiMembers(roomId);
         const inRoomMembers = io.sockets.adapter.rooms.get(roomId);
         console.log(inRoomMembers);
 
         //채팅룸에 있는 멤버들에 한해 메시지 읽음 처리
-        for(const clientSocketId of inRoomMembers!){
-          if(userListBySocketId.has(clientSocketId)){
+        for (const clientSocketId of inRoomMembers!) {
+          if (userListBySocketId.has(clientSocketId)) {
             const inRoomUserId = userListBySocketId.get(clientSocketId);
             const result = await saveLastMessage(inRoomUserId!, roomId, messageId);
-            if(result === BigInt(0))
-              throw new HttpException(500, "Internal Server Error.");
+            if (result === BigInt(0)) throw new HttpException(500, "Internal Server Error.");
           }
         }
         //소켓에 접속해 있는 전체 멤버들에게 채팅리스트 업데이트
-        for(let i = 0; i < notificationMembers.length; i ++){
+        for (let i = 0; i < notificationMembers.length; i++) {
           const notiUserId = notificationMembers[i].userId;
-          if(socketListByUserId.has(notiUserId)){
+          if (socketListByUserId.has(notiUserId)) {
             const socketId = socketListByUserId.get(notificationMembers[i].userId);
             const payload = await getChatRooms(notiUserId);
             console.log(notiUserId, payload);
             const clientSocket = io.sockets.sockets.get(socketId as string);
-            clientSocket?.emit("chatLists", {data : payload});
+            clientSocket?.emit("chatLists", { data: payload });
           }
         }
-        
       } catch (error) {
         logger.error("Interal Server Error.", error);
-        callback({error : "Fail to send message."});
+        callback({ error: "Fail to send message." });
       }
     });
 

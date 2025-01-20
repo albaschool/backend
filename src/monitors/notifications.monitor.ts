@@ -43,7 +43,7 @@ class NotificationMonitor {
           sendToId = row["user_id"] as string;
         }
         console.log(sendToId);
-        
+
         sessionManager.pushToUser(sendToId as string, { data: payload, eventName: eventName });
       });
     });
