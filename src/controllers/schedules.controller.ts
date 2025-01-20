@@ -76,7 +76,7 @@ export const updateSchedule = async (req: Request, res: Response) => {
     throw new HttpException(403, "가게 주인만 수정할 수 있습니다.");
   }
 
-  const payload: UpdateSchedulePayload = req.body;
+  const payload: Partial<UpdateSchedulePayload> = req.body;
   const result = await services.updateSchedule(req.params.scheduleId, payload);
 
   if (result.numUpdatedRows === BigInt(0)) {

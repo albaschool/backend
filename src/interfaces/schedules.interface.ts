@@ -8,8 +8,8 @@ export interface CreateSchedulePayload {
 }
 
 export interface UpdateSchedulePayload {
-  dayOfWeek?: number;
-  content?: string;
-  startTime?: string;
-  endTime?: string;
+  dayOfWeek: number;
+  content: string;
+  startTime: string;
+  endTime: string;
 }

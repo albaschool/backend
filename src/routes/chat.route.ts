@@ -1,6 +1,6 @@
 import express from "express";
 
-import { chatRoomSave, getChatRoomDetail, setLastMessage } from "@/controllers/chat.contoller";
+import { chatRoomSave, getChatRoomDetail, setLastMessage } from "@/controllers/chat.controller";
 import authMiddleware from "@/middlewares/auth.middleware";
 const router = express.Router();
 
