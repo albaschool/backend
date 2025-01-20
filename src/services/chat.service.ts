@@ -3,6 +3,7 @@ import { nanoid } from "nanoid";
 
 import { db } from "@/db";
 import { CreateChatRoom, getChatRoom } from "@/interfaces/chat.interface";
+import { dateFormat } from "@/utils/dateFormat";
 
 //채팅방 생성
 export const createChatRoom = async (roomInfo: CreateChatRoom) => {
@@ -19,6 +20,8 @@ export const createChatRoom = async (roomInfo: CreateChatRoom) => {
 };
 //메시지 저장 socket controller에서 사용
 export const saveMessage = async (content: string, senderId: string, roomId: string, messageId: string) => {
+  const now = new Date();
+  const createdAt = dateFormat(now);
   const result = await db
     .insertInto("message")
     .values({
@@ -26,10 +29,10 @@ export const saveMessage = async (content: string, senderId: string, roomId: str
       roomId,
       senderId,
       content,
+      createdAt
     })
     .executeTakeFirst();
-
-  return result;
+  return {result, createdAt};
 };
 
 //채팅방 조회
@@ -41,15 +44,13 @@ export const getChatRooms = async (userId: string) => {
     .where("userId", "=", userId)
     .execute();
   for (let i = 0; i < chatRooms.length; i++) {
-    const { count, lastContent, createdAt } = await getLastMessageAndCount(chatRooms[i].id, userId);
+    const { count, lastContent, createdAt} = await getLastMessageAndCount(chatRooms[i].id, userId);
     chatRooms[i].lastMessage = lastContent;
     chatRooms[i].notReadCount = count;
     chatRooms[i].createdAt = createdAt;
     chatRooms[i].memberCount = (await getChatRoomMemebers(chatRooms[i].id)).length;
   }
-  chatRooms.sort((a, b) => {
-    return a.createdAt < b.createdAt ? -1 : 1;
-  });
+  chatRooms.sort((a,b)=> a.createdAt! >= b.createdAt! ? -1 : 1)
   return chatRooms;
 };
 
@@ -80,13 +81,13 @@ export const getLastMessageAndCount = async (chatRoomId: string, userId: string)
   if (messages.length !== 0)
     return {
       lastContent: messages[messages.length - 1].content,
-      count: messages.length - startIdx,
-      createdAt: messages[messages.length - 1].createdAt,
+      count: messages.length - startIdx - 1,
+      createdAt : messages[messages.length - 1].createdAt
     };
   else
     return {
       lastContent: "",
-      count: messages.length - startIdx,
+      count: messages.length - startIdx -1 ,
     };
 };
 
@@ -118,7 +119,6 @@ export const saveLastMessage = async (userId: string, roomId: string, messageId:
         messageId,
       })
       .executeTakeFirst();
-    console.log(result);
     return result.numInsertedOrUpdatedRows;
   } else {
     const result = await db
@@ -128,7 +128,6 @@ export const saveLastMessage = async (userId: string, roomId: string, messageId:
       })
       .where(({ eb, and }) => and([eb("userId", "=", userId), eb("roomId", "=", roomId)]))
       .executeTakeFirst();
-    console.log(result);
     return result.numUpdatedRows;
   }
 };
@@ -144,7 +143,7 @@ export const getChatRoomMemebers = async (chatRoomId: string) => {
   return members;
 };
 
-export const chatNotification = async (chatRoomId: string) => {
+export const getNotiMembers = async (chatRoomId: string) => {
   const members = await db
     .selectFrom("chatRoom")
     .innerJoin("storeMember", "storeMember.storeId", "chatRoom.storeId")
@@ -152,14 +151,5 @@ export const chatNotification = async (chatRoomId: string) => {
     .where("chatRoom.id", "=", chatRoomId)
     .execute();
 
-  for (let i = 0; i < members.length; i++) {
-    const userId = members[i].userId;
-    await db
-      .insertInto("chatNotification")
-      .values({
-        userId,
-      })
-      .executeTakeFirst();
-  }
-  return members.length;
+  return members
 };

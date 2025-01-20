@@ -28,7 +28,7 @@ class NotificationMonitor {
           console.log(userId);
           payload = await getChatRooms(userId as string);
           eventName = "chatNotification";
-          sendToId = row["userId"] as string;
+          sendToId = row["user_id"] as string;
           console.log(payload);
         } else {
           payload = {
@@ -42,7 +42,8 @@ class NotificationMonitor {
           eventName = "notification";
           sendToId = row["user_id"] as string;
         }
-
+        console.log(sendToId);
+        
         sessionManager.pushToUser(sendToId as string, { data: payload, eventName: eventName });
       });
     });
