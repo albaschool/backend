@@ -92,9 +92,9 @@ const login = async (req: Request, res: Response) => {
       res.cookie("Authorization", token, {
         httpOnly: true,
       });
-      console.log(token);
       res.status(200).json({
         message: "로그인이 완료됐습니다.",
+        token: token,
       });
     } else {
       res.status(404).json({

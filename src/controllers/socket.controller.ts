@@ -23,7 +23,7 @@ const socket = (server: http.Server) => {
   const socketListByUserId: Map<string, string> = new Map();
   const userListBySocketId: Map<string, string> = new Map();
 
-  io.on("connection", (socket) => {
+  io.on("connection", async (socket) => {
     logger.info("Client is connected", socket.id);
     const token = socket.handshake.auth.token;
     if (!token || !token.startsWith("Bearer ")) {
@@ -32,12 +32,12 @@ const socket = (server: http.Server) => {
     }
     const auth = jwt.verify(token.substring(7), config.jwt.secretKey) as AuthPayload;
     const userId = auth.id;
-
+    const initialize = await getChatRooms(userId);
+    socket.emit("initailize", { data: initialize });
     socketListByUserId.set(userId, socket.id);
     userListBySocketId.set(socket.id, userId);
 
     const userName = auth.name;
-
     socket.on("joinRoom", async (data) => {
       const { roomId } = data;
       try {

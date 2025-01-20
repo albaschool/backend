@@ -11,12 +11,13 @@ const socket1 = io(`http://localhost:3000/`, {
 console.log(1);
 socket1.on("connect", () => {
   console.log("Connected to server with id:", socket1.id);
-});
-socket1.emit("joinRoom", { roomId: "CbAnflTw" }, (response) => {
-  console.log("Join room response:", response);
+
+  socket1.emit("joinRoom", { roomId: "CbAnflTw" }, (response) => {
+    console.log("Join room response:", response);
+  });
 });
 
-socket1.emit("sendMessage", { content: "hello room2222 CbAnflTw!", roomId: "CbAnflTw" }, (response) => {
+socket1.emit("broadcast", { content: "hello room2222 CbAnflTw!", roomId: "CbAnflTw" }, (response) => {
   console.log("Send message response:", response);
 });
 
@@ -24,10 +25,10 @@ socket1.on("broadcast", (response) => {
   console.log(response);
 });
 
-socket1.on("chatLists", (response) => {
-  console.log(response);
-});
+// socket1.on("initailize", (response) => {
+//     console.log(response);
+// });
 
-socket1.emit("leaveRoom", { roomId: "CbAnflTw" }, (response) => {
+socket1.on("chatLists", (response) => {
   console.log(response);
 });
