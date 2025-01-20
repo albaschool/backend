@@ -37,7 +37,7 @@ export const createSchedule = async (payload: CreateSchedulePayload) => {
   return schedule;
 };
 
-export const updateSchedule = async (scheduleId: string, payload: UpdateSchedulePayload) => {
+export const updateSchedule = async (scheduleId: string, payload: Partial<UpdateSchedulePayload>) => {
   const { dayOfWeek, content, startTime, endTime } = payload;
   const result = await db
     .updateTable("schedule")
