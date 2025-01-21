@@ -1,6 +1,7 @@
 import express from "express";
 
 import { chatRoomSave, getChatRoomDetail } from "@/controllers/chat.contoller";
+
 import authMiddleware from "@/middlewares/auth.middleware";
 const router = express.Router();
 

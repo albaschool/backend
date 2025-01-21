@@ -38,6 +38,7 @@ export interface StoreTable {
   openTime: string;
   closeTime: string;
   salt: string;
+  bizRegistrationNum: string;
   createdAt: ColumnType<Date, string | undefined, never>;
 }
 
