@@ -53,7 +53,7 @@ export const getChatRooms = async (userId: string) => {
   }
 
   chatRooms.sort((a, b) => (a.createdAt! >= b.createdAt! ? -1 : 1));
-  
+
   return chatRooms;
 };
 

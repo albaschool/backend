@@ -13,7 +13,7 @@ import { getChatRooms, getNotiMembers, saveLastMessage, saveMessage } from "@/se
 const usersInChatByUserId: Map<string, string> = new Map();
 
 const usersInRoomBySocketId: Map<string, string> = new Map();
-const usersInRoomByUserId : Map<string, string> = new Map();
+const usersInRoomByUserId: Map<string, string> = new Map();
 
 const socket = (server: http.Server) => {
   const io = new Server(server, {
@@ -28,41 +28,39 @@ const socket = (server: http.Server) => {
 
   //유효성 검사
   io.use((socket, next) => {
-    const token = socket.handshake.auth.token;  
-    if (token || token.startsWith("Bearer ")) {  
-      next();  
+    const token = socket.handshake.auth.token;
+    if (token || token.startsWith("Bearer ")) {
+      next();
     } else {
-      next(new HttpException(401, '토큰이 없습니다.')); 
+      next(new HttpException(401, "토큰이 없습니다."));
     }
   });
 
-  const chatListSocket = io.of('/chat');
-  const chatRoomSocket = io.of('/room');
+  const chatListSocket = io.of("/chat");
+  const chatRoomSocket = io.of("/room");
 
-  chatListSocket.on("connection", async (socket)=>{
-      logger.info("Client is connected in chatList space" +  socket.id);
-      const token = socket.handshake.auth.token;
-      const auth = jwt.verify(token.substring(7), config.jwt.secretKey) as AuthPayload;
-      const userId = auth.id;
-      const initialize = await getChatRooms(userId);
-      socket.emit("initialize", {data : initialize});
-      usersInChatByUserId.set(userId, socket.id);
-
-      socket.on("disconnect", () => {
-        usersInChatByUserId.delete(userId);
-        logger.info("User disconnected");
-      });
-
-
-  })
-
-  chatRoomSocket.on("connection", async (socket)=>{
-    logger.info("Client is connected in room space" +  socket.id);
+  chatListSocket.on("connection", async (socket) => {
+    logger.info("Client is connected in chatList space" + socket.id);
     const token = socket.handshake.auth.token;
     const auth = jwt.verify(token.substring(7), config.jwt.secretKey) as AuthPayload;
     const userId = auth.id;
     const initialize = await getChatRooms(userId);
-    socket.emit("initialize", {data : initialize});
+    socket.emit("initialize", { data: initialize });
+    usersInChatByUserId.set(userId, socket.id);
+
+    socket.on("disconnect", () => {
+      usersInChatByUserId.delete(userId);
+      logger.info("User disconnected");
+    });
+  });
+
+  chatRoomSocket.on("connection", async (socket) => {
+    logger.info("Client is connected in room space" + socket.id);
+    const token = socket.handshake.auth.token;
+    const auth = jwt.verify(token.substring(7), config.jwt.secretKey) as AuthPayload;
+    const userId = auth.id;
+    const initialize = await getChatRooms(userId);
+    socket.emit("initialize", { data: initialize });
     usersInRoomBySocketId.set(socket.id, userId);
     usersInRoomByUserId.set(userId, socket.id);
     const userName = auth.name;
@@ -71,7 +69,7 @@ const socket = (server: http.Server) => {
       const { roomId } = data;
       try {
         socket.join(roomId);
-        callback({message : "joined Ok."});
+        callback({ message: "joined Ok." });
         logger.info(`${socket.id} joined in room ${roomId}`);
       } catch (error) {
         logger.error("Interal Server Error.", error);
@@ -110,7 +108,7 @@ const socket = (server: http.Server) => {
 
         const notificationMembers = await getNotiMembers(roomId);
         const roomSockets = await chatRoomSocket.in(roomId).fetchSockets();
-        
+
         //채팅룸에 있는 멤버들에 한해 메시지 읽음 처리
         for (const roomSocket of roomSockets!) {
           if (usersInRoomBySocketId.has(roomSocket.id)) {
@@ -125,7 +123,7 @@ const socket = (server: http.Server) => {
           if (usersInChatByUserId.has(notiUserId)) {
             const socketId = usersInChatByUserId.get(notificationMembers[i].userId);
             const payload = await getChatRooms(notiUserId);
-            console.log(socketId)
+            console.log(socketId);
             const clientSocket = chatListSocket.sockets.get(socketId as string);
             clientSocket?.emit("chatLists", { data: payload });
           }
@@ -141,8 +139,7 @@ const socket = (server: http.Server) => {
       usersInRoomBySocketId.delete(socket.id);
       logger.info("User disconnected");
     });
-
-  });  
+  });
 };
 
 export default socket;

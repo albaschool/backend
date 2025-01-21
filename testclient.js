@@ -10,11 +10,8 @@ const socket1 = io(`http://localhost:3000/chat`, {
 //const socket2 = io(`http://localhost:3000/` , {auth : {token : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgzaUFTNkRkR0NoWCIsIm5hbWUiOiLquYDslYzrsJQiLCJyb2xlIjoic3RhZmYiLCJpYXQiOjE3MzczNjIxMzEsImV4cCI6NjE3MzczNjIxMzEsImlzcyI6ImFuZGV2In0.SmRLEn7R_V86fAgBuYbF1o1QDUGOK785qGtHh_84nwM"}});
 // console.log(1);
 
-
 socket1.on("connect", () => {
   console.log("Connected to server with id:", socket1.id);
-
-  
 });
 // socket1.emit("joinRoom", { roomId: "CbAnflTw" }, (response) => {
 //     console.log("Join room response:", response);})
@@ -29,4 +26,3 @@ socket1.on("initialize", (response) => {
 socket1.on("chatLists", (response) => {
   console.log(response);
 });
-
