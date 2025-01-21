@@ -37,6 +37,9 @@ const config = {
     user: getEnvVar("MAIL_USER"),
     password: getEnvVar("MAIL_PASSWORD"),
   },
+  openapi: {
+    ntsBusinessman: getEnvVar("OPENAPI_NTS_BUSINESSMAN"),
+  },
 };
 
 export default config;

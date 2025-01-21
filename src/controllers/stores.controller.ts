@@ -27,6 +27,11 @@ export const createStore = async (req: Request, res: Response) => {
   const salt = await createSalt();
   const hashedPassword = await createHashedPassword(payload.password, salt);
 
+  const validateBizRegistrationNum = await services.validateBizRegistrationNum(payload.bizRegistrationNum);
+  if (!validateBizRegistrationNum) {
+    throw new HttpException(400, "사업자 등록번호가 올바르지 않습니다.");
+  }
+
   const { result, storeId } = await services.createStore({
     ...payload,
     password: hashedPassword,
@@ -47,7 +52,7 @@ export const createStore = async (req: Request, res: Response) => {
 
 /** GET /stores/me */
 export const getMyStores = async (req: Request, res: Response) => {
-  const stores = await services.getStores(req.auth!.id);
+  const stores = await services.getStoresByUserId(req.auth!.id);
 
   if (stores.length === 0) {
     res.status(404).json([]);

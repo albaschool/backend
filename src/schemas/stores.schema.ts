@@ -12,6 +12,7 @@ export const createStoreSchema = z.object({
     closeTime: z
       .string()
       .regex(/^([01][0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$/, "HH:mm:ss 혹은 HH:mm 형식이어야 합니다."),
+    bizRegistrationNum: z.string().regex(/^\d{10}$/, "숫자 10자리여야 합니다."),
   }),
 });
 
