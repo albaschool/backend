@@ -87,7 +87,7 @@ const login = async (req: Request, res: Response) => {
 
   res.status(200).json({
     message: "로그인이 완료됐습니다.",
-    token : token
+    token: token,
   });
 };
 
