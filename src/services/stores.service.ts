@@ -37,12 +37,12 @@ export const getStoreMembers = async (storeId: string) => {
 };
 
 export const createStore = async (payload: CreateStorePayload) => {
-  const { ownerId, title, location, contact, password, openTime, closeTime, salt } = payload;
+  const { ownerId, title, location, contact, password, openTime, closeTime, salt, bizRegistrationNum } = payload;
   const storeId = nanoid(8);
 
   const result = await db
     .insertInto("store")
-    .values({ id: storeId, ownerId, title, location, contact, password, openTime, closeTime, salt })
+    .values({ id: storeId, ownerId, title, location, contact, password, openTime, closeTime, salt, bizRegistrationNum })
     .executeTakeFirst();
 
   return { result, storeId };

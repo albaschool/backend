@@ -7,6 +7,7 @@ export interface CreateStorePayload {
   openTime: string;
   closeTime: string;
   salt: string;
+  bizRegistrationNum: string;
 }
 
 export interface UpdateStorePayload {
