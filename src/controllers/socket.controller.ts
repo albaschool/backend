@@ -10,66 +10,38 @@ import { RecievedSocketData, SendSocketData } from "@/interfaces/socket.interfac
 import logger from "@/logger";
 import { getChatRooms, getNotiMembers, saveLastMessage, saveMessage } from "@/services/chat.service";
 
-const usersInChatByUserId: Map<string, string> = new Map();
-
-const usersInRoomBySocketId: Map<string, string> = new Map();
-const usersInRoomByUserId: Map<string, string> = new Map();
-
 const socket = (server: http.Server) => {
   const io = new Server(server, {
     cors: {
       origin: "*",
-      methods: "*",
+      methods: ["GET", "POST"],
       allowedHeaders: ["Content-Type", "Authorization"],
       credentials: true,
     },
-    path: "/socket.io",
   });
 
-  //유효성 검사
-  io.use((socket, next) => {
+  const socketListByUserId: Map<string, string> = new Map();
+  const userListBySocketId: Map<string, string> = new Map();
+
+  io.on("connection", async (socket) => {
+    logger.info("Client is connected", socket.id);
     const token = socket.handshake.auth.token;
-    if (token || token.startsWith("Bearer ")) {
-      next();
-    } else {
-      next(new HttpException(401, "토큰이 없습니다."));
+    if (!token || !token.startsWith("Bearer ")) {
+      socket.disconnect();
+      throw new HttpException(401, "토큰을 찾을 수 없습니다.");
     }
-  });
-
-  const chatListSocket = io.of("/chat");
-  const chatRoomSocket = io.of("/room");
-
-  chatListSocket.on("connection", async (socket) => {
-    logger.info("Client is connected in chatList space" + socket.id);
-    const token = socket.handshake.auth.token;
     const auth = jwt.verify(token.substring(7), config.jwt.secretKey) as AuthPayload;
     const userId = auth.id;
     const initialize = await getChatRooms(userId);
-    socket.emit("initialize", { data: initialize });
-    usersInChatByUserId.set(userId, socket.id);
+    socket.emit("initailize", { data: initialize });
+    socketListByUserId.set(userId, socket.id);
+    userListBySocketId.set(socket.id, userId);
 
-    socket.on("disconnect", () => {
-      usersInChatByUserId.delete(userId);
-      logger.info("User disconnected");
-    });
-  });
-
-  chatRoomSocket.on("connection", async (socket) => {
-    logger.info("Client is connected in room space" + socket.id);
-    const token = socket.handshake.auth.token;
-    const auth = jwt.verify(token.substring(7), config.jwt.secretKey) as AuthPayload;
-    const userId = auth.id;
-    const initialize = await getChatRooms(userId);
-    socket.emit("initialize", { data: initialize });
-    usersInRoomBySocketId.set(socket.id, userId);
-    usersInRoomByUserId.set(userId, socket.id);
     const userName = auth.name;
-
-    socket.on("joinRoom", async (data, callback?) => {
+    socket.on("joinRoom", async (data) => {
       const { roomId } = data;
       try {
         socket.join(roomId);
-        callback({ message: "joined Ok." });
         logger.info(`${socket.id} joined in room ${roomId}`);
       } catch (error) {
         logger.error("Interal Server Error.", error);
@@ -78,6 +50,8 @@ const socket = (server: http.Server) => {
 
     socket.on("leaveRoom", async (data) => {
       const { roomId } = data;
+      console.log(`User ${socket.id} is leaving room: ${roomId}`);
+
       try {
         socket.leave(roomId);
         logger.info(`User ${socket.id} has leaved room ${roomId}`);
@@ -107,37 +81,38 @@ const socket = (server: http.Server) => {
         callback({ message: "Ok" });
 
         const notificationMembers = await getNotiMembers(roomId);
-        const roomSockets = await chatRoomSocket.in(roomId).fetchSockets();
+        const inRoomMembers = io.sockets.adapter.rooms.get(roomId);
 
         //채팅룸에 있는 멤버들에 한해 메시지 읽음 처리
-        for (const roomSocket of roomSockets!) {
-          if (usersInRoomBySocketId.has(roomSocket.id)) {
-            const roomUserId = usersInRoomBySocketId.get(roomSocket.id);
-            const result = await saveLastMessage(roomUserId!, roomId, messageId);
-            if (result === BigInt(0)) throw new HttpException(500, "Internal Server Error. *");
+        for (const clientSocket of inRoomMembers!) {
+          if (userListBySocketId.has(clientSocket)) {
+            const inRoomUserId = userListBySocketId.get(clientSocket);
+            const result = await saveLastMessage(inRoomUserId!, roomId, messageId);
+            if (result === BigInt(0)) throw new HttpException(500, "Internal Server Error.");
           }
         }
         //소켓에 접속해 있는 전체 멤버들에게 채팅리스트 업데이트
-        for (let i = 0; i < notificationMembers.length; i++) {
-          const notiUserId = notificationMembers[i].userId;
-          if (usersInChatByUserId.has(notiUserId)) {
-            const socketId = usersInChatByUserId.get(notificationMembers[i].userId);
+        for (const notiMember of notificationMembers) {
+          const notiUserId = notiMember.userId;
+          const socketId = socketListByUserId.get(notiUserId);
+
+          if (socketId && ! inRoomMembers?.has(socketId)) {
             const payload = await getChatRooms(notiUserId);
-            console.log(socketId);
-            const clientSocket = chatListSocket.sockets.get(socketId as string);
+            console.log(notiUserId, payload);
+            const clientSocket = io.sockets.sockets.get(socketId as string);
             clientSocket?.emit("chatLists", { data: payload });
           }
         }
       } catch (error) {
-        logger.error("Interal Server Error. error", error);
+        logger.error("Interal Server Error.", error);
         callback({ error: "Fail to send message." });
       }
     });
 
     socket.on("disconnect", () => {
-      usersInRoomByUserId.delete(userId);
-      usersInRoomBySocketId.delete(socket.id);
-      logger.info("User disconnected");
+      socketListByUserId.delete(userId);
+      userListBySocketId.delete(socket.id);
+      logger.info("User disconnected", socket.id);
     });
   });
 };
