@@ -47,7 +47,7 @@ export const createStore = async (req: Request, res: Response) => {
 
 /** GET /stores/me */
 export const getMyStores = async (req: Request, res: Response) => {
-  const stores = await services.getStores(req.auth!.id);
+  const stores = await services.getStoresByUserId(req.auth!.id);
 
   if (stores.length === 0) {
     res.status(404).json([]);

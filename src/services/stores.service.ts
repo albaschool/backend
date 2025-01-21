@@ -4,11 +4,17 @@ import { nanoid } from "nanoid";
 import { db } from "@/db";
 import { CreateStorePayload, UpdateStorePayload } from "@/interfaces/stores.interface";
 
-export const getStores = async (userId?: string) => {
+export const getStores = async () => {
+  const stores = await db.selectFrom("store").select(["id", "title", "location", "openTime", "closeTime"]).execute();
+  return stores;
+};
+
+export const getStoresByUserId = async (userId: string) => {
   const stores = await db
-    .selectFrom("store")
-    .select(["id", "title", "location", "openTime", "closeTime"])
-    .$if(!!userId, (q) => q.where("ownerId", "=", userId!))
+    .selectFrom("storeMember")
+    .innerJoin("store", "store.id", "storeMember.storeId")
+    .select(["store.id", "store.title", "store.location", "store.openTime", "store.closeTime"])
+    .where("storeMember.userId", "=", userId)
     .execute();
 
   return stores;
