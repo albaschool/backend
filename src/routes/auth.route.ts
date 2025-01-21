@@ -224,7 +224,7 @@ router.put(
 );
 
 router.put(
-  "/fixPassword",
+  "/checkPassword",
   // #swagger.tags = ["Auth"]
   // #swagger.description = "사용자의 비밀번호를 확인합니다."
   // #swagger.security = [{ bearerAuth: [] }]
