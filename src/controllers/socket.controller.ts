@@ -18,7 +18,7 @@ const socket = (server: http.Server) => {
       allowedHeaders: ["Content-Type", "Authorization"],
       credentials: true,
     },
-    path : "/socket.io"
+    path: "/socket.io",
   });
 
   const socketListByUserId: Map<string, string> = new Map();
@@ -97,7 +97,7 @@ const socket = (server: http.Server) => {
           const notiUserId = notiMember.userId;
           const socketId = socketListByUserId.get(notiUserId);
 
-          if (socketId && ! inRoomMembers?.has(socketId)) {
+          if (socketId && !inRoomMembers?.has(socketId)) {
             const payload = await getChatRooms(notiUserId);
             console.log(notiUserId, payload);
             const clientSocket = io.sockets.sockets.get(socketId as string);
