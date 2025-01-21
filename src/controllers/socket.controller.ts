@@ -14,10 +14,11 @@ const socket = (server: http.Server) => {
   const io = new Server(server, {
     cors: {
       origin: "*",
-      methods: ["GET", "POST"],
+      methods: "*",
       allowedHeaders: ["Content-Type", "Authorization"],
       credentials: true,
     },
+    path : "/socket.io"
   });
 
   const socketListByUserId: Map<string, string> = new Map();
