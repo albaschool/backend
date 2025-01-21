@@ -79,6 +79,14 @@ router.post(
         }
       }
     }
+    #swagger.responses[400] = {
+      description: "사업자 등록번호가 올바르지 않을 때",
+      content: {
+        "application/json": {
+          example: { message: "사업자 등록번호가 올바르지 않습니다." }
+        }
+      }
+    }
     #swagger.responses[500] = {
       description: "Internal Server Error",
       content: {

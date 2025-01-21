@@ -33,6 +33,9 @@ const config = {
   jwt: {
     secretKey: getEnvVar("JWT_SECRET_KEY"),
   },
+  openapi: {
+    ntsBusinessman: getEnvVar("OPENAPI_NTS_BUSINESSMAN"),
+  },
 };
 
 export default config;
