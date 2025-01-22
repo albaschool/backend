@@ -16,8 +16,7 @@ socket1.emit("joinRoom", { roomId: "CbAnflTw" }, (response) => {
   console.log("Join room response:", response);
 });
 
-socket1.emit("broadcast", { content: "hello room2222 CbAnflTw!", roomId: "CbAnflTw" }
-  );
+socket1.emit("broadcast", { content: "hello room2222 CbAnflTw!", roomId: "CbAnflTw" });
 socket1.emit("broadcast", { content: "hello room2222 CbAnflTw!", roomId: "CbAnflTw" });
 socket1.emit("broadcast", { content: "hello room2222 CbAnflTw!", roomId: "CbAnflTw" });
 socket1.emit("broadcast", { content: "hello room2222 CbAnflTw!", roomId: "CbAnflTw" }, (response) => {
