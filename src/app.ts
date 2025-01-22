@@ -46,6 +46,7 @@ app.use("/schedules", schedulesRoute);
 app.use("/notifications", notificationsRoute);
 
 app.use(errorMiddleware);
+
 app.set("port", config.http.port);
 server.listen(parseInt(config.http.port), config.http.host, () => {
   logger.info(`Node environment: ${config.node.env}`);
