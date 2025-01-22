@@ -64,7 +64,6 @@ const regist = async (req: Request, res: Response) => {
 };
 
 const login = async (req: Request, res: Response) => {
-
   const body = req.body;
   const user = await isUser(body.email, body.password);
 
