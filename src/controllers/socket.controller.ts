@@ -59,17 +59,14 @@ const socket = (server: http.Server) => {
     const token = socket.handshake.auth.token;
     const auth = jwt.verify(token.substring(7), config.jwt.secretKey) as AuthPayload;
     const userId = auth.id;
-    const initialize = await getChatRooms(userId);
-    socket.emit("initialize", { data: initialize });
     usersInRoomBySocketId.set(socket.id, userId);
     usersInRoomByUserId.set(userId, socket.id);
     const userName = auth.name;
 
-    socket.on("joinRoom", async (data, callback?) => {
+    socket.on("joinRoom", async (data) => {
       const { roomId } = data;
       try {
         socket.join(roomId);
-        callback({ message: "joined Ok." });
         logger.info(`${socket.id} joined in room ${roomId}`);
       } catch (error) {
         logger.error("Interal Server Error.", error);
@@ -86,7 +83,7 @@ const socket = (server: http.Server) => {
       }
     });
 
-    socket.on("broadcast", async (data: RecievedSocketData, callback?) => {
+    socket.on("broadcast", async (data: RecievedSocketData) => {
       try {
         const { content, roomId } = data;
         logger.info(`Message received: ${content} in room ${roomId}`);
@@ -97,14 +94,13 @@ const socket = (server: http.Server) => {
         const message: SendSocketData = {
           content: content,
           roomId: roomId,
-          userId: userId,
+          senderId: userId,
           name: userName,
           messageId: messageId,
           createdAt: createdAt,
         };
 
-        io.to(roomId).emit("broadcast", message);
-        callback({ message: "Ok" });
+        chatRoomSocket.to(roomId).emit("broadcast", message);
 
         const notificationMembers = await getNotiMembers(roomId);
         const roomSockets = await chatRoomSocket.in(roomId).fetchSockets();
@@ -123,14 +119,12 @@ const socket = (server: http.Server) => {
           if (usersInChatByUserId.has(notiUserId)) {
             const socketId = usersInChatByUserId.get(notificationMembers[i].userId);
             const payload = await getChatRooms(notiUserId);
-            console.log(socketId);
             const clientSocket = chatListSocket.sockets.get(socketId as string);
             clientSocket?.emit("chatLists", { data: payload });
           }
         }
       } catch (error) {
         logger.error("Interal Server Error. error", error);
-        callback({ error: "Fail to send message." });
       }
     });
 

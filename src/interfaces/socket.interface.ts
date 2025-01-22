@@ -3,7 +3,7 @@ export interface RecievedSocketData {
   roomId: string;
 }
 export interface SendSocketData {
-  userId: string;
+  senderId: string;
   name: string;
   content: string;
   roomId: string;
