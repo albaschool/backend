@@ -70,7 +70,6 @@ const login = async (req: Request, res: Response) => {
   if (!user) {
     throw new HttpException(404, "아이디 또는 비밀번호가 일치하지 않습니다.");
   }
-
   const token = jwt.sign(
     {
       id: user.id,

@@ -223,7 +223,7 @@ router.put(
   fixPassword,
 );
 
-router.put(
+router.post(
   "/checkPassword",
   // #swagger.tags = ["Auth"]
   // #swagger.description = "사용자의 비밀번호를 확인합니다."
