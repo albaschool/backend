@@ -54,7 +54,7 @@ const doc = {
         $password: "password",
         $openTime: "09:00:00",
         $closeTime: "21:00:00",
-        $bizRegistrationNum: "1234567890",
+        $bizRegistrationNum: "암호화된 사업자 등록번호",
       },
       updateStore: {
         $title: "GS25 서울역점",
