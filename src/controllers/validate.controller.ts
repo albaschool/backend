@@ -22,9 +22,6 @@ export const validateBizRegistrationNum = async (req: Request, res: Response) =>
     }
 
     const encrypted = services.encrypt(bizRegistrationNum);
-
-    logger.debug(`${bizRegistrationNum} -> ${encrypted} -> ${services.decrypt(encrypted)}`);
-
     res.status(200).json({ value: encrypted });
   } catch (error) {
     if (error instanceof HttpException) {
