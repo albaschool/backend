@@ -104,7 +104,7 @@ const fixPassword = async (req: Request, res: Response) => {
 const checkUserPassword = async (req: Request, res: Response) => {
   try {
     const body = req.body;
-    const result = checkPassword(body.password, body.id);
+    const result = await checkPassword(body.password, req.auth!.id);
     if (!result) throw new Error();
     else res.status(200).json({ message: "비밀번호 확인이 완료됐습니다." });
   } catch {
