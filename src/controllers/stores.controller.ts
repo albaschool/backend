@@ -34,7 +34,7 @@ export const createStore = async (req: Request, res: Response) => {
 
   const salt = await createSalt();
   const hashedPassword = await createHashedPassword(payload.password, salt);
-  
+
   const { result, storeId } = await services.createStore({
     ...payload,
     password: hashedPassword,

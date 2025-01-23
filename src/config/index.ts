@@ -42,7 +42,7 @@ const config = {
   },
   validate: {
     privateKey: getEnvVar("VALIDATE_PRIVATE_KEY"),
-  }
+  },
 };
 
 export default config;

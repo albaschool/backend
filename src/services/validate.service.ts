@@ -40,4 +40,4 @@ export const decrypt = (encrypted: string): string => {
   let decrypted = decipher.update(encryptedText, "hex", "utf8");
   decrypted += decipher.final("utf8");
   return decrypted;
-}
+};
