@@ -1,10 +1,8 @@
 import { sql } from "kysely";
 import { nanoid } from "nanoid";
 
-import config from "@/config";
 import { db } from "@/db";
 import { CreateStorePayload, UpdateStorePayload } from "@/interfaces/stores.interface";
-import logger from "@/logger";
 
 export const getStores = async () => {
   const stores = await db.selectFrom("store").select(["id", "title", "location", "openTime", "closeTime"]).execute();
@@ -108,29 +106,4 @@ export const isStoreMember = async (storeId: string, userId: string) => {
     .executeTakeFirst();
 
   return result !== undefined;
-};
-
-export const validateBizRegistrationNum = async (bizRegistrationNum: string) => {
-  try {
-    const res = await fetch(
-      `https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=${config.openapi.ntsBusinessman}`,
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          b_no: [bizRegistrationNum],
-        }),
-      },
-    );
-
-    const { data } = await res.json();
-
-    return !(data[0]?.["tax_type"]?.includes("등록되지 않은 사업자등록번호") ?? true);
-  } catch (error) {
-    logger.error(error);
-    return false;
-  }
 };

@@ -40,6 +40,9 @@ const config = {
   openapi: {
     ntsBusinessman: getEnvVar("OPENAPI_NTS_BUSINESSMAN"),
   },
+  validate: {
+    privateKey: getEnvVar("VALIDATE_PRIVATE_KEY"),
+  }
 };
 
 export default config;
