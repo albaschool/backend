@@ -33,6 +33,10 @@ const doc = {
       name: "Notifications",
       description: "알림 엔드포인트",
     },
+    {
+      name: "Validate",
+      description: "검증 엔드포인트",
+    },
   ],
   securityDefinitions: {
     bearerAuth: {
