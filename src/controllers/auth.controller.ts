@@ -5,7 +5,15 @@ import config from "@/config";
 import HttpException from "@/interfaces/http-exception.interface";
 import logger from "@/logger";
 import { getMailOptions, transport } from "@/providers/email.provider";
-import { checkPassword, isUser, saveCode, saveUser, updatePassword, verifyEmail } from "@/services/auth.service";
+import {
+  checkPassword,
+  getUserInfo,
+  isUser,
+  saveCode,
+  saveUser,
+  updatePassword,
+  verifyEmail,
+} from "@/services/auth.service";
 import { createHashedPassword, createSalt } from "@/utils/password";
 
 // POST /auth/email
@@ -112,4 +120,14 @@ const checkUserPassword = async (req: Request, res: Response) => {
   }
 };
 
-export { checkUserPassword, email, emailVerify, fixPassword, login, regist };
+const getMyPage = async (req: Request, res: Response) => {
+  try {
+    const result = await getUserInfo(req.auth!.id);
+    if (!result) throw new HttpException(404, "유저 정보를 찾을 수 없습니다.");
+    else res.status(200).json(result);
+  } catch {
+    throw new HttpException(401, "토큰이 만료 됐습니다.");
+  }
+};
+
+export { checkUserPassword, email, emailVerify, fixPassword, getMyPage, login, regist };

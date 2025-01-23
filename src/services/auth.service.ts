@@ -67,3 +67,12 @@ export const checkPassword = async (password: string, id: string) => {
   if (result === undefined) return false;
   return await comparePassword(result.password, password, result.salt);
 };
+
+export const getUserInfo = async (id: string) => {
+  const result = await db
+    .selectFrom("user")
+    .select(["name", "email", "contact"])
+    .where("id", "=", id)
+    .executeTakeFirst();
+  return result;
+};

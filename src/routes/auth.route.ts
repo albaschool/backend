@@ -1,6 +1,14 @@
 import express from "express";
 
-import { checkUserPassword, email, emailVerify, fixPassword, login, regist } from "@/controllers/auth.controller";
+import {
+  checkUserPassword,
+  email,
+  emailVerify,
+  fixPassword,
+  getMyPage,
+  login,
+  regist,
+} from "@/controllers/auth.controller";
 import authMiddleware from "@/middlewares/auth.middleware";
 import validate from "@/middlewares/validate.middleware";
 import { emailSendSchema, passwordSchema, saveUserSchema } from "@/schemas/auth.schema";
@@ -270,5 +278,42 @@ router.post(
   validate(passwordSchema),
   authMiddleware,
   checkUserPassword,
+);
+
+router.get(
+  "/me",
+  // #swagger.tags = ["Auth"]
+  // #swagger.description = "내 정보 조회."
+  // #swagger.security = [{ bearerAuth: [] }]
+  /*
+    #swagger.responses[200] = {
+      description: "OK",
+      content: {
+        "application/json": {
+          examples: {
+            example: { $ref: "#/components/examples/getAuthInfoExample" }
+          }
+        }
+      }
+    }
+    #swagger.responses[404] = {
+      description: "사용자의 정보를 가지고 있지 않음",
+      content: {
+        "application/json": {
+          example: []
+        }
+      }
+    }
+    #swagger.responses[500] = {
+      description: "Internal Server Error",
+      content: {
+        "application/json": {
+          example: { message: "Internal server error" }
+        }
+      }
+    }
+  */
+  authMiddleware,
+  getMyPage,
 );
 export default router;
