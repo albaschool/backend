@@ -14,6 +14,7 @@ import chatRoute from "@/routes/chat.route";
 import notificationsRoute from "@/routes/notifications.route";
 import schedulesRoute from "@/routes/schedules.route";
 import storesRoute from "@/routes/stores.route";
+import validateRouter from "@/routes/validate.route";
 
 import socketRun from "./controllers/socket.controller";
 import authRoute from "./routes/auth.route";
@@ -44,6 +45,7 @@ app.use("/auth", authRoute);
 app.use("/stores", storesRoute);
 app.use("/schedules", schedulesRoute);
 app.use("/notifications", notificationsRoute);
+app.use("/validate", validateRouter);
 
 app.use(errorMiddleware);
 
