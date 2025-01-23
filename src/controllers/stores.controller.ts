@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import HttpException from "@/interfaces/http-exception.interface";
 import { AddStoreMemberPayload, CreateStorePayload, UpdateStorePayload } from "@/interfaces/stores.interface";
 import * as services from "@/services/stores.service";
+import { decrypt as bizRegNumDecrypt } from "@/services/validate.service";
 import { comparePassword, createHashedPassword, createSalt } from "@/utils/password";
 
 /** GET /stores */
@@ -24,14 +25,16 @@ export const createStore = async (req: Request, res: Response) => {
     ...req.body,
   };
 
-  const salt = await createSalt();
-  const hashedPassword = await createHashedPassword(payload.password, salt);
-
-  const validateBizRegistrationNum = await services.validateBizRegistrationNum(payload.bizRegistrationNum);
-  if (!validateBizRegistrationNum) {
+  try {
+    const decryptedBizRegistrationNum = bizRegNumDecrypt(payload.bizRegistrationNum);
+    payload.bizRegistrationNum = decryptedBizRegistrationNum;
+  } catch {
     throw new HttpException(400, "사업자 등록번호가 올바르지 않습니다.");
   }
 
+  const salt = await createSalt();
+  const hashedPassword = await createHashedPassword(payload.password, salt);
+  
   const { result, storeId } = await services.createStore({
     ...payload,
     password: hashedPassword,
