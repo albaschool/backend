@@ -236,6 +236,15 @@ const doc = {
           },
         ],
       },
+      getAuthInfoExample: {
+        value: [
+          {
+            name: "김철수",
+            email: "example@mail.com",
+            contact: "01011112222",
+          },
+        ],
+      },
     },
     parameters: {
       storeId: {
