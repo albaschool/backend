@@ -55,6 +55,7 @@ const doc = {
         $openTime: "09:00:00",
         $closeTime: "21:00:00",
         $bizRegistrationNum: "암호화된 사업자 등록번호",
+        $type : "음식점/카페"
       },
       updateStore: {
         $title: "GS25 서울역점",

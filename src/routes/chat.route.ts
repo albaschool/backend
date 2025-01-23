@@ -1,48 +1,8 @@
 import express from "express";
 
-import { chatRoomSave, getChatRoomDetail, setLastMessage } from "@/controllers/chat.controller";
+import { getChatRoomDetail, setLastMessage } from "@/controllers/chat.controller";
 import authMiddleware from "@/middlewares/auth.middleware";
 const router = express.Router();
-
-// 채팅방 생성
-router.post(
-  "/",
-  // #swagger.tags = ["Chat"]
-  // #swagger.description = "채팅방 생성."
-  // #swagger.security = [{ bearerAuth: [] }]
-  /*
-        #swagger.requestBody = {
-        required: true,
-        content: {
-            "application/json": {
-            schema: {
-                $ref: "#/components/schemas/createChatRoom"
-            }  
-            }
-        }
-        }
-    */
-  /*
-        #swagger.responses[201] = {
-        description: "Created",
-        content: {
-            "application/json": {
-            example: { message: "채팅방 생성이 완료 됐습니다." }
-            }
-        }
-        }
-        #swagger.responses[500] = {
-        description: "Internal Server Error",
-        content: {
-            "application/json": {
-            example: { message: "Internal server error" }
-            }
-        }
-        }
-    */
-  authMiddleware,
-  chatRoomSave,
-);
 
 router.put(
   "/message/last",
