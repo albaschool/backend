@@ -3,7 +3,6 @@ import { Request, Response } from "express";
 import HttpException from "@/interfaces/http-exception.interface";
 import * as services from "@/services/chat.service";
 
-
 //채팅방 상세조회
 
 export const getChatRoomDetail = async (req: Request, res: Response) => {

@@ -6,7 +6,7 @@ import { getChatRoom } from "@/interfaces/chat.interface";
 import { dateFormat } from "@/utils/dateFormat";
 
 //채팅방 생성
-export const createChatRoom = async (storeId : string, title : string) => {
+export const createChatRoom = async (storeId: string, title: string) => {
   const result = await db
     .insertInto("chatRoom")
     .values({
