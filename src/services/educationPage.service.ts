@@ -5,7 +5,7 @@ import { CreateEducationPagePayload, defaultContent } from "@/interfaces/edu.int
 
 export const createDefaultPages = async (storeId: string, type: string) => {
   const titles = await db.selectFrom("defaultPage").select(["title"]).where("type", "=", type).execute();
-  
+
   const insertArray = [];
   for (let i = 0; i < titles.length; i++) {
     const temp: CreateEducationPagePayload = {
