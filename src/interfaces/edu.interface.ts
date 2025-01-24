@@ -57,3 +57,10 @@ export const academyEdu = [
   "긴급 상황 (안전사고 등) 대처 방법",
   "개인정보 보호 및 보안 규정",
 ];
+
+export interface CreateEducationPagePayload {
+  id: string;
+  title: string;
+  content: string;
+  storeId: string;
+}
