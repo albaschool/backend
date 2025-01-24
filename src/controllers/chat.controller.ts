@@ -3,21 +3,6 @@ import { Request, Response } from "express";
 import HttpException from "@/interfaces/http-exception.interface";
 import * as services from "@/services/chat.service";
 
-export const chatRoomSave = async (req: Request, res: Response) => {
-  const body = req.body;
-  const result = await services.createChatRoom(body);
-
-  if (result.numInsertedOrUpdatedRows === BigInt(0)) {
-    res.status(500).json({
-      message: "Internal Server Error.",
-    });
-    return;
-  }
-  res.status(201).json({
-    message: "채팅방 생성이 완료 됐습니다.",
-  });
-};
-
 //채팅방 상세조회
 
 export const getChatRoomDetail = async (req: Request, res: Response) => {

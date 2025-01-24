@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 
 import HttpException from "@/interfaces/http-exception.interface";
 import { AddStoreMemberPayload, CreateStorePayload, UpdateStorePayload } from "@/interfaces/stores.interface";
+import { createChatRoom } from "@/services/chat.service";
+import { createDefaultPages } from "@/services/educationPage.service";
 import * as services from "@/services/stores.service";
 import { decrypt as bizRegNumDecrypt } from "@/services/validate.service";
 import { comparePassword, createHashedPassword, createSalt } from "@/utils/password";
@@ -49,6 +51,14 @@ export const createStore = async (req: Request, res: Response) => {
   if (memberResult.numInsertedOrUpdatedRows === BigInt(0)) {
     throw new Error("Failed to add store member");
   }
+
+  const chatRoomResult = await createChatRoom(storeId, req.body.title);
+  if (chatRoomResult.numInsertedOrUpdatedRows === BigInt(0)) {
+    throw new Error("Failed to create chat room");
+  }
+  const type = req.body.type;
+  const eduResult = createDefaultPages(storeId, type);
+  if (!eduResult) throw new Error("Failed to create default education page");
 
   res.status(201).json({ message: "가게가 생성되었습니다." });
 };

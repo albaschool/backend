@@ -2,12 +2,11 @@ import { sql } from "kysely";
 import { nanoid } from "nanoid";
 
 import { db } from "@/db";
-import { CreateChatRoom, getChatRoom } from "@/interfaces/chat.interface";
+import { getChatRoom } from "@/interfaces/chat.interface";
 import { dateFormat } from "@/utils/dateFormat";
 
 //채팅방 생성
-export const createChatRoom = async (roomInfo: CreateChatRoom) => {
-  const { storeId, title } = roomInfo;
+export const createChatRoom = async (storeId: string, title: string) => {
   const result = await db
     .insertInto("chatRoom")
     .values({
