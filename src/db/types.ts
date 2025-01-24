@@ -12,6 +12,7 @@ export interface Database {
   verification: VerificationTable;
   notification: NotificationTable;
   chatNotification: ChatNotificationTable;
+  defaultPage: DefaultPageTalbe;
 }
 
 export interface UserTable {
@@ -145,3 +146,12 @@ export interface ChatNotificationTable {
 export type ChatNotification = Selectable<ChatNotificationTable>;
 export type NewChatNotification = Insertable<ChatNotificationTable>;
 export type ChatNotificationUpdate = Updateable<ChatNotificationTable>;
+
+export interface DefaultPageTalbe {
+  type: string;
+  title: string;
+}
+
+export type DefaultPage = Selectable<DefaultPageTalbe>;
+export type NewDefaulPage = Insertable<DefaultPageTalbe>;
+export type DefaultPageUpdate = Updateable<DefaultPageTalbe>;
