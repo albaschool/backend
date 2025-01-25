@@ -191,6 +191,16 @@ const doc = {
           createdAt: "2025-01-15T02:10:30.000Z",
         },
       },
+      chatNotificationInitialize: {
+        value: {
+          isNewMessage: false,
+        },
+      },
+      chatNotification: {
+        value: {
+          isNewMessage: true,
+        },
+      },
       chatRoomExample: {
         value: [
           {
