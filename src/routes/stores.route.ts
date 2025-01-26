@@ -87,6 +87,14 @@ router.post(
         }
       }
     }
+    #swagger.responses[403] = {
+      description: "사장님 계정이 아닐 때",
+      content: {
+        "application/json": {
+          example: { message: "사장님만 생성할 수 있습니다." }
+        }
+      }
+    }
     #swagger.responses[500] = {
       description: "Internal Server Error",
       content: {
