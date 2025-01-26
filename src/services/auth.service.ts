@@ -30,7 +30,7 @@ export const saveUser = async (auth: RegistRequest) => {
   return result;
 };
 
-export const isUser = async (email: string, password: string) => {
+export const getUser = async (email: string, password: string) => {
   const user = await db
     .selectFrom("user")
     .select(["id", "name", "role", "password", "salt"])
