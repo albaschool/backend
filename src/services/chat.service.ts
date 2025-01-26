@@ -155,3 +155,9 @@ export const getNotiMembers = async (chatRoomId: string) => {
 
   return members;
 };
+
+export const getInitialNotification = async (userId: string) => {
+  const roomList = await getChatRooms(userId);
+  for (let i = 0; i < roomList.length; i++) if (roomList[i].notReadCount! > 0) return true;
+  return false;
+};
