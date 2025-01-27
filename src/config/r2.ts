@@ -9,7 +9,7 @@ const r2 = new R2({
   secretAccessKey: config.cloudflare.secretAccessKey,
 });
 
-const bucket = r2.bucket(config.cloudflare.bucketName);
+export const bucket = r2.bucket(config.cloudflare.bucketName);
 
 export const checkR2Bucket = async () => {
   if (!(await bucket.exists())) {
