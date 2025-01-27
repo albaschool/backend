@@ -37,6 +37,10 @@ const doc = {
       name: "Validate",
       description: "검증 엔드포인트",
     },
+    {
+      name: "SSE",
+      description: "Server-Sent Events 엔드포인트",
+    },
   ],
   securityDefinitions: {
     bearerAuth: {
@@ -159,8 +163,7 @@ const doc = {
           },
         ],
       },
-      notificationsInitialize: {
-        description: "최초 연결 시 받는 메시지입니다. 최근 10개의 알림을 최신순으로 받습니다.",
+      notificationsExample: {
         value: [
           {
             id: "dQk9ZkCMze6y",
@@ -179,6 +182,12 @@ const doc = {
             createdAt: "2025-01-13T08:06:01.000Z",
           },
         ],
+      },
+      notificationInitialize: {
+        description: "SSE 최초 연결 시 읽지 않은 알림의 유무를 전달합니다.",
+        value: {
+          hasUnreadNotification: false,
+        },
       },
       notification: {
         description: "알림이 생성될 때 받는 메시지입니다.",
