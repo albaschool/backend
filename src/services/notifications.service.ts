@@ -1,3 +1,4 @@
+import { sql } from "kysely";
 import { nanoid } from "nanoid";
 
 import { db } from "@/db";
@@ -53,4 +54,16 @@ export const getStoreNameById = async (storeId: string) => {
   const store = await db.selectFrom("store").select(["title"]).where("id", "=", storeId).executeTakeFirst();
 
   return store?.title;
+};
+
+export const hasUnreadNotification = async (userId: string) => {
+  const result = await db
+    .selectFrom("notification")
+    .select(sql`1`.as("exists"))
+    .where("userId", "=", userId)
+    .where("isChecked", "=", false)
+    .limit(1)
+    .executeTakeFirst();
+
+  return !!result;
 };
