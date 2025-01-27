@@ -23,6 +23,7 @@ export interface UserTable {
   contact: string;
   role: "manager" | "staff";
   salt: string;
+  profile: string;
 }
 
 export type User = Selectable<UserTable>;
