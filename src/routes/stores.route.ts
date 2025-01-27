@@ -3,6 +3,7 @@ import express from "express";
 import {
   addStoreMember,
   createStore,
+  deleteStore,
   deleteStoreMember,
   getMyStores,
   getStoreById,
@@ -377,5 +378,32 @@ router.delete(
   validate(storeIdParamsSchema.merge(userIdParamsSchema)),
   deleteStoreMember,
 );
+
+router.delete(
+  "/stores/:storeId",
+  /*
+    #swagger.tags = ["Stores"]
+    #swagger.description = "특정 가게를 삭제합니다."
+    #swagger.security = [{ bearerAuth: [] }]
+    #swagger.parameters['$ref'] = ['#/components/parameters/storeId']
+    #swagger.responses[200] = {
+      description: "OK",
+      content: {
+        "application/json": {
+          example: { message: "가게가 삭제되었습니다." }
+        }
+      }
+    }
+    #swagger.responses[403] = {
+      description: "가게 소유자가 아닐 때",
+      content: {
+        "application/json": {
+          example: { message: "가게 소유자만 삭제할 수 있습니다." }
+        }
+      }
+    }
+  */
+  deleteStore,
+)
 
 export default router;
