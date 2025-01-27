@@ -380,7 +380,7 @@ router.delete(
 );
 
 router.delete(
-  "/stores/:storeId",
+  "/:storeId",
   /*
     #swagger.tags = ["Stores"]
     #swagger.description = "특정 가게를 삭제합니다."
