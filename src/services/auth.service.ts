@@ -2,6 +2,7 @@ import { nanoid } from "nanoid";
 
 import { db } from "@/db";
 import { RegistRequest } from "@/interfaces/auth.interface";
+import { deleteFileFromR2 } from "@/services/file.service";
 import { comparePassword, createHashedPassword, createSalt } from "@/utils/password";
 
 export const saveCode = async (email: string, code: string) => {
@@ -71,8 +72,20 @@ export const checkPassword = async (password: string, id: string) => {
 export const getUserInfo = async (id: string) => {
   const result = await db
     .selectFrom("user")
-    .select(["name", "email", "contact"])
+    .select(["name", "email", "contact", "profile"])
     .where("id", "=", id)
     .executeTakeFirst();
+  return result;
+};
+
+export const changeProfile = async (id: string, profile: string | null) => {
+  const beforeProfile = await db.selectFrom("user").select("profile").where("id", "=", id).executeTakeFirst();
+
+  if (beforeProfile?.profile) {
+    await deleteFileFromR2(beforeProfile.profile);
+  }
+
+  const result = await db.updateTable("user").set({ profile }).where("id", "=", id).executeTakeFirst();
+
   return result;
 };

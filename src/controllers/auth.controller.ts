@@ -6,6 +6,7 @@ import HttpException from "@/interfaces/http-exception.interface";
 import logger from "@/logger";
 import { getMailOptions, transport } from "@/providers/email.provider";
 import {
+  changeProfile,
   checkPassword,
   getUser,
   getUserInfo,
@@ -14,6 +15,7 @@ import {
   updatePassword,
   verifyEmail,
 } from "@/services/auth.service";
+import { uploadFileToR2 } from "@/services/file.service";
 import { createHashedPassword, createSalt } from "@/utils/password";
 
 // POST /auth/email
@@ -125,10 +127,45 @@ const getMyPage = async (req: Request, res: Response) => {
   try {
     const result = await getUserInfo(req.auth!.id);
     if (!result) throw new HttpException(404, "유저 정보를 찾을 수 없습니다.");
-    else res.status(200).json(result);
+    res.status(200).json({
+      ...result,
+      profile: result.profile ? `https://${config.cloudflare.customDomain}/${result.profile}` : null,
+    });
   } catch {
     throw new HttpException(401, "토큰이 만료 됐습니다.");
   }
 };
 
-export { checkUserPassword, email, emailVerify, fixPassword, getMyPage, login, regist };
+const uploadProfile = async (req: Request, res: Response) => {
+  if (!req.file) {
+    res.status(400).json({ message: "이미지 파일을 업로드 해주세요." });
+    return;
+  }
+
+  const fileData = req.file.buffer;
+  const mimeType = req.file.mimetype;
+  if (!fileData || !mimeType) {
+    res.status(400).json({ message: "잘못된 파일 형식입니다." });
+    return;
+  }
+
+  const imageKey = await uploadFileToR2("profile", fileData, mimeType);
+
+  const result = await changeProfile(req.auth!.id, imageKey);
+  if (result.numUpdatedRows.toString() === "0n") {
+    throw new Error();
+  }
+
+  res.status(200).json({ message: "프로필 사진이 수정되었습니다." });
+};
+
+const deleteProfile = async (req: Request, res: Response) => {
+  const result = await changeProfile(req.auth!.id, null);
+  if (result.numUpdatedRows.toString() === "0n") {
+    throw new Error();
+  }
+
+  res.status(200).json({ message: "프로필 사진이 삭제되었습니다." });
+};
+
+export { checkUserPassword, deleteProfile, email, emailVerify, fixPassword, getMyPage, login, regist, uploadProfile };
