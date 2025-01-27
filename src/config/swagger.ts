@@ -243,6 +243,7 @@ const doc = {
             name: "김철수",
             email: "example@mail.com",
             contact: "01011112222",
+            profile: "https://example.com/profile.jpg",
           },
         ],
       },

@@ -72,7 +72,7 @@ export const checkPassword = async (password: string, id: string) => {
 export const getUserInfo = async (id: string) => {
   const result = await db
     .selectFrom("user")
-    .select(["name", "email", "contact"])
+    .select(["name", "email", "contact", "profile"])
     .where("id", "=", id)
     .executeTakeFirst();
   return result;
