@@ -8,8 +8,8 @@ import { getMailOptions, transport } from "@/providers/email.provider";
 import {
   changeProfile,
   checkPassword,
-  getUser,
   deleteProfileFromDb,
+  getUser,
   getUserInfo,
   saveCode,
   saveUser,
