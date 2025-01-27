@@ -79,31 +79,19 @@ export const getUserInfo = async (id: string) => {
 };
 
 export const changeProfile = async (id: string, profile: string) => {
-  const beforeProfile = await db
-    .selectFrom("user")
-    .select("profile")
-    .where("id", "=", id)
-    .executeTakeFirst();
+  const beforeProfile = await db.selectFrom("user").select("profile").where("id", "=", id).executeTakeFirst();
 
   if (beforeProfile?.profile) {
     await deleteFileFromR2(beforeProfile.profile);
   }
 
-  const result = await db
-    .updateTable("user")
-    .set({ profile })
-    .where("id", "=", id)
-    .executeTakeFirst();
-  
+  const result = await db.updateTable("user").set({ profile }).where("id", "=", id).executeTakeFirst();
+
   return result;
-}
+};
 
 export const deleteProfileFromDb = async (id: string) => {
-  const result = await db
-    .updateTable("user")
-    .set({ profile: null })
-    .where("id", "=", id)
-    .executeTakeFirst();
+  const result = await db.updateTable("user").set({ profile: null }).where("id", "=", id).executeTakeFirst();
 
   return result;
-}
+};

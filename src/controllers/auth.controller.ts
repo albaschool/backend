@@ -129,7 +129,10 @@ const getMyPage = async (req: Request, res: Response) => {
     if (!result) throw new HttpException(404, "유저 정보를 찾을 수 없습니다.");
     res
       .status(200)
-      .json({ ...result, profile: result.profile ? `https://${config.cloudflare.customDomain}/${result.profile}` : null });
+      .json({
+        ...result,
+        profile: result.profile ? `https://${config.cloudflare.customDomain}/${result.profile}` : null,
+      });
   } catch {
     throw new HttpException(401, "토큰이 만료 됐습니다.");
   }

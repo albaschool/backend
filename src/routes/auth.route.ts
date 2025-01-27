@@ -389,6 +389,6 @@ router.delete(
   */
   authMiddleware,
   deleteProfile,
-)
+);
 
 export default router;
