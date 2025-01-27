@@ -2,7 +2,7 @@ import ZongJi from "zongji";
 
 import config from "@/config";
 import logger from "@/logger";
-import { getChatRooms } from "@/services/chat.service";
+import { getChatRoomMemebers } from "@/services/chat.service";
 import { notificationsSessionManager as sessionManager } from "@/utils/session-manager";
 class NotificationMonitor {
   private zongji: ZongJi;
@@ -23,13 +23,16 @@ class NotificationMonitor {
         let eventName: string;
         let payload;
         let sendToId: string;
-        if (row["id"] === undefined) {
-          const userId = row["user_id"];
-          console.log(userId);
-          payload = await getChatRooms(userId as string);
+        if (row["target"] === undefined) {
+          const roomId = row["room_id"];
+
+          const users = await getChatRoomMemebers(roomId as string);
           eventName = "chatNotification";
-          sendToId = row["user_id"] as string;
-          console.log(payload);
+          payload = { isNewMessage: true };
+          for (let i = 0; i < users.length; i++) {
+            sendToId = users[i].userId;
+            sessionManager.pushToUser(sendToId as string, { data: payload, eventName: eventName });
+          }
         } else {
           payload = {
             id: row["id"],
@@ -41,17 +44,15 @@ class NotificationMonitor {
           };
           eventName = "notification";
           sendToId = row["user_id"] as string;
+          sessionManager.pushToUser(sendToId as string, { data: payload, eventName: eventName });
         }
-        console.log(sendToId);
-
-        sessionManager.pushToUser(sendToId as string, { data: payload, eventName: eventName });
       });
     });
 
     this.zongji.start({
       startAtEnd: true,
       includeSchema: {
-        albaschool: ["notification", "chat_notification"],
+        albaschool: ["notification", "message"],
       },
     });
   }

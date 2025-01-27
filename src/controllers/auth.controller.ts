@@ -8,9 +8,9 @@ import { getMailOptions, transport } from "@/providers/email.provider";
 import {
   changeProfile,
   checkPassword,
+  getUser,
   deleteProfileFromDb,
   getUserInfo,
-  isUser,
   saveCode,
   saveUser,
   updatePassword,
@@ -76,7 +76,7 @@ const regist = async (req: Request, res: Response) => {
 
 const login = async (req: Request, res: Response) => {
   const body = req.body;
-  const user = await isUser(body.email, body.password);
+  const user = await getUser(body.email, body.password);
 
   if (!user) {
     throw new HttpException(404, "아이디 또는 비밀번호가 일치하지 않습니다.");
@@ -98,6 +98,7 @@ const login = async (req: Request, res: Response) => {
   res.status(200).json({
     message: "로그인이 완료됐습니다.",
     token: token,
+    role: user.role,
   });
 };
 

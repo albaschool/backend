@@ -22,6 +22,10 @@ export const getStores = async (_: Request, res: Response) => {
 
 /** POST /stores */
 export const createStore = async (req: Request, res: Response) => {
+  if (req.auth?.role !== "manager") {
+    throw new HttpException(403, "사장님만 생성할 수 있습니다.");
+  }
+
   const payload: CreateStorePayload = {
     ownerId: req.auth!.id,
     ...req.body,

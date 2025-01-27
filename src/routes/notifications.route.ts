@@ -20,8 +20,8 @@ router.get(
           examples: {
             initialize: { $ref: "#/components/examples/notificationsInitialize" },
             notification: { $ref: "#/components/examples/notification" },
-            chatRoomInitialize : {$ref: "#/components/examples/chatRoomExample"},
-            chatNotification : { $ref: "#/components/examples/chatRoomExample" },
+            chatNotificationInitialize : {$ref: "#/components/examples/chatNotificationInitialize"},
+            chatNotification : { $ref: "#/components/examples/chatNotification" },
           }
         }
       }
