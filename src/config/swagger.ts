@@ -183,6 +183,12 @@ const doc = {
           },
         ],
       },
+      notificationInitialize: {
+        description: "SSE 최초 연결 시 읽지 않은 알림의 유무를 전달합니다.",
+        value: {
+          hasUnreadNotification: false,
+        },
+      },
       notification: {
         description: "알림이 생성될 때 받는 메시지입니다.",
         value: {
