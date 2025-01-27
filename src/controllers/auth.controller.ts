@@ -8,7 +8,6 @@ import { getMailOptions, transport } from "@/providers/email.provider";
 import {
   changeProfile,
   checkPassword,
-  deleteProfileFromDb,
   getUser,
   getUserInfo,
   saveCode,
@@ -161,7 +160,7 @@ const uploadProfile = async (req: Request, res: Response) => {
 };
 
 const deleteProfile = async (req: Request, res: Response) => {
-  const result = await deleteProfileFromDb(req.auth!.id);
+  const result = await changeProfile(req.auth!.id, null);
   if (result.numUpdatedRows.toString() === "0n") {
     throw new Error();
   }
