@@ -43,6 +43,12 @@ const config = {
   validate: {
     privateKey: getEnvVar("VALIDATE_PRIVATE_KEY"),
   },
+  cloudflare: {
+    accountId: getEnvVar("CF_ACCOUNT_ID"),
+    accessKeyId: getEnvVar("CF_ACCESS_KEY_ID"),
+    secretAccessKey: getEnvVar("CF_SECRET_ACCESS_KEY"),
+    bucketName: getEnvVar("CF_BUCKET_NAME"),
+  }
 };
 
 export default config;

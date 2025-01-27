@@ -5,6 +5,7 @@ import express from "express";
 import http from "http";
 
 import config from "@/config";
+import { checkR2Bucket } from "@/config/r2";
 import { setupSwagger } from "@/config/swagger";
 import { checkDbEstablished } from "@/db";
 import logger, { httpLogger } from "@/logger";
@@ -39,6 +40,7 @@ if (config.node.env === "development") {
 
 checkDbEstablished();
 startMonitoring();
+checkR2Bucket();
 
 app.use("/chat", chatRoute);
 app.use("/auth", authRoute);
