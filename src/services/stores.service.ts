@@ -60,11 +60,11 @@ export const addStoreMember = async (storeId: string, userId: string) => {
   return result;
 };
 
-export const deleteStoreMember = async (storeId: string, memberId: string) => {
+export const deleteStoreMember = async (storeId: string, userId: string) => {
   const result = await db
     .deleteFrom("storeMember")
     .where("storeId", "=", storeId)
-    .where("userId", "=", memberId)
+    .where("userId", "=", userId)
     .executeTakeFirst();
 
   return result;

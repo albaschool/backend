@@ -181,7 +181,7 @@ export const deleteStoreMember = async (req: Request, res: Response) => {
     throw new HttpException(403, "가게 소유자만 삭제할 수 있습니다.");
   }
 
-  const result = await services.deleteStoreMember(req.params.storeId, req.params.memberId);
+  const result = await services.deleteStoreMember(req.params.storeId, req.params.userId);
 
   if (result.numDeletedRows === BigInt(0)) {
     throw new HttpException(404, "존재하지 않는 직원입니다.");
