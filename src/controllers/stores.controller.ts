@@ -4,6 +4,7 @@ import HttpException from "@/interfaces/http-exception.interface";
 import { AddStoreMemberPayload, CreateStorePayload, UpdateStorePayload } from "@/interfaces/stores.interface";
 import { createChatRoom } from "@/services/chat.service";
 import { createDefaultPages } from "@/services/educationPage.service";
+import { deleteSchedules } from "@/services/schedules.service";
 import * as services from "@/services/stores.service";
 import { decrypt as bizRegNumDecrypt } from "@/services/validate.service";
 import { comparePassword, createHashedPassword, createSalt } from "@/utils/password";
@@ -185,6 +186,11 @@ export const deleteStoreMember = async (req: Request, res: Response) => {
 
   if (result.numDeletedRows === BigInt(0)) {
     throw new HttpException(404, "존재하지 않는 직원입니다.");
+  }
+
+  const deleteResult = await deleteSchedules(req.params.userId, req.params.storeId);
+  if (deleteResult.numDeletedRows === BigInt(0)) {
+    throw new Error("Failed to delete schedules");
   }
 
   res.status(200).json({ message: "직원이 삭제되었습니다." });
