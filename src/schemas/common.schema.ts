@@ -2,7 +2,7 @@ import { z } from "@/utils/ko-zod";
 
 export const userIdParamsSchema = z.object({
   params: z.object({
-    userId: z.string().length(8),
+    userId: z.string().length(12),
   }),
 });
 
