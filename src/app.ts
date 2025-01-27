@@ -14,6 +14,7 @@ import { startMonitoring } from "@/monitors";
 import chatRoute from "@/routes/chat.route";
 import notificationsRoute from "@/routes/notifications.route";
 import schedulesRoute from "@/routes/schedules.route";
+import sseRouter from "@/routes/sse.route";
 import storesRoute from "@/routes/stores.route";
 import validateRouter from "@/routes/validate.route";
 
@@ -48,6 +49,7 @@ app.use("/stores", storesRoute);
 app.use("/schedules", schedulesRoute);
 app.use("/notifications", notificationsRoute);
 app.use("/validate", validateRouter);
+app.use("/sse", sseRouter);
 
 app.use(errorMiddleware);
 
