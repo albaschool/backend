@@ -1,18 +1,24 @@
 import express from "express";
+import multer from "multer";
 
+import { multerImageConfig } from "@/config/multer";
 import {
   checkUserPassword,
+  deleteProfile,
   email,
   emailVerify,
   fixPassword,
   getMyPage,
   login,
   regist,
+  uploadProfile,
 } from "@/controllers/auth.controller";
 import authMiddleware from "@/middlewares/auth.middleware";
 import validate from "@/middlewares/validate.middleware";
 import { emailSendSchema, passwordSchema, saveUserSchema } from "@/schemas/auth.schema";
 const router = express.Router();
+
+const upload = multer(multerImageConfig);
 
 router.post(
   "/email",
@@ -316,4 +322,73 @@ router.get(
   authMiddleware,
   getMyPage,
 );
+
+router.post(
+  "/profile",
+  /* 
+    #swagger.tags = ["Auth"]
+    #swagger.description = "프로필 이미지를 업로드합니다."
+    #swagger.security = [{ bearerAuth: [] }]
+    #swagger.consumes = ["multipart/form-data"]
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "multipart/form-data": {
+          schema: {
+            type: "object",
+            properties: {
+              profile: {
+                type: "string",
+                format: "binary"
+              }
+            }
+          }
+        }
+      }
+    }
+    #swagger.responses[200] = {
+      description: "OK",
+      content: {
+        "application/json": {
+          example: {
+            message: "프로필 사진이 수정되었습니다."
+          }
+        }
+      }
+    }
+    #swagger.responses[400] = {
+      description: "Bad Request",
+      content: {
+        "application/json": {
+          example: {
+            message: "이미지 파일을 업로드 해주세요."
+          }
+        }
+      }
+    }
+  */
+  authMiddleware,
+  upload.single("profile"),
+  uploadProfile,
+);
+
+router.delete(
+  "/profile",
+  /*
+    #swagger.tags = ["Auth"]
+    #swagger.description = "프로필 이미지를 삭제합니다."
+    #swagger.security = [{ bearerAuth: [] }]
+    #swagger.responses[200] = {
+      description: "OK",
+      content: {
+        "application/json": {
+          example: { message: "프로필 사진이 삭제되었습니다." }
+        }
+      }
+    }
+  */
+  authMiddleware,
+  deleteProfile,
+)
+
 export default router;
