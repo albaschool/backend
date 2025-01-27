@@ -48,6 +48,7 @@ const config = {
     accessKeyId: getEnvVar("CF_ACCESS_KEY_ID"),
     secretAccessKey: getEnvVar("CF_SECRET_ACCESS_KEY"),
     bucketName: getEnvVar("CF_BUCKET_NAME"),
+    customDomain: getEnvVar("CF_CUSTOM_DOMAIN"),
   }
 };
 
