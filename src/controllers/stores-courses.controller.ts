@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 
 import HttpException from '@/interfaces/http-exception.interface';
+import { isOwner } from '@/services/stores.service';
 import * as services from "@/services/stores-edu.service"
 
 export const getEducations = async (req: Request, res: Response) => {
@@ -18,3 +19,17 @@ export const getEducations = async (req: Request, res: Response) => {
 
   res.status(200).json(educations);
 };
+
+export const deleteEducation = async (req: Request, res: Response) => {
+  const isStoreOwner = await isOwner(req.auth!.id, req.params.storeId);
+  if (!isStoreOwner) {
+    throw new HttpException(403, "가게 소유자만 삭제할 수 있습니다.");
+  }
+
+  const result = await services.deleteEducationById(req.params.eduId);
+  if (result.numDeletedRows === BigInt(0)) {
+    throw new HttpException(404, "교육과정이 존재하지 않습니다.");
+  }
+
+  res.status(200).json({ message: "교육과정이 삭제되었습니다." });
+}

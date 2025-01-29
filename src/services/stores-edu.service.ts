@@ -18,3 +18,10 @@ export const getEducationsById = async (storeId: string) => {
     .where("storeId", "=", storeId)
     .execute();
 };
+
+export const deleteEducationById = async (eduId: string) => {
+  return db
+    .deleteFrom("educationPage")
+    .where("id", "=", eduId)
+    .executeTakeFirst();
+}

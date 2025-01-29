@@ -1,6 +1,6 @@
 import express from "express";
 
-import { getEducations } from "@/controllers/stores-courses.controller";
+import { deleteEducation, getEducations } from "@/controllers/stores-courses.controller";
 import authMiddleware from "@/middlewares/auth.middleware";
 import validate from "@/middlewares/validate.middleware";
 import { storeIdParamsSchema } from "@/schemas/common.schema";
@@ -58,6 +58,41 @@ router.get(
   */
   validate(storeIdParamsSchema),
   getEducations,
+);
+
+router.delete(
+  "/:eduId",
+  /*
+    #swagger.tags = ["Education"]
+    #swagger.description = "특정 교육 자료를 삭제합니다."
+    #swagger.security = [{ bearerAuth: [] }]
+    #swagger.parameters['$ref'] = ['#/components/parameters/storeId', '#/components/parameters/eduId']
+    #swagger.responses[200] = {
+      description: "OK",
+      content: {
+        "application/json": {
+          example: { message: "교육과정이 삭제되었습니다." }
+        }
+      }
+    }
+    #swagger.responses[403] = {
+      description: "가게 소유자가 아닐 때",
+      content: {
+        "application/json": {
+          example: { message: "가게 소유자만 삭제할 수 있습니다." }
+        }
+      }
+    }
+    #swagger.responses[404] = {
+      description: "교육과정이 존재하지 않을 때",
+      content: {
+        "application/json": {
+          example: { message: "교육과정이 존재하지 않습니다." }
+        }
+      }
+    }
+  */
+  deleteEducation,
 );
 
 export default router;

@@ -299,6 +299,15 @@ const doc = {
           type: "string",
         },
       },
+      eduId: {
+        in: "path",
+        name: "eduId",
+        required: true,
+        description: "강의 자료 아이디 (12자)",
+        schema: {
+          type: "string",
+        },
+      },
     },
   },
 };
