@@ -11,7 +11,6 @@ export const getEducations = async (req: Request, res: Response) => {
   }
 
   const educations = await services.getEducationsById(req.params.storeId);
-
   if (educations.length === 0) {
     res.status(404).json([]);
     return;
@@ -28,8 +27,8 @@ export const deleteEducation = async (req: Request, res: Response) => {
 
   const result = await services.deleteEducationById(req.params.eduId);
   if (result.numDeletedRows === BigInt(0)) {
-    throw new HttpException(404, "교육과정이 존재하지 않습니다.");
+    throw new HttpException(404, "강의 자료가 존재하지 않습니다.");
   }
 
-  res.status(200).json({ message: "교육과정이 삭제되었습니다." });
-}
+  res.status(200).json({ message: "강의 자료가 삭제되었습니다." });
+};

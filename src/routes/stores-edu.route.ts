@@ -48,7 +48,7 @@ router.get(
       }
     }
     #swagger.responses[404] = {
-      description: "교육과정이 존재하지 않을 때",
+      description: "강의 자료가 존재하지 않을 때",
       content: {
         "application/json": {
           example: []
@@ -71,7 +71,7 @@ router.delete(
       description: "OK",
       content: {
         "application/json": {
-          example: { message: "교육과정이 삭제되었습니다." }
+          example: { message: "강의 자료가 삭제되었습니다." }
         }
       }
     }
@@ -84,10 +84,10 @@ router.delete(
       }
     }
     #swagger.responses[404] = {
-      description: "교육과정이 존재하지 않을 때",
+      description: "강의 자료가 존재하지 않을 때",
       content: {
         "application/json": {
-          example: { message: "교육과정이 존재하지 않습니다." }
+          example: { message: "강의 자료가 존재하지 않습니다." }
         }
       }
     }
