@@ -340,8 +340,7 @@ router.delete(
     #swagger.tags = ["Stores"]
     #swagger.description = "특정 가게의 직원을 삭제합니다."
     #swagger.security = [{ bearerAuth: [] }]
-    #swagger.parameters['$ref'] = ['#/components/parameters/storeId']
-    #swagger.parameters['$ref'] = ['#/components/parameters/userId']
+    #swagger.parameters['$ref'] = ['#/components/parameters/storeId', '#/components/parameters/userId']
     #swagger.responses[200] = {
       description: "OK",
       content: {
@@ -358,7 +357,7 @@ router.delete(
         }
       }
     }
-      #swagger.responses[404] = {
+    #swagger.responses[404] = {
       description: "존재하지 않는 직원일 때",
       content: {
         "application/json": {
