@@ -1,9 +1,14 @@
 import express from "express";
+import multer from "multer";
 
-import { deleteEducation, getEducations } from "@/controllers/stores-edu.controller";
+import { multerImageConfig } from "@/config/multer";
+import { createEducation, deleteEducation, getEducations } from "@/controllers/stores-edu.controller";
 import authMiddleware from "@/middlewares/auth.middleware";
 import validate from "@/middlewares/validate.middleware";
 import { storeIdParamsSchema } from "@/schemas/common.schema";
+import { createEducationSchema, eduIdParamsSchema } from "@/schemas/educations.schema";
+
+const upload = multer(multerImageConfig);
 
 const router = express.Router({ mergeParams: true });
 
@@ -58,6 +63,61 @@ router.get(
   */
   validate(storeIdParamsSchema),
   getEducations,
+);
+
+router.post(
+  "",
+  /*
+    #swagger.tags = ["Education"]
+    #swagger.description = "특정 가게에 교육 자료를 추가합니다."
+    #swagger.security = [{ bearerAuth: [] }]
+    #swagger.parameters['$ref'] = ['#/components/parameters/storeId']
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "multipart/form-data": {
+          schema: {
+            type: "object",
+            properties: {
+              title: {
+                type: "string",
+                example: "제목"
+              },
+              content: {
+                type: "string",
+                example: "내용"
+              },
+              img: { type: "string", format: "binary" },
+            },
+            required: ["title", "content"]
+          }
+        },
+      }
+    }
+    #swagger.responses[201] = {
+      description: "Created",
+      content: {
+        "application/json": {
+          schema: {
+            example: { message: "강의 자료가 생성되었습니다." }
+          }
+        }
+      }
+    }
+    #swagger.responses[403] = {
+      description: "가게 소유자가 아닐 때",
+      content: {
+        "application/json": {
+          example: { message: "가게 소유자만 생성할 수 있습니다." }
+        }
+      }
+    }
+  */
+ // body 검증 추가
+  validate(storeIdParamsSchema),
+  upload.single("img"),
+  validate(createEducationSchema),
+  createEducation,
 );
 
 router.delete(

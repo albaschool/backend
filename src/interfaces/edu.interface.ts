@@ -5,3 +5,10 @@ export interface CreateEducationPagePayload {
   content: string;
   storeId: string;
 }
+
+export interface CreateEducationPayload {
+  title: string;
+  content: string;
+  img?: Buffer;
+  mimeType?: string;
+}

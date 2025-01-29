@@ -9,7 +9,7 @@ const mimeToExt: Record<string, string> = {
   "image/webp": ".webp",
 };
 
-export const uploadFileToR2 = async (type: "profile", fileData: Buffer, mimeType: string): Promise<string> => {
+export const uploadFileToR2 = async (type: "profile" | "education", fileData: Buffer, mimeType: string): Promise<string> => {
   try {
     const ext = mimeToExt[mimeType];
     if (!ext) {
