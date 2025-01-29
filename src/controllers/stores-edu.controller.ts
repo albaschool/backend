@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 
+import config from "@/config";
 import HttpException from "@/interfaces/http-exception.interface";
 import { isOwner } from "@/services/stores.service";
 import * as services from "@/services/stores-edu.service";
@@ -16,7 +17,14 @@ export const getEducations = async (req: Request, res: Response) => {
     return;
   }
 
-  res.status(200).json(educations);
+  res
+    .status(200)
+    .json(
+      educations.map((edu) => ({
+        ...edu,
+        img: edu.img ? `https://${config.cloudflare.customDomain}/${edu.img}` : null,
+      })),
+    );
 };
 
 export const createEducation = async (req: Request, res: Response) => {
