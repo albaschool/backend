@@ -49,6 +49,26 @@ export const createEducation = async (req: Request, res: Response) => {
   res.status(201).json({ message: "강의 자료가 생성되었습니다." });
 };
 
+export const updateEducation = async (req: Request, res: Response) => {
+  const isStoreOwner = await isOwner(req.auth!.id, req.params.storeId);
+  if (!isStoreOwner) {
+    throw new HttpException(403, "가게 소유자만 수정할 수 있습니다.");
+  }
+
+  const result = await services.updateEducationById(req.params.eduId, {
+    title: req.body.title !== "" ? req.body.title : undefined,
+    content: req.body.content !== "" ? req.body.content : undefined,
+    img: req.file?.buffer,
+    mimeType: req.file?.mimetype,
+    deleteImg: req.body.deleteImg === "true",
+  });
+  if (!result || result.numUpdatedRows === BigInt(0)) {
+    throw new HttpException(404, "강의 자료가 존재하지 않습니다.");
+  }
+
+  res.status(200).json({ message: "강의 자료가 수정되었습니다." });
+}
+
 export const deleteEducation = async (req: Request, res: Response) => {
   const isStoreOwner = await isOwner(req.auth!.id, req.params.storeId);
   if (!isStoreOwner) {

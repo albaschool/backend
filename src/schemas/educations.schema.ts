@@ -24,4 +24,6 @@ export const createEducationSchema = z.object({
     .optional(),
 });
 
-export const updateEducationSchema = createEducationSchema.partial();
+export const updateEducationSchema = createEducationSchema
+  .partial()
+  .merge(z.object({ body: z.object({ deleteImg: z.string().optional() }) }));

@@ -2,11 +2,11 @@ import express from "express";
 import multer from "multer";
 
 import { multerImageConfig } from "@/config/multer";
-import { createEducation, deleteEducation, getEducations } from "@/controllers/stores-edu.controller";
+import { createEducation, deleteEducation, getEducations, updateEducation } from "@/controllers/stores-edu.controller";
 import authMiddleware from "@/middlewares/auth.middleware";
 import validate from "@/middlewares/validate.middleware";
 import { storeIdParamsSchema } from "@/schemas/common.schema";
-import { createEducationSchema, eduIdParamsSchema } from "@/schemas/educations.schema";
+import { createEducationSchema, eduIdParamsSchema, updateEducationSchema } from "@/schemas/educations.schema";
 
 const upload = multer(multerImageConfig);
 
@@ -113,18 +113,74 @@ router.post(
       }
     }
   */
- // body 검증 추가
   validate(storeIdParamsSchema),
   upload.single("img"),
   validate(createEducationSchema),
   createEducation,
 );
 
+router.put(
+  "/:eduId",
+  /*
+    #swagger.tags = ["Education"]
+    #swagger.description = "특정 가게의 교육 자료를 수정합니다."
+    #swagger.security = [{ bearerAuth: [] }]
+    #swagger.parameters['$ref'] = ['#/components/parameters/storeId', '#/components/parameters/eduId']
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "multipart/form-data": {
+          schema: {
+            type: "object",
+            properties: {
+              title: {
+                type: "string",
+                example: ""
+              },
+              content: {
+                type: "string",
+                example: ""
+              },
+              deleteImg: {
+                type: "boolean",
+                example: false
+              },
+              img: { type: "string", format: "binary" },
+            },
+          }
+        },
+      }
+    }
+    #swagger.responses[200] = {
+      description: "OK",
+      content: {
+        "application/json": {
+          schema: {
+            example: { message: "강의 자료가 수정되었습니다." }
+          }
+        }
+      }
+    }
+    #swagger.responses[403] = {
+      description: "가게 소유자가 아닐 때",
+      content: {
+        "application/json": {
+          example: { message: "가게 소유자만 생성할 수 있습니다." }
+        }
+      }
+    }
+  */
+  validate(storeIdParamsSchema),
+  upload.single("img"),
+  validate(updateEducationSchema),
+  updateEducation,
+);
+
 router.delete(
   "/:eduId",
   /*
     #swagger.tags = ["Education"]
-    #swagger.description = "특정 교육 자료를 삭제합니다."
+    #swagger.description = "특정 가게의 교육 자료를 삭제합니다."
     #swagger.security = [{ bearerAuth: [] }]
     #swagger.parameters['$ref'] = ['#/components/parameters/storeId', '#/components/parameters/eduId']
     #swagger.responses[200] = {

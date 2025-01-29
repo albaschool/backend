@@ -2,7 +2,7 @@ import { sql } from "kysely";
 import { nanoid } from "nanoid";
 
 import { db } from "@/db";
-import { CreateEducationPayload } from "@/interfaces/edu.interface";
+import { CreateEducationPayload, UpdateEducationPayload } from "@/interfaces/edu.interface";
 import { deleteFileFromR2, uploadFileToR2 } from "@/services/file.service";
 
 export const isStoreMember = async (storeId: string, userId: string) => {
@@ -37,6 +37,31 @@ export const createEducation = async (payload: CreateEducationPayload, storeId: 
       storeId,
       img: imageKey,
     })
+    .executeTakeFirst();
+};
+
+export const updateEducationById = async (eduId: string, payload: Partial<UpdateEducationPayload>) => {
+  const { img, mimeType, deleteImg, ...education } = payload;
+
+  let imageKey: string | null = null;
+  if ((img && mimeType) || deleteImg) {
+    const result = await db.selectFrom("educationPage").select("img").where("id", "=", eduId).executeTakeFirst();
+    if (!result) {
+      return undefined;
+    }
+
+    if (result.img) await deleteFileFromR2(result.img);
+
+    if (img && mimeType && !deleteImg) imageKey = await uploadFileToR2("education", img, mimeType, eduId);
+  }
+
+  return db
+    .updateTable("educationPage")
+    .set({
+      ...education,
+      ...((imageKey || deleteImg) && { img: imageKey }),
+    })
+    .where("id", "=", eduId)
     .executeTakeFirst();
 };
 

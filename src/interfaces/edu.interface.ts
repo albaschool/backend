@@ -12,3 +12,7 @@ export interface CreateEducationPayload {
   img?: Buffer;
   mimeType?: string;
 }
+
+export interface UpdateEducationPayload extends Partial<CreateEducationPayload> {
+  deleteImg: boolean;
+}
