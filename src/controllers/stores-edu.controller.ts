@@ -17,14 +17,12 @@ export const getEducations = async (req: Request, res: Response) => {
     return;
   }
 
-  res
-    .status(200)
-    .json(
-      educations.map((edu) => ({
-        ...edu,
-        img: edu.img ? `https://${config.cloudflare.customDomain}/${edu.img}` : null,
-      })),
-    );
+  res.status(200).json(
+    educations.map((edu) => ({
+      ...edu,
+      img: edu.img ? `https://${config.cloudflare.customDomain}/${edu.img}` : null,
+    })),
+  );
 };
 
 export const createEducation = async (req: Request, res: Response) => {
@@ -67,7 +65,7 @@ export const updateEducation = async (req: Request, res: Response) => {
   }
 
   res.status(200).json({ message: "강의 자료가 수정되었습니다." });
-}
+};
 
 export const deleteEducation = async (req: Request, res: Response) => {
   const isStoreOwner = await isOwner(req.auth!.id, req.params.storeId);
