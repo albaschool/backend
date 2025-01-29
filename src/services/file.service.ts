@@ -9,17 +9,22 @@ const mimeToExt: Record<string, string> = {
   "image/webp": ".webp",
 };
 
-export const uploadFileToR2 = async (type: "profile" | "education", fileData: Buffer, mimeType: string): Promise<string> => {
+export const uploadFileToR2 = async (
+  type: "profile" | "education",
+  fileData: Buffer,
+  mimeType: string,
+  fileName?: string,
+): Promise<string> => {
   try {
     const ext = mimeToExt[mimeType];
     if (!ext) {
       throw new Error("Unsupported file type");
     }
 
-    const fileName = `${type}/${nanoid(24)}${ext}`;
+    const dest = `${type}/${fileName ? fileName : nanoid(24)}${ext}`;
 
     try {
-      const response = await bucket.upload(fileData, fileName, {
+      const response = await bucket.upload(fileData, dest, {
         contentType: mimeType,
       });
 
@@ -38,6 +43,6 @@ export const uploadFileToR2 = async (type: "profile" | "education", fileData: Bu
   }
 };
 
-export const deleteFileFromR2 = async (objectKey: string): Promise<void> => {
-  await bucket.deleteObject(objectKey);
+export const deleteFileFromR2 = async (objectKey: string) => {
+  return await bucket.deleteObject(objectKey);
 };
