@@ -3,8 +3,7 @@ import { nanoid } from "nanoid";
 
 import { db } from "@/db";
 import { CreateEducationPayload } from "@/interfaces/edu.interface";
-
-import { uploadFileToR2 } from "./file.service";
+import { deleteFileFromR2, uploadFileToR2 } from "@/services/file.service";
 
 export const isStoreMember = async (storeId: string, userId: string) => {
   return db
@@ -26,13 +25,15 @@ export const getEducationsById = async (storeId: string) => {
 export const createEducation = async (payload: CreateEducationPayload, storeId: string) => {
   const { img, mimeType, ...education } = payload;
 
-  const imageKey = img && mimeType ? await uploadFileToR2("education", img, mimeType) : null;
+  const id = nanoid(12);
+
+  const imageKey = img && mimeType ? await uploadFileToR2("education", img, mimeType, id) : null;
 
   return db
     .insertInto("educationPage")
     .values({
       ...education,
-      id: nanoid(12),
+      id,
       storeId,
       img: imageKey,
     })
@@ -40,5 +41,12 @@ export const createEducation = async (payload: CreateEducationPayload, storeId: 
 };
 
 export const deleteEducationById = async (eduId: string) => {
-  return db.deleteFrom("educationPage").where("id", "=", eduId).executeTakeFirst();
+  const result = await db.selectFrom("educationPage").select("img").where("id", "=", eduId).executeTakeFirst();
+  if (!result) {
+    return undefined;
+  }
+
+  if (result.img) await deleteFileFromR2(result.img);
+
+  return await db.deleteFrom("educationPage").where("id", "=", eduId).executeTakeFirst();
 };

@@ -56,7 +56,7 @@ export const deleteEducation = async (req: Request, res: Response) => {
   }
 
   const result = await services.deleteEducationById(req.params.eduId);
-  if (result.numDeletedRows === BigInt(0)) {
+  if (!result || result.numDeletedRows === BigInt(0)) {
     throw new HttpException(404, "강의 자료가 존재하지 않습니다.");
   }
 
