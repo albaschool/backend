@@ -1,6 +1,6 @@
 import express from "express";
 
-import { deleteEducation, getEducations } from "@/controllers/stores-courses.controller";
+import { deleteEducation, getEducations } from "@/controllers/stores-edu.controller";
 import authMiddleware from "@/middlewares/auth.middleware";
 import validate from "@/middlewares/validate.middleware";
 import { storeIdParamsSchema } from "@/schemas/common.schema";
