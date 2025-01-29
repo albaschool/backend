@@ -92,6 +92,7 @@ router.delete(
       }
     }
   */
+  validate(storeIdParamsSchema.merge(eduIdParamsSchema)),
   deleteEducation,
 );
 
