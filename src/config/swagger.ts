@@ -26,7 +26,7 @@ const doc = {
       description: "가게 엔드포인트",
     },
     {
-      name: "Courses",
+      name: "Education",
       description: "가게 교육 엔드포인트",
     },
     {
