@@ -11,7 +11,7 @@ export const isStoreMember = async (storeId: string, userId: string) => {
     .executeTakeFirst();
 }
 
-export const getCoursesById = async (storeId: string) => {
+export const getEducationsById = async (storeId: string) => {
   return db
     .selectFrom("educationPage")
     .select(["id", "title", "content", "img", "createdAt"])

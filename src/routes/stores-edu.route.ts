@@ -1,6 +1,6 @@
 import express from "express";
 
-import { getCourses } from "@/controllers/stores-courses.controller";
+import { getEducations } from "@/controllers/stores-courses.controller";
 import authMiddleware from "@/middlewares/auth.middleware";
 import validate from "@/middlewares/validate.middleware";
 import { storeIdParamsSchema } from "@/schemas/common.schema";
@@ -57,7 +57,7 @@ router.get(
     }
   */
   validate(storeIdParamsSchema),
-  getCourses,
+  getEducations,
 );
 
 export default router;
