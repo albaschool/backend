@@ -27,8 +27,8 @@ export const getSchedulesByStore = async (storeId: string) => {
   return schedules;
 };
 
-export const createSchedule = async (payload: CreateSchedulePayload) => {
-  const { userId, storeId, content, dayOfWeek, startTime, endTime } = payload;
+export const createSchedule = async (storeId: string, payload: CreateSchedulePayload) => {
+  const { userId, content, dayOfWeek, startTime, endTime } = payload;
   const schedule = await db
     .insertInto("schedule")
     .values({ id: nanoid(12), userId, storeId, content, dayOfWeek, startTime, endTime })

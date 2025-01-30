@@ -3,7 +3,6 @@ import { z } from "@/utils/ko-zod";
 export const createScheduleBodySchema = z.object({
   body: z.object({
     userId: z.string().length(12),
-    storeId: z.string().length(8),
     dayOfWeek: z.number().int().min(0).max(7),
     content: z.string(),
     startTime: z

@@ -41,11 +41,11 @@ export const createSchedule = async (req: Request, res: Response) => {
   }
 
   const payload: CreateSchedulePayload = req.body;
-  if (!(await services.isStoreOwner(req.auth!.id, payload.storeId))) {
+  if (!(await services.isStoreOwner(req.auth!.id, req.params.storeId))) {
     throw new HttpException(403, "가게 주인만 생성할 수 있습니다.");
   }
 
-  const result = await services.createSchedule(payload);
+  const result = await services.createSchedule(req.params.storeId, payload);
 
   if (result.numInsertedOrUpdatedRows === BigInt(0)) {
     throw new Error();
@@ -55,7 +55,7 @@ export const createSchedule = async (req: Request, res: Response) => {
   await createNotification({
     content: `${getNameOfDay(payload.dayOfWeek)}요일 일정이 추가되었습니다.`,
     target: "/schedules",
-    title: (await getStoreNameById(payload.storeId)) ?? "알 수 없는 가게",
+    title: (await getStoreNameById(req.params.storeId)) ?? "알 수 없는 가게",
     userId: payload.userId,
   });
 
