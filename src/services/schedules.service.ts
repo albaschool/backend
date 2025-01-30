@@ -85,3 +85,7 @@ export const getScheduleById = async (scheduleId: string) => {
 
   return schedule;
 };
+
+export const deleteSchedules = async (userId: string, storeId: string) => {
+  return await db.deleteFrom("schedule").where("userId", "=", userId).where("storeId", "=", storeId).executeTakeFirst();
+};

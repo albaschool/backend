@@ -3,6 +3,7 @@ import express from "express";
 import {
   addStoreMember,
   createStore,
+  deleteStore,
   deleteStoreMember,
   getMyStores,
   getStoreById,
@@ -340,8 +341,7 @@ router.delete(
     #swagger.tags = ["Stores"]
     #swagger.description = "특정 가게의 직원을 삭제합니다."
     #swagger.security = [{ bearerAuth: [] }]
-    #swagger.parameters['$ref'] = ['#/components/parameters/storeId']
-    #swagger.parameters['$ref'] = ['#/components/parameters/userId']
+    #swagger.parameters['$ref'] = ['#/components/parameters/storeId', '#/components/parameters/userId']
     #swagger.responses[200] = {
       description: "OK",
       content: {
@@ -358,7 +358,7 @@ router.delete(
         }
       }
     }
-      #swagger.responses[404] = {
+    #swagger.responses[404] = {
       description: "존재하지 않는 직원일 때",
       content: {
         "application/json": {
@@ -377,6 +377,33 @@ router.delete(
   */
   validate(storeIdParamsSchema.merge(userIdParamsSchema)),
   deleteStoreMember,
+);
+
+router.delete(
+  "/:storeId",
+  /*
+    #swagger.tags = ["Stores"]
+    #swagger.description = "특정 가게를 삭제합니다."
+    #swagger.security = [{ bearerAuth: [] }]
+    #swagger.parameters['$ref'] = ['#/components/parameters/storeId']
+    #swagger.responses[200] = {
+      description: "OK",
+      content: {
+        "application/json": {
+          example: { message: "가게가 삭제되었습니다." }
+        }
+      }
+    }
+    #swagger.responses[403] = {
+      description: "가게 소유자가 아닐 때",
+      content: {
+        "application/json": {
+          example: { message: "가게 소유자만 삭제할 수 있습니다." }
+        }
+      }
+    }
+  */
+  deleteStore,
 );
 
 router.use("/:storeId/edu", coursesRoute);

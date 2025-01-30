@@ -107,3 +107,18 @@ export const isStoreMember = async (storeId: string, userId: string) => {
 
   return result !== undefined;
 };
+
+export const deleteStoreById = async (storeId: string) => {
+  return await db.transaction().execute(async (trx) => {
+    const chatRoom = await trx.selectFrom("chatRoom").select("id").where("storeId", "=", storeId).executeTakeFirst();
+    if (chatRoom) {
+      await trx.deleteFrom("lastReadMessage").where("roomId", "=", chatRoom.id).executeTakeFirst();
+      await trx.deleteFrom("message").where("roomId", "=", chatRoom.id).executeTakeFirst();
+    }
+    await trx.deleteFrom("chatRoom").where("storeId", "=", storeId).executeTakeFirst();
+    await trx.deleteFrom("educationPage").where("storeId", "=", storeId).executeTakeFirst();
+    await trx.deleteFrom("schedule").where("storeId", "=", storeId).executeTakeFirst();
+    await trx.deleteFrom("storeMember").where("storeId", "=", storeId).executeTakeFirst();
+    return await trx.deleteFrom("store").where("id", "=", storeId).executeTakeFirst();
+  });
+};
