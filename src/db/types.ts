@@ -110,6 +110,7 @@ export interface EducationPageTable {
   title: string;
   content: string;
   img: string | null;
+  createdAt: ColumnType<Date, string | undefined, never>;
 }
 
 export type EducationPage = Selectable<EducationPageTable>;
