@@ -26,6 +26,10 @@ const doc = {
       description: "가게 엔드포인트",
     },
     {
+      name: "Education",
+      description: "가게 교육 엔드포인트",
+    },
+    {
       name: "Schedules",
       description: "일정 엔드포인트",
     },
@@ -291,6 +295,15 @@ const doc = {
         name: "userId",
         required: true,
         description: "유저 아이디 (12자)",
+        schema: {
+          type: "string",
+        },
+      },
+      eduId: {
+        in: "path",
+        name: "eduId",
+        required: true,
+        description: "강의 자료 아이디 (12자)",
         schema: {
           type: "string",
         },

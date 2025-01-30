@@ -12,6 +12,7 @@ import {
 } from "@/controllers/stores.controller";
 import authMiddleware from "@/middlewares/auth.middleware";
 import validate from "@/middlewares/validate.middleware";
+import coursesRoute from "@/routes/stores-edu.route";
 import { storeIdParamsSchema, userIdParamsSchema } from "@/schemas/common.schema";
 import { createStoreSchema, passwordSchema } from "@/schemas/stores.schema";
 
@@ -377,5 +378,7 @@ router.delete(
   validate(storeIdParamsSchema.merge(userIdParamsSchema)),
   deleteStoreMember,
 );
+
+router.use("/:storeId/edu", coursesRoute);
 
 export default router;
