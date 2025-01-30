@@ -404,7 +404,7 @@ router.delete(
     }
   */
   deleteStore,
-)
+);
 
 router.use("/:storeId/edu", coursesRoute);
 
