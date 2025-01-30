@@ -104,9 +104,10 @@ const socket = (server: http.Server) => {
 
         const notificationMembers = await getNotiMembers(roomId);
         const roomSockets = await chatRoomSocket.in(roomId).fetchSockets();
-
+        const roomSocketIds = [];
         //채팅룸에 있는 멤버들에 한해 메시지 읽음 처리
         for (const roomSocket of roomSockets!) {
+          roomSocketIds.push(roomSocket.id);
           if (usersInRoomBySocketId.has(roomSocket.id)) {
             const roomUserId = usersInRoomBySocketId.get(roomSocket.id);
             const result = await saveLastMessage(roomUserId!, roomId, messageId);
@@ -121,6 +122,12 @@ const socket = (server: http.Server) => {
             const payload = await getChatRooms(notiUserId);
             const clientSocket = chatListSocket.sockets.get(socketId as string);
             clientSocket?.emit("chatLists", { data: payload });
+          } else if (usersInRoomByUserId.has(notiUserId)) {
+            const socketId = usersInRoomByUserId.get(userId)!;
+            if (!roomSocketIds.includes(socketId)) {
+              const clientSocket = chatRoomSocket.sockets.get(socketId as string);
+              clientSocket?.emit("newMessage", { isNewMessage: true });
+            }
           }
         }
       } catch (error) {
