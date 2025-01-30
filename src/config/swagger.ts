@@ -78,7 +78,6 @@ const doc = {
       },
       createSchedule: {
         $userId: "0pm8MlHvf366",
-        $storeId: "4uDfVBHq",
         $content: "오후타임",
         $dayOfWeek: 1,
         $startTime: "12:00:00",

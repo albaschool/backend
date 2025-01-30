@@ -83,11 +83,12 @@ router.get(
 );
 
 router.post(
-  "",
+  "/:storeId",
   /*
     #swagger.tags = ["Schedules"]
     #swagger.description = "일정을 추가합니다."
     #swagger.security = [{ bearerAuth: [] }]
+    #swagger.parameters['$ref'] = ['#/components/parameters/storeId']
     #swagger.requestBody = {
       required: true,
       content: {
@@ -115,7 +116,7 @@ router.post(
       }
     }
   */
-  validate(createScheduleBodySchema),
+  validate(storeIdParamsSchema.merge(createScheduleBodySchema)),
   createSchedule,
 );
 
