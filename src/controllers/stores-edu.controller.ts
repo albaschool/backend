@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 
-import config from "@/config";
 import HttpException from "@/interfaces/http-exception.interface";
 import { isOwner } from "@/services/stores.service";
 import * as services from "@/services/stores-edu.service";
@@ -17,12 +16,21 @@ export const getEducations = async (req: Request, res: Response) => {
     return;
   }
 
-  res.status(200).json(
-    educations.map((edu) => ({
-      ...edu,
-      img: edu.img ? `https://${config.cloudflare.customDomain}/${edu.img}` : null,
-    })),
-  );
+  res.status(200).json(educations);
+};
+
+export const getEducation = async (req: Request, res: Response) => {
+  const isStoreMember = await services.isStoreMember(req.params.storeId, req.auth!.id);
+  if (!isStoreMember) {
+    throw new HttpException(403, "가게가 존재하지 않거나 가게에 소속되어 있지 않습니다.");
+  }
+
+  const education = await services.getEducationById(req.params.storeId, req.params.eduId);
+  if (!education) {
+    throw new HttpException(404, "강의 자료가 존재하지 않습니다.");
+  }
+
+  res.status(200).json(education);
 };
 
 export const createEducation = async (req: Request, res: Response) => {
@@ -31,15 +39,7 @@ export const createEducation = async (req: Request, res: Response) => {
     throw new HttpException(403, "가게 소유자만 생성할 수 있습니다.");
   }
 
-  const result = await services.createEducation(
-    {
-      title: req.body.title,
-      content: req.body.content,
-      img: req.file?.buffer,
-      mimeType: req.file?.mimetype,
-    },
-    req.params.storeId,
-  );
+  const result = await services.createEducation(req.body, req.params.storeId);
   if (result.numInsertedOrUpdatedRows === BigInt(0)) {
     throw new Error("Failed to create education");
   }
@@ -53,14 +53,8 @@ export const updateEducation = async (req: Request, res: Response) => {
     throw new HttpException(403, "가게 소유자만 수정할 수 있습니다.");
   }
 
-  const result = await services.updateEducationById(req.params.eduId, {
-    title: req.body.title !== "" ? req.body.title : undefined,
-    content: req.body.content !== "" ? req.body.content : undefined,
-    img: req.file?.buffer,
-    mimeType: req.file?.mimetype,
-    deleteImg: req.body.deleteImg === "true",
-  });
-  if (!result || result.numUpdatedRows === BigInt(0)) {
+  const result = await services.updateEducationById(req.params.storeId, req.params.eduId, req.body);
+  if (result.numUpdatedRows === BigInt(0)) {
     throw new HttpException(404, "강의 자료가 존재하지 않습니다.");
   }
 
@@ -73,8 +67,8 @@ export const deleteEducation = async (req: Request, res: Response) => {
     throw new HttpException(403, "가게 소유자만 삭제할 수 있습니다.");
   }
 
-  const result = await services.deleteEducationById(req.params.eduId);
-  if (!result || result.numDeletedRows === BigInt(0)) {
+  const result = await services.deleteEducationById(req.params.storeId, req.params.eduId);
+  if (result.numDeletedRows === BigInt(0)) {
     throw new HttpException(404, "강의 자료가 존재하지 않습니다.");
   }
 
