@@ -19,6 +19,20 @@ export const getEducations = async (req: Request, res: Response) => {
   res.status(200).json(educations);
 };
 
+export const getEducation = async (req: Request, res: Response) => {
+  const isStoreMember = await services.isStoreMember(req.params.storeId, req.auth!.id);
+  if (!isStoreMember) {
+    throw new HttpException(403, "가게가 존재하지 않거나 가게에 소속되어 있지 않습니다.");
+  }
+
+  const education = await services.getEducationById(req.params.storeId, req.params.eduId);
+  if (!education) {
+    throw new HttpException(404, "강의 자료가 존재하지 않습니다.");
+  }
+
+  res.status(200).json(education);
+}
+
 export const createEducation = async (req: Request, res: Response) => {
   const isStoreOwner = await isOwner(req.auth!.id, req.params.storeId);
   if (!isStoreOwner) {
@@ -39,7 +53,7 @@ export const updateEducation = async (req: Request, res: Response) => {
     throw new HttpException(403, "가게 소유자만 수정할 수 있습니다.");
   }
 
-  const result = await services.updateEducationById(req.params.eduId, req.body);
+  const result = await services.updateEducationById(req.params.storeId, req.params.eduId, req.body);
   if (result.numUpdatedRows === BigInt(0)) {
     throw new HttpException(404, "강의 자료가 존재하지 않습니다.");
   }
@@ -53,7 +67,7 @@ export const deleteEducation = async (req: Request, res: Response) => {
     throw new HttpException(403, "가게 소유자만 삭제할 수 있습니다.");
   }
 
-  const result = await services.deleteEducationById(req.params.eduId);
+  const result = await services.deleteEducationById(req.params.storeId, req.params.eduId);
   if (result.numDeletedRows === BigInt(0)) {
     throw new HttpException(404, "강의 자료가 존재하지 않습니다.");
   }

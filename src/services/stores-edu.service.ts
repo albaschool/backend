@@ -14,11 +14,7 @@ export const isStoreMember = async (storeId: string, userId: string) => {
 };
 
 export const getEducationsById = async (storeId: string) => {
-  return db
-    .selectFrom("educationPage")
-    .select(["id", "title", "createdAt"])
-    .where("storeId", "=", storeId)
-    .execute();
+  return db.selectFrom("educationPage").select(["id", "title", "createdAt"]).where("storeId", "=", storeId).execute();
 };
 
 export const createEducation = async (payload: CreateEducationPayload, storeId: string) => {
@@ -32,16 +28,26 @@ export const createEducation = async (payload: CreateEducationPayload, storeId: 
     .executeTakeFirst();
 };
 
-export const updateEducationById = async (eduId: string, payload: Partial<CreateEducationPayload>) => {
+export const updateEducationById = async (storeId: string, eduId: string, payload: Partial<CreateEducationPayload>) => {
   return db
     .updateTable("educationPage")
     .set({
-      ...payload
+      ...payload,
     })
     .where("id", "=", eduId)
+    .where("storeId", "=", storeId)
     .executeTakeFirst();
 };
 
-export const deleteEducationById = async (eduId: string) => {
-  return await db.deleteFrom("educationPage").where("id", "=", eduId).executeTakeFirst();
+export const deleteEducationById = async (storeId: string, eduId: string) => {
+  return await db.deleteFrom("educationPage").where("id", "=", eduId).where("storeId", "=", storeId).executeTakeFirst();
+};
+
+export const getEducationById = async (storeId: string, eduId: string) => {
+  return db
+    .selectFrom("educationPage")
+    .select(["id", "title", "content", "createdAt"])
+    .where("id", "=", eduId)
+    .where("storeId", "=", storeId)
+    .executeTakeFirst();
 };
