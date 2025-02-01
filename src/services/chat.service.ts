@@ -2,7 +2,7 @@ import { sql } from "kysely";
 import { nanoid } from "nanoid";
 
 import { db } from "@/db";
-import { getChatRoom } from "@/interfaces/chat.interface";
+import { getChatRoom, RoomMembers } from "@/interfaces/chat.interface";
 import { dateFormat } from "@/utils/dateFormat";
 
 //채팅방 생성
@@ -94,7 +94,11 @@ export const getLastMessageAndCount = async (chatRoomId: string, userId: string)
 };
 
 // 채팅방 상세조회
-export const getChatRoomMessages = async (chatRoomId: string) => {
+export const getChatRoomMessages = async (chatRoomId: string, members: RoomMembers[]) => {
+  const userIds = [];
+  for (let i = 0; i < members.length; i++) {
+    userIds.push(members[i].userId);
+  }
   const messages = await db
     .selectFrom("message")
     .innerJoin("user", "user.id", "message.senderId")
@@ -102,6 +106,11 @@ export const getChatRoomMessages = async (chatRoomId: string) => {
     .where("roomId", "=", chatRoomId)
     .orderBy("createdAt asc")
     .execute();
+  for (let i = 0; i < messages.length; i++) {
+    if (!userIds.includes(messages[i].senderId)) {
+      messages[i].senderId = "알수없는 사용자";
+    }
+  }
   return messages;
 };
 

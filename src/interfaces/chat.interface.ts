@@ -11,3 +11,8 @@ export interface getChatRoom {
   memberCount?: number;
   createdAt?: Date;
 }
+
+export interface RoomMembers {
+  userId: string;
+  name: string;
+}
