@@ -62,9 +62,10 @@ export const createStore = async (req: Request, res: Response) => {
     throw new Error("Failed to create chat room");
   }
   const type = req.body.type;
-  const eduResult = createDefaultPages(storeId, type);
-  if (!eduResult) throw new Error("Failed to create default education page");
-
+  if (type && type != "기타") {
+    const eduResult = await createDefaultPages(storeId, type);
+    if (!eduResult) throw new Error("Failed to create default education page");
+  }
   res.status(201).json({ message: "가게가 생성되었습니다." });
 };
 
