@@ -155,6 +155,7 @@ router.put(
       content: {
         "application/json": {
           example: {
+            "title": "POS 시스템 사용법",
             "content": "POS 시스템은 ..."
           }
         }

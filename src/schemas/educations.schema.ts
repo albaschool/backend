@@ -13,4 +13,9 @@ export const createEducationSchema = z.object({
   }),
 });
 
-export const updateEducationSchema = createEducationSchema.partial();
+export const updateEducationSchema = z.object({
+  body: z.object({
+    title: z.string().optional(),
+    content: z.string().optional(),
+  }),
+});
