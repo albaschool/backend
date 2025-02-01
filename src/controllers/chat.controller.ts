@@ -9,7 +9,7 @@ export const getChatRoomDetail = async (req: Request, res: Response) => {
   const { id } = req.params;
   const chatRoomDetail = { members: {}, messages: {} };
   const members = await services.getChatRoomMemebers(id);
-  const messages = await services.getChatRoomMessages(id);
+  const messages = await services.getChatRoomMessages(id, members);
   if (messages.length > 0) {
     const result = await services.saveLastMessage(req.auth!.id, id, messages[messages.length - 1].id);
     if (result === BigInt(0)) {
