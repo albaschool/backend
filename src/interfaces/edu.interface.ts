@@ -9,10 +9,4 @@ export interface CreateEducationPagePayload {
 export interface CreateEducationPayload {
   title: string;
   content: string;
-  img?: Buffer;
-  mimeType?: string;
-}
-
-export interface UpdateEducationPayload extends Partial<CreateEducationPayload> {
-  deleteImg: boolean;
 }

@@ -2,8 +2,7 @@ import { sql } from "kysely";
 import { nanoid } from "nanoid";
 
 import { db } from "@/db";
-import { CreateEducationPayload, UpdateEducationPayload } from "@/interfaces/edu.interface";
-import { deleteFileFromR2, uploadFileToR2 } from "@/services/file.service";
+import { CreateEducationPayload } from "@/interfaces/edu.interface";
 
 export const isStoreMember = async (storeId: string, userId: string) => {
   return db
@@ -23,55 +22,26 @@ export const getEducationsById = async (storeId: string) => {
 };
 
 export const createEducation = async (payload: CreateEducationPayload, storeId: string) => {
-  const { img, mimeType, ...education } = payload;
-
-  const id = nanoid(12);
-
-  const imageKey = img && mimeType ? await uploadFileToR2("education", img, mimeType, id) : null;
-
   return db
     .insertInto("educationPage")
     .values({
-      ...education,
-      id,
+      ...payload,
+      id: nanoid(12),
       storeId,
-      img: imageKey,
     })
     .executeTakeFirst();
 };
 
-export const updateEducationById = async (eduId: string, payload: Partial<UpdateEducationPayload>) => {
-  const { img, mimeType, deleteImg, ...education } = payload;
-
-  let imageKey: string | null = null;
-  if ((img && mimeType) || deleteImg) {
-    const result = await db.selectFrom("educationPage").select("img").where("id", "=", eduId).executeTakeFirst();
-    if (!result) {
-      return undefined;
-    }
-
-    if (result.img) await deleteFileFromR2(result.img);
-
-    if (img && mimeType && !deleteImg) imageKey = await uploadFileToR2("education", img, mimeType, eduId);
-  }
-
+export const updateEducationById = async (eduId: string, payload: Partial<CreateEducationPayload>) => {
   return db
     .updateTable("educationPage")
     .set({
-      ...education,
-      ...((imageKey || deleteImg) && { img: imageKey }),
+      ...payload
     })
     .where("id", "=", eduId)
     .executeTakeFirst();
 };
 
 export const deleteEducationById = async (eduId: string) => {
-  const result = await db.selectFrom("educationPage").select("img").where("id", "=", eduId).executeTakeFirst();
-  if (!result) {
-    return undefined;
-  }
-
-  if (result.img) await deleteFileFromR2(result.img);
-
   return await db.deleteFrom("educationPage").where("id", "=", eduId).executeTakeFirst();
 };
