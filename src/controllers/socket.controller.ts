@@ -123,7 +123,7 @@ const socket = (server: http.Server) => {
             const clientSocket = chatListSocket.sockets.get(socketId as string);
             clientSocket?.emit("chatLists", { data: payload });
           } else if (usersInRoomByUserId.has(notiUserId)) {
-            const socketId = usersInRoomByUserId.get(userId)!;
+            const socketId = usersInRoomByUserId.get(notiUserId)!;
             if (!roomSocketIds.includes(socketId)) {
               const clientSocket = chatRoomSocket.sockets.get(socketId as string);
               clientSocket?.emit("newMessage", { isNewMessage: true });
