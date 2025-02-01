@@ -31,7 +31,7 @@ export const getEducation = async (req: Request, res: Response) => {
   }
 
   res.status(200).json(education);
-}
+};
 
 export const createEducation = async (req: Request, res: Response) => {
   const isStoreOwner = await isOwner(req.auth!.id, req.params.storeId);

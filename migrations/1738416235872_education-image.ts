@@ -4,7 +4,7 @@ export async function up(db: Kysely<unknown>): Promise<void> {
   await db.schema
     .alterTable("education_page")
     .dropColumn("img")
-		.modifyColumn("content", sql`LONGTEXT`)
+    .modifyColumn("content", sql`LONGTEXT`)
     .execute();
 }
 
