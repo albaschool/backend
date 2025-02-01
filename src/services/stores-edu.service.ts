@@ -16,7 +16,7 @@ export const isStoreMember = async (storeId: string, userId: string) => {
 export const getEducationsById = async (storeId: string) => {
   return db
     .selectFrom("educationPage")
-    .select(["id", "title", "content", "img", "createdAt"])
+    .select(["id", "title", "createdAt"])
     .where("storeId", "=", storeId)
     .execute();
 };

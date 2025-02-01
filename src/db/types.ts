@@ -109,7 +109,6 @@ export interface EducationPageTable {
   storeId: string;
   title: string;
   content: string;
-  img: string | null;
   createdAt: ColumnType<Date, string | undefined, never>;
 }
 
