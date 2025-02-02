@@ -25,7 +25,7 @@ services:
     environment:
       - MYSQL_DATABASE=albaschool
       - MYSQL_ROOT_PASSWORD=
-    command: 
+    command:
       - --server-id=1
       - --log-bin=/var/lib/mysql/mysql-bin.log
       - --binlog-format=row
