@@ -8,7 +8,7 @@ interface Payload {
 }
 
 export class SessionManager {
-  private sessions: Map<string, Session>;
+  private sessions: Map<string, Session[]>;
 
   constructor() {
     this.sessions = new Map();
@@ -16,10 +16,24 @@ export class SessionManager {
 
   async createSession(userId: string, req: Request, res: Response) {
     const session = await createSession(req, res);
-    this.sessions.set(userId, session);
+    if (this.sessions.has(userId)) {
+      this.sessions.get(userId)?.push(session);
+    } else {
+      this.sessions.set(userId, [session]);
+    }
 
     session.on("disconnected", () => {
-      this.sessions.delete(userId);
+      const sessions = this.sessions.get(userId);
+      if (!sessions) return;
+      if (sessions.length <= 1) {
+        this.sessions.delete(userId);
+        return;
+      }
+
+      const sessionIndex = sessions.indexOf(session);
+      if (sessionIndex > -1) {
+        sessions.splice(sessionIndex, 1);
+      }
     });
 
     return session;
@@ -31,9 +45,9 @@ export class SessionManager {
   }
 
   pushToUser(userId: string, payload: Payload) {
-    const session = this.sessions.get(userId);
-    if (!session) return;
-    this.push(session, payload);
+    const sessions = this.sessions.get(userId);
+    if (!sessions) return;
+    sessions.forEach((session) => this.push(session, payload));
   }
 
   getActiveSessionCount(): number {
