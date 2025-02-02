@@ -19,6 +19,10 @@ const doc = {
       url: `http://localhost:${config.http.port}`,
       description: "로컬 서버",
     },
+    {
+      url: "https://albaschool-api.btry.dev",
+      description: "배포 서버",
+    },
   ],
   tags: [
     {
