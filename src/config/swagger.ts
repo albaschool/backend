@@ -21,8 +21,8 @@ const doc = {
     },
     {
       url: "https://albaschool-api.btry.dev",
-      description: "배포 서버"
-    }
+      description: "배포 서버",
+    },
   ],
   tags: [
     {
