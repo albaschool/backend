@@ -1,0 +1,46 @@
+services:
+  backend:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=
+      - JWT_SECRET_KEY=
+      - OPENAPI_NTS_BUSINESSMAN=
+      - VALIDATE_PRIVATE_KEY=
+      - MAIL_USER=
+      - MAIL_PASSWORD=
+      - CF_ACCOUNT_ID=
+      - CF_ACCESS_KEY_ID=
+      - CF_SECRET_ACCESS_KEY=
+      - CF_BUCKET_NAME=
+      - CF_CUSTOM_DOMAIN=
+    depends_on:
+      - db
+    networks:
+      - albaschool-network
+
+  db:
+    image: mariadb:latest
+    environment:
+      - MYSQL_DATABASE=albaschool
+      - MYSQL_ROOT_PASSWORD=
+    command: 
+      - --server-id=1
+      - --log-bin=/var/lib/mysql/mysql-bin.log
+      - --binlog-format=row
+      - --max-binlog-size=100M
+      - --expire-logs-days=3
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - albaschool-network
+
+volumes:
+  mariadb_data:
+
+networks:
+  albaschool-network:
+    driver: bridge
