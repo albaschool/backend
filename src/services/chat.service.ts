@@ -90,7 +90,7 @@ export const getLastMessageAndCount = async (chatRoomId: string, userId: string)
   else
     return {
       lastContent: "",
-      count: messages.length - startIdx - 1,
+      count: 0,
     };
 };
 
