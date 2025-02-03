@@ -94,13 +94,13 @@ export const getLastMessageAndCount = async (chatRoomId: string, userId: string)
 };
 
 // 채팅방 상세조회
-export const getChatRoomMessages = async (chatRoomId: string, members: RoomMembers[], page : string)=> {
+export const getChatRoomMessages = async (chatRoomId: string, members: RoomMembers[], page: string) => {
   const userIds = [];
   const limit = 50;
 
-  if(!page) page = "1";
+  if (!page) page = "1";
   const numPage = parseInt(page);
-  const offset = (numPage - 1) * limit
+  const offset = (numPage - 1) * limit;
   for (let i = 0; i < members.length; i++) {
     userIds.push(members[i].userId);
   }
@@ -118,7 +118,7 @@ export const getChatRoomMessages = async (chatRoomId: string, members: RoomMembe
       messages[i].senderId = "(알수 없는 사용자)";
     }
   }
-  messages.sort((a,b)=> (a.createdAt < b.createdAt ? -1 : 1));
+  messages.sort((a, b) => (a.createdAt < b.createdAt ? -1 : 1));
   return messages;
 };
 
