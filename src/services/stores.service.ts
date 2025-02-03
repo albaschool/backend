@@ -1,6 +1,7 @@
 import { sql } from "kysely";
 import { nanoid } from "nanoid";
 
+import config from "@/config";
 import { db } from "@/db";
 import { CreateStorePayload, UpdateStorePayload } from "@/interfaces/stores.interface";
 
@@ -36,10 +37,13 @@ export const getStoreMembers = async (storeId: string) => {
     .innerJoin("user", (join) =>
       join.onRef("storeMember.userId", "=", "user.id").on("storeMember.storeId", "=", storeId),
     )
-    .select(["user.id", "user.name", "user.contact"])
+    .select(["user.id", "user.name", "user.contact", "user.profile"])
     .execute();
 
-  return members;
+  return members.map(({ profile, ...member }) => ({
+    ...member,
+    profile: profile ? `https://${config.cloudflare.customDomain}/${profile}` : null,
+  }));
 };
 
 export const createStore = async (payload: CreateStorePayload) => {
