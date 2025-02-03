@@ -24,4 +24,3 @@ export const getChatRoomDetail = async (req: Request, res: Response) => {
     chatRoomDetail,
   });
 };
-
