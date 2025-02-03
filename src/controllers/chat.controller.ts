@@ -7,9 +7,10 @@ import * as services from "@/services/chat.service";
 
 export const getChatRoomDetail = async (req: Request, res: Response) => {
   const { id } = req.params;
+  const page = req.query.page as string;
   const chatRoomDetail = { members: {}, messages: {} };
   const members = await services.getChatRoomMemebers(id);
-  const messages = await services.getChatRoomMessages(id, members);
+  const messages = await services.getChatRoomMessages(id, members, page);
   if (messages.length > 0) {
     const result = await services.saveLastMessage(req.auth!.id, id, messages[messages.length - 1].id);
     if (result === BigInt(0)) {
