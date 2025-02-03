@@ -1,10 +1,6 @@
 FROM node:22-slim AS base
 
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
-
-FROM base AS prod
+RUN npm install -g pnpm
 
 WORKDIR /app
 
@@ -12,4 +8,4 @@ COPY . /app
 
 RUN pnpm install
 
-CMD pnpm migrate:latest && pnpm start
+CMD ["sh", "-c", "pnpm migrate:latest && pnpm start"]
