@@ -4,6 +4,7 @@ import { nanoid } from "nanoid";
 import { db } from "@/db";
 import { getChatRoom, RoomMembers } from "@/interfaces/chat.interface";
 import { dateFormat } from "@/utils/dateFormat";
+import config from "@/config";
 
 //채팅방 생성
 export const createChatRoom = async (storeId: string, title: string) => {
@@ -147,11 +148,14 @@ export const getChatRoomMemebers = async (chatRoomId: string) => {
     .selectFrom("chatRoom")
     .innerJoin("storeMember", "storeMember.storeId", "chatRoom.storeId")
     .innerJoin("user", "storeMember.userId", "user.id")
-    .select(["userId", "name"])
+    .select(["userId", "name", "profile"])
     .where("chatRoom.id", "=", chatRoomId)
     .execute();
 
-  return members;
+  return members.map(({ profile, ...member }) => ({
+    ...member,
+    profile: profile ? `https://${config.cloudflare.customDomain}/${profile}` : null,
+  }));
 };
 
 export const getNotiMembers = async (chatRoomId: string) => {
