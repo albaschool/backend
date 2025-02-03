@@ -121,7 +121,7 @@ export const getChatRoomMessages = async (
     .innerJoin("user", "user.id", "message.senderId")
     .select(["content", "user.name", "senderId", "createdAt", "message.id"])
     .where("roomId", "=", chatRoomId)
-    .$if(messageId !== undefined, (qb) => qb.where("createdAt", ">", createdAt as Date))
+    .$if(messageId !== undefined, (qb) => qb.where("createdAt", ">=", createdAt as Date))
     .orderBy("createdAt desc")
     .limit(limit)
     .offset(offset)
