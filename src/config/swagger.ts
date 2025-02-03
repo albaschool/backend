@@ -240,6 +240,7 @@ const doc = {
           {
             userId: "",
             name: "김사장",
+            profile: null,
           },
         ],
         messages: [
