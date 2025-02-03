@@ -104,7 +104,7 @@ export const getChatRoomMessages = async (
   const userIds = [];
   const limit = 50;
   let messageMark;
-  let createdAt : unknown;
+  let createdAt: unknown;
   if (messageId) {
     messageMark = await db.selectFrom("message").select("createdAt").where("id", "=", messageId).executeTakeFirst();
     createdAt = messageMark!.createdAt.toISOString();
