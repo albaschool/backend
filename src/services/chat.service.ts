@@ -1,10 +1,10 @@
 import { sql } from "kysely";
 import { nanoid } from "nanoid";
 
+import config from "@/config";
 import { db } from "@/db";
 import { getChatRoom, RoomMembers } from "@/interfaces/chat.interface";
 import { dateFormat } from "@/utils/dateFormat";
-import config from "@/config";
 
 //채팅방 생성
 export const createChatRoom = async (storeId: string, title: string) => {
