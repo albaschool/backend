@@ -56,7 +56,7 @@ export const deleteSchedule = async (scheduleId: string) => {
 
 export const isUserInStore = async (userId: string, storeId: string) => {
   const result = await db
-    .selectFrom("schedule")
+    .selectFrom("storeMember")
     .select(sql`1`.as("exists"))
     .where("userId", "=", userId)
     .where("storeId", "=", storeId)
