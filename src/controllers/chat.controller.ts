@@ -25,17 +25,3 @@ export const getChatRoomDetail = async (req: Request, res: Response) => {
   });
 };
 
-export const setLastMessage = async (req: Request, res: Response) => {
-  const body = req.body;
-  const userId = req.auth!.id;
-  const result = await services.saveLastMessage(userId, body.chatRoomId, body.messageId);
-  if (result === BigInt(0)) {
-    res.status(500).json({
-      message: "Internal Server Error.",
-    });
-    return;
-  }
-  res.status(201).json({
-    message: "채팅방 생성이 완료 됐습니다.",
-  });
-};

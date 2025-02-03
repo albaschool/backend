@@ -1,47 +1,8 @@
 import express from "express";
 
-import { getChatRoomDetail, setLastMessage } from "@/controllers/chat.controller";
+import { getChatRoomDetail } from "@/controllers/chat.controller";
 import authMiddleware from "@/middlewares/auth.middleware";
 const router = express.Router();
-
-router.put(
-  "/message/last",
-  // #swagger.tags = ["Chat"]
-  // #swagger.description = "마지막으로 읽은 메시지 설정."
-  // #swagger.security = [{ bearerAuth: [] }]
-  /*
-      #swagger.requestBody = {
-      required: true,
-      content: {
-          "application/json": {
-          schema: {
-              $ref: "#/components/schemas/saveLastMessage"
-          }  
-          }
-      }
-      }
-  */
-  /*
-      #swagger.responses[201] = {
-      description: "Created",
-      content: {
-          "application/json": {
-          example: { message: "마지막 메시지가 변경 됐습니다." }
-          }
-      }
-      }
-      #swagger.responses[500] = {
-      description: "Internal Server Error",
-      content: {
-          "application/json": {
-          example: { message: "Internal server error" }
-          }
-      }
-      }
-  */
-  authMiddleware,
-  setLastMessage,
-);
 
 //채팅방 상세 조회
 router.get(
