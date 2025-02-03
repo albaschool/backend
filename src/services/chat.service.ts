@@ -104,7 +104,7 @@ export const getChatRoomMessages = async (
   const userIds = [];
   const limit = 50;
   let messageMark;
-  let createdAt: string;
+  let createdAt : unknown;
   if (messageId) {
     messageMark = await db.selectFrom("message").select("createdAt").where("id", "=", messageId).executeTakeFirst();
     createdAt = messageMark.createdAt.toISOString();
@@ -121,7 +121,7 @@ export const getChatRoomMessages = async (
     .innerJoin("user", "user.id", "message.senderId")
     .select(["content", "user.name", "senderId", "createdAt", "message.id"])
     .where("roomId", "=", chatRoomId)
-    .$if(messageId, (qb) => qb.where("createdAt", ">", createdAt))
+    .$if(messageId, (qb) => qb.where("createdAt", ">", createdAt as Date))
     .orderBy("createdAt desc")
     .limit(limit)
     .offset(offset)
