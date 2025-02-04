@@ -81,11 +81,7 @@ export const updateStoreById = async (storeId: string, payload: Partial<UpdateSt
 };
 
 export const getUser = async (userId: string) => {
-  const result = await db
-    .selectFrom("user")
-    .select("name")
-    .where("id", "=", userId)
-    .executeTakeFirst();
+  const result = await db.selectFrom("user").select("name").where("id", "=", userId).executeTakeFirst();
 
   return result;
 };
