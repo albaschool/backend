@@ -12,6 +12,7 @@ import {
   getUserInfo,
   saveCode,
   saveUser,
+  updateAuthInfo,
   updatePassword,
   verifyEmail,
 } from "@/services/auth.service";
@@ -168,4 +169,26 @@ const deleteProfile = async (req: Request, res: Response) => {
   res.status(200).json({ message: "프로필 사진이 삭제되었습니다." });
 };
 
-export { checkUserPassword, deleteProfile, email, emailVerify, fixPassword, getMyPage, login, regist, uploadProfile };
+const updateAuth = async (req: Request, res: Response) => {
+  try {
+    const body = req.body;
+    console.log(req.auth!.id);
+    const result = await updateAuthInfo(body.name, body.contact, req.auth!.id);
+    if (result.numUpdatedRows.toString() === "0n") throw new Error();
+    res.status(200).json({ message: "회원정보 변경이 완료 됐습니다." });
+  } catch {
+    throw new HttpException(401, "토큰이 만료 됐습니다.");
+  }
+};
+export {
+  checkUserPassword,
+  deleteProfile,
+  email,
+  emailVerify,
+  fixPassword,
+  getMyPage,
+  login,
+  regist,
+  updateAuth,
+  uploadProfile,
+};
