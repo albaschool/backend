@@ -88,7 +88,8 @@ const socket = (server: http.Server) => {
         const { content, roomId } = data;
         logger.info(`Message received: ${content} in room ${roomId}`);
         const messageId = nanoid(12);
-        const { result, createdAt } = await saveMessage(content, userId, roomId, messageId);
+        const { result } = await saveMessage(content, userId, roomId, messageId);
+        const now = new Date();
         if ((result.numInsertedOrUpdatedRows ?? 0) === 0) throw new HttpException(500, "Internal Server Error.");
 
         const message: SendSocketData = {
@@ -97,7 +98,7 @@ const socket = (server: http.Server) => {
           senderId: userId,
           name: userName,
           messageId: messageId,
-          createdAt: createdAt,
+          createdAt: now,
         };
 
         chatRoomSocket.to(roomId).emit("broadcast", message);
