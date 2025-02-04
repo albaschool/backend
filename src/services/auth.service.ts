@@ -89,3 +89,13 @@ export const changeProfile = async (id: string, profile: string | null) => {
 
   return result;
 };
+
+export const updateAuthInfo = async (name: string, contact: string, id: string) => {
+  const result = await db
+    .updateTable("user")
+    .$if(name !== undefined, (qb) => qb.set({ name: name }))
+    .$if(contact !== undefined, (qb) => qb.set({ contact: contact }))
+    .where("id", "=", id)
+    .executeTakeFirst();
+  return result;
+};

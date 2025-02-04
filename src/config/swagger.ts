@@ -123,6 +123,10 @@ const doc = {
         chatRoomId: "",
         messageId: "",
       },
+      updateUser: {
+        name: "김철수",
+        contact: "01012341234",
+      },
     },
     examples: {
       storesExample: {

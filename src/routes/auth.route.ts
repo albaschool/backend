@@ -11,6 +11,7 @@ import {
   getMyPage,
   login,
   regist,
+  updateAuth,
   uploadProfile,
 } from "@/controllers/auth.controller";
 import authMiddleware from "@/middlewares/auth.middleware";
@@ -389,6 +390,53 @@ router.delete(
   */
   authMiddleware,
   deleteProfile,
+);
+
+router.put(
+  "/update",
+  // #swagger.tags = ["Auth"]
+  // #swagger.description = "회원정보를 변경합니다."
+  // #swagger.security = [{ bearerAuth: [] }]
+  /*
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            $ref: "#/components/schemas/updateUser"
+          }  
+        }
+      }
+    }
+  */
+  /*
+    #swagger.responses[200] = {
+      description: "Created",
+      content: {
+        "application/json": {
+          example: { message: "비밀번호 변경이 완료됐습니다." }
+        }
+      }
+    }
+    #swagger.responses[401] = {
+    description: "토큰 만료",
+    content: {
+      "application/json": {
+        example: { message: "토큰이 만료 됐습니다." }
+      }
+    }
+  }
+    #swagger.responses[500] = {
+      description: "Internal Server Error",
+      content: {
+        "application/json": {
+          example: { message: "Internal server error" }
+        }
+      }
+    }
+  */
+  authMiddleware,
+  updateAuth,
 );
 
 export default router;
