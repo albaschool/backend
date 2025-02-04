@@ -189,10 +189,7 @@ export const deleteStoreMember = async (req: Request, res: Response) => {
     throw new HttpException(404, "존재하지 않는 직원입니다.");
   }
 
-  const deleteResult = await deleteSchedules(req.params.userId, req.params.storeId);
-  if (deleteResult.numDeletedRows === BigInt(0)) {
-    throw new Error("Failed to delete schedules");
-  }
+  await deleteSchedules(req.params.userId, req.params.storeId);
 
   res.status(200).json({ message: "직원이 삭제되었습니다." });
 };
