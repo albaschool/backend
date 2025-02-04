@@ -4,6 +4,7 @@ import HttpException from "@/interfaces/http-exception.interface";
 import { AddStoreMemberPayload, CreateStorePayload, UpdateStorePayload } from "@/interfaces/stores.interface";
 import { createChatRoom } from "@/services/chat.service";
 import { createDefaultPages } from "@/services/educationPage.service";
+import { createNotification } from "@/services/notifications.service";
 import { deleteSchedules } from "@/services/schedules.service";
 import * as services from "@/services/stores.service";
 import { decrypt as bizRegNumDecrypt } from "@/services/validate.service";
@@ -148,30 +149,38 @@ export const addStoreMember = async (req: Request, res: Response) => {
   if (req.auth!.role !== "staff") {
     throw new HttpException(403, "직원만 사용할 수 있습니다.");
   }
-
+  
   const store = await services.getStoreById(req.params.storeId);
-
+  
   if (!store) {
     throw new HttpException(404, "존재하지 않는 가게입니다.");
   }
-
-  const { title, password, salt } = store;
+  
+  const { title, password, salt, ownerId } = store;
   const payload: AddStoreMemberPayload = req.body;
-
+  
   if (!(await comparePassword(password, payload.password, salt))) {
     throw new HttpException(401, "비밀번호가 일치하지 않습니다.");
   }
-
+  
   const isMember = await services.isStoreMember(req.params.storeId, req.auth!.id);
   if (isMember) {
     throw new HttpException(409, "이미 가게에 소속되어 있습니다.");
   }
-
+  
   const result = await services.addStoreMember(req.params.storeId, req.auth!.id);
   if (result.numInsertedOrUpdatedRows === BigInt(0)) {
     throw new Error("Failed to add store member");
   }
-
+  
+  const user = await services.getUser(req.auth!.id)
+  await createNotification({
+    userId: ownerId,
+    title,
+    content: `${user?.name ?? "알 수 없음"}님이 가게에 추가되었습니다.`,
+    target: `/user/manager`,
+  });
+  
   res.status(200).json({ message: `${title} 가게에 추가되었습니다.` });
 };
 

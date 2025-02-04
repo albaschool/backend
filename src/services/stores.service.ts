@@ -24,7 +24,7 @@ export const getStoresByUserId = async (userId: string) => {
 export const getStoreById = async (storeId: string) => {
   const store = await db
     .selectFrom("store")
-    .select(["title", "location", "contact", "password", "salt"])
+    .select(["title", "location", "ownerId", "contact", "password", "salt"])
     .where("id", "=", storeId)
     .executeTakeFirst();
 
@@ -80,14 +80,14 @@ export const updateStoreById = async (storeId: string, payload: Partial<UpdateSt
   return result;
 };
 
-export const isUserExists = async (userId: string) => {
+export const getUser = async (userId: string) => {
   const result = await db
     .selectFrom("user")
-    .select(sql`1`.as("exists"))
+    .select("name")
     .where("id", "=", userId)
     .executeTakeFirst();
 
-  return result !== undefined;
+  return result;
 };
 
 export const isOwner = async (userId: string, storeId: string) => {
