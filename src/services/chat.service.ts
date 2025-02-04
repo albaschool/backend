@@ -4,7 +4,6 @@ import { nanoid } from "nanoid";
 import config from "@/config";
 import { db } from "@/db";
 import { getChatRoom, RoomMembers } from "@/interfaces/chat.interface";
-import { dateFormat } from "@/utils/dateFormat";
 
 //채팅방 생성
 export const createChatRoom = async (storeId: string, title: string) => {
@@ -20,8 +19,6 @@ export const createChatRoom = async (storeId: string, title: string) => {
 };
 //메시지 저장 socket controller에서 사용
 export const saveMessage = async (content: string, senderId: string, roomId: string, messageId: string) => {
-  const now = new Date();
-  const createdAt = dateFormat(now);
   const result = await db
     .insertInto("message")
     .values({
@@ -29,10 +26,9 @@ export const saveMessage = async (content: string, senderId: string, roomId: str
       roomId,
       senderId,
       content,
-      createdAt,
     })
     .executeTakeFirst();
-  return { result, createdAt };
+  return { result };
 };
 
 //채팅방 조회

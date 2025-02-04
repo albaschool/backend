@@ -8,5 +8,5 @@ export interface SendSocketData {
   content: string;
   roomId: string;
   messageId: string;
-  createdAt: string;
+  createdAt: Date;
 }
