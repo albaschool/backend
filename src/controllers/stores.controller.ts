@@ -4,6 +4,7 @@ import HttpException from "@/interfaces/http-exception.interface";
 import { AddStoreMemberPayload, CreateStorePayload, UpdateStorePayload } from "@/interfaces/stores.interface";
 import { createChatRoom } from "@/services/chat.service";
 import { createDefaultPages } from "@/services/educationPage.service";
+import { createNotification } from "@/services/notifications.service";
 import { deleteSchedules } from "@/services/schedules.service";
 import * as services from "@/services/stores.service";
 import { decrypt as bizRegNumDecrypt } from "@/services/validate.service";
@@ -155,7 +156,7 @@ export const addStoreMember = async (req: Request, res: Response) => {
     throw new HttpException(404, "존재하지 않는 가게입니다.");
   }
 
-  const { title, password, salt } = store;
+  const { title, password, salt, ownerId } = store;
   const payload: AddStoreMemberPayload = req.body;
 
   if (!(await comparePassword(password, payload.password, salt))) {
@@ -171,6 +172,14 @@ export const addStoreMember = async (req: Request, res: Response) => {
   if (result.numInsertedOrUpdatedRows === BigInt(0)) {
     throw new Error("Failed to add store member");
   }
+
+  const user = await services.getUser(req.auth!.id);
+  await createNotification({
+    userId: ownerId,
+    title,
+    content: `${user?.name ?? "알 수 없음"}님이 가게에 추가되었습니다.`,
+    target: `/user/manager`,
+  });
 
   res.status(200).json({ message: `${title} 가게에 추가되었습니다.` });
 };
