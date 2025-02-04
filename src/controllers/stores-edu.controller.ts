@@ -43,6 +43,7 @@ export const createEducation = async (req: Request, res: Response) => {
   if (result.numInsertedOrUpdatedRows === BigInt(0)) {
     throw new Error("Failed to create education");
   }
+  await services.createEduNoti(req.params.storeId);
 
   res.status(201).json({ message: "강의 자료가 생성되었습니다." });
 };
@@ -57,7 +58,7 @@ export const updateEducation = async (req: Request, res: Response) => {
   if (result.numUpdatedRows === BigInt(0)) {
     throw new HttpException(404, "강의 자료가 존재하지 않습니다.");
   }
-
+  await services.updateEduNoti(req.params.storeId);
   res.status(200).json({ message: "강의 자료가 수정되었습니다." });
 };
 
